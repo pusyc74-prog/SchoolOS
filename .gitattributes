@@ -1,0 +1,5 @@
+# Keep Unix line endings so scripts run inside Linux/WSL/Docker even when cloned on Windows
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.pdf binary
