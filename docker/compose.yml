@@ -1,0 +1,59 @@
+# Local development stack for SchoolOS (Frappe v16 + ERPNext + HR + Education).
+# Start:  docker compose -f docker/compose.yml up -d
+# Shell:  docker compose -f docker/compose.yml exec frappe bash
+name: schoolos
+
+services:
+  mariadb:
+    image: docker.io/mariadb:11.8
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+    environment:
+      MYSQL_ROOT_PASSWORD: "123"
+      MARIADB_AUTO_UPGRADE: "1"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    restart: unless-stopped
+
+  redis-cache:
+    image: docker.io/redis:alpine
+    restart: unless-stopped
+
+  redis-queue:
+    image: docker.io/redis:alpine
+    restart: unless-stopped
+
+  # Catches every email SchoolOS sends. Open http://localhost:8025 to read them.
+  mailpit:
+    image: docker.io/axllent/mailpit
+    ports:
+      - "8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+    restart: unless-stopped
+
+  frappe:
+    image: docker.io/frappe/bench:latest
+    command: sleep infinity
+    environment:
+      - SHELL=/bin/bash
+    volumes:
+      # this repo, editable from your Mac
+      - ..:/workspace/schoolos:cached
+      # the bench lives in a Docker volume (much faster than a Mac folder).
+      # Mounted on the frappe user's home so file ownership is correct.
+      - bench-home:/home/frappe
+    ports:
+      - "8000:8000"   # website / desk
+      - "9000:9000"   # realtime
+    depends_on:
+      - mariadb
+      - redis-cache
+      - redis-queue
+
+volumes:
+  mariadb-data:
+  bench-home:

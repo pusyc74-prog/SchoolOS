@@ -1,0 +1,274 @@
+{
+ "actions": [],
+ "creation": "2026-10-21 12:00:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "branding_section",
+  "school_display_name",
+  "school_logo",
+  "column_break_b1",
+  "primary_color",
+  "portal_url",
+  "school_address",
+  "alerts_section",
+  "alerts_enabled",
+  "dry_run",
+  "send_email",
+  "column_break_a1",
+  "absence_alerts",
+  "absence_only_today",
+  "circular_alerts",
+  "report_card_alerts",
+  "whatsapp_section",
+  "whatsapp_enabled",
+  "whatsapp_phone_number_id",
+  "whatsapp_access_token",
+  "whatsapp_api_version",
+  "whatsapp_language",
+  "column_break_w1",
+  "absence_template",
+  "circular_template",
+  "report_card_template",
+  "dashboard_section",
+  "low_attendance_threshold",
+  "dashboard_window_days",
+  "column_break_d1",
+  "count_leave_as_present"
+ ],
+ "fields": [
+  {
+   "fieldname": "branding_section",
+   "fieldtype": "Section Break",
+   "label": "Branding"
+  },
+  {
+   "fieldname": "school_display_name",
+   "fieldtype": "Data",
+   "label": "School Name (shown in app, alerts and report cards)"
+  },
+  {
+   "fieldname": "school_logo",
+   "fieldtype": "Attach Image",
+   "label": "School Logo"
+  },
+  {
+   "fieldname": "column_break_b1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "#1F3A5F",
+   "fieldname": "primary_color",
+   "fieldtype": "Color",
+   "label": "Brand Colour"
+  },
+  {
+   "description": "Full link parents open, e.g. https://school.example.com/school. Leave blank to use this site's address.",
+   "fieldname": "portal_url",
+   "fieldtype": "Data",
+   "label": "Portal Link"
+  },
+  {
+   "fieldname": "school_address",
+   "fieldtype": "Small Text",
+   "label": "Address (for report cards)"
+  },
+  {
+   "fieldname": "alerts_section",
+   "fieldtype": "Section Break",
+   "label": "Alerts"
+  },
+  {
+   "default": "1",
+   "fieldname": "alerts_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Alerts"
+  },
+  {
+   "default": "1",
+   "description": "Keep ON while testing. Alerts are written to SchoolOS Alert Log but never sent.",
+   "fieldname": "dry_run",
+   "fieldtype": "Check",
+   "label": "Test Mode (log alerts, don't send)"
+  },
+  {
+   "default": "1",
+   "fieldname": "send_email",
+   "fieldtype": "Check",
+   "label": "Send Email"
+  },
+  {
+   "fieldname": "column_break_a1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "absence_alerts",
+   "fieldtype": "Check",
+   "label": "Absence Alerts"
+  },
+  {
+   "default": "1",
+   "description": "Skip alerts when attendance is entered for past dates.",
+   "fieldname": "absence_only_today",
+   "fieldtype": "Check",
+   "label": "Only for Today's Attendance"
+  },
+  {
+   "default": "1",
+   "fieldname": "circular_alerts",
+   "fieldtype": "Check",
+   "label": "Circular Alerts"
+  },
+  {
+   "default": "1",
+   "fieldname": "report_card_alerts",
+   "fieldtype": "Check",
+   "label": "Report Card Alerts"
+  },
+  {
+   "description": "Uses Meta's WhatsApp Cloud API directly (no reseller fees). Templates must be approved in WhatsApp Manager with the body parameters listed below, in order.",
+   "fieldname": "whatsapp_section",
+   "fieldtype": "Section Break",
+   "label": "WhatsApp (Meta Cloud API)"
+  },
+  {
+   "fieldname": "whatsapp_enabled",
+   "fieldtype": "Check",
+   "label": "Enable WhatsApp"
+  },
+  {
+   "depends_on": "whatsapp_enabled",
+   "fieldname": "whatsapp_phone_number_id",
+   "fieldtype": "Data",
+   "label": "Phone Number ID"
+  },
+  {
+   "depends_on": "whatsapp_enabled",
+   "fieldname": "whatsapp_access_token",
+   "fieldtype": "Password",
+   "label": "Access Token",
+   "length": 1000
+  },
+  {
+   "default": "v23.0",
+   "depends_on": "whatsapp_enabled",
+   "description": "Check developers.facebook.com for the current version.",
+   "fieldname": "whatsapp_api_version",
+   "fieldtype": "Data",
+   "label": "Graph API Version"
+  },
+  {
+   "default": "en",
+   "depends_on": "whatsapp_enabled",
+   "description": "e.g. en, mr, hi. All templates must exist in this language.",
+   "fieldname": "whatsapp_language",
+   "fieldtype": "Data",
+   "label": "Template Language Code"
+  },
+  {
+   "fieldname": "column_break_w1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "school_absence_alert",
+   "description": "Body params: 1 guardian name, 2 student name, 3 date, 4 school name",
+   "fieldname": "absence_template",
+   "fieldtype": "Data",
+   "label": "Absence Template"
+  },
+  {
+   "default": "school_circular",
+   "description": "Body params: 1 guardian name, 2 title, 3 school name, 4 portal link",
+   "fieldname": "circular_template",
+   "fieldtype": "Data",
+   "label": "Circular Template"
+  },
+  {
+   "default": "school_report_card",
+   "description": "Body params: 1 guardian name, 2 student name, 3 exam, 4 school name, 5 portal link",
+   "fieldname": "report_card_template",
+   "fieldtype": "Data",
+   "label": "Report Card Template"
+  },
+  {
+   "fieldname": "dashboard_section",
+   "fieldtype": "Section Break",
+   "label": "Dashboards"
+  },
+  {
+   "default": "75",
+   "fieldname": "low_attendance_threshold",
+   "fieldtype": "Percent",
+   "label": "Low Attendance Threshold"
+  },
+  {
+   "default": "30",
+   "fieldname": "dashboard_window_days",
+   "fieldtype": "Int",
+   "label": "Trend Window (days)"
+  },
+  {
+   "fieldname": "column_break_d1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "count_leave_as_present",
+   "fieldtype": "Check",
+   "label": "Count Approved Leave as Present"
+  }
+ ],
+ "is_submittable": 0,
+ "issingle": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-10-21 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SchoolOS",
+ "name": "SchoolOS Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Education Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "School Principal",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

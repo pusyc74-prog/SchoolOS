@@ -1,0 +1,74 @@
+{
+ "actions": [],
+ "creation": "2026-10-21 12:00:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "course",
+  "total_obtained",
+  "total_maximum",
+  "percentage",
+  "grade",
+  "passed"
+ ],
+ "fields": [
+  {
+   "fieldname": "course",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Subject",
+   "options": "Course",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_obtained",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Obtained",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_maximum",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Maximum",
+   "read_only": 1
+  },
+  {
+   "fieldname": "percentage",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "Percentage",
+   "read_only": 1
+  },
+  {
+   "fieldname": "grade",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Grade",
+   "read_only": 1
+  },
+  {
+   "fieldname": "passed",
+   "fieldtype": "Check",
+   "label": "Passed",
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-10-21 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SchoolOS",
+ "name": "Student Report Card Subject",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

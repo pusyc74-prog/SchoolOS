@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="{{ primary_color }}">
+	<title>{{ school_name | e }}</title>
+	{% if logo %}<link rel="icon" href="{{ logo }}">{% endif %}
+	<link rel="stylesheet" href="/assets/schoolos/css/school.css?v={{ version }}">
+	<style>:root { --brand: {{ primary_color }}; }</style>
+</head>
+<body>
+	<header class="topbar">
+		<div class="brand">
+			{% if logo %}<img src="{{ logo }}" alt="" class="logo">{% endif %}
+			<span class="school-name">{{ school_name | e }}</span>
+		</div>
+		<div class="user">
+			<span id="user-name"></span>
+			<a href="/desk" id="desk-link" class="hidden">Admin</a>
+			<a href="/logout">Log out</a>
+		</div>
+	</header>
+	<nav id="tabs" class="tabs" role="tablist"></nav>
+	<main id="app">
+		<div class="loading">Loading…</div>
+	</main>
+	<script src="/assets/schoolos/js/school.js?v={{ version }}"></script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-10-21 12:00:00.000000",
+ "custom": 0,
+ "default_print_format": "SchoolOS Report Card",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "student",
+  "student_name",
+  "template",
+  "academic_year",
+  "column_break_1",
+  "student_group",
+  "program",
+  "roll_number",
+  "exam_labels",
+  "marks_section",
+  "subjects",
+  "marks",
+  "result_section",
+  "overall_percentage",
+  "overall_grade",
+  "column_break_2",
+  "result",
+  "total_obtained",
+  "total_maximum",
+  "attendance_section",
+  "working_days",
+  "days_present",
+  "column_break_3",
+  "attendance_percentage",
+  "co_section",
+  "co_scholastic",
+  "teacher_remarks",
+  "promoted_to",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "RC-.YYYY.-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Series",
+   "options": "RC-.YYYY.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Student",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "student.student_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Student Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "template",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Template",
+   "options": "Report Card Template",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "template.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "student_group",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Student Group (Class / Section)",
+   "options": "Student Group"
+  },
+  {
+   "fieldname": "program",
+   "fieldtype": "Link",
+   "label": "Program",
+   "options": "Program"
+  },
+  {
+   "fieldname": "roll_number",
+   "fieldtype": "Int",
+   "label": "Roll No."
+  },
+  {
+   "fieldname": "exam_labels",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Exam Columns",
+   "length": 500,
+   "read_only": 1
+  },
+  {
+   "fieldname": "marks_section",
+   "fieldtype": "Section Break",
+   "label": "Marks"
+  },
+  {
+   "fieldname": "subjects",
+   "fieldtype": "Table",
+   "label": "Subjects",
+   "options": "Student Report Card Subject"
+  },
+  {
+   "fieldname": "marks",
+   "fieldtype": "Table",
+   "label": "Marks by Exam",
+   "options": "Student Report Card Mark"
+  },
+  {
+   "fieldname": "result_section",
+   "fieldtype": "Section Break",
+   "label": "Result"
+  },
+  {
+   "fieldname": "overall_percentage",
+   "fieldtype": "Percent",
+   "label": "Overall %",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overall_grade",
+   "fieldtype": "Data",
+   "label": "Overall Grade",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Data",
+   "label": "Result",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_obtained",
+   "fieldtype": "Float",
+   "label": "Total Obtained",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_maximum",
+   "fieldtype": "Float",
+   "label": "Total Maximum",
+   "read_only": 1
+  },
+  {
+   "fieldname": "attendance_section",
+   "fieldtype": "Section Break",
+   "label": "Attendance"
+  },
+  {
+   "fieldname": "working_days",
+   "fieldtype": "Int",
+   "label": "Working Days",
+   "read_only": 1
+  },
+  {
+   "fieldname": "days_present",
+   "fieldtype": "Int",
+   "label": "Days Present",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "attendance_percentage",
+   "fieldtype": "Percent",
+   "label": "Attendance %",
+   "read_only": 1
+  },
+  {
+   "fieldname": "co_section",
+   "fieldtype": "Section Break",
+   "label": "Co-Scholastic & Remarks"
+  },
+  {
+   "fieldname": "co_scholastic",
+   "fieldtype": "Table",
+   "label": "Co-Scholastic",
+   "options": "Student Report Card Co Scholastic"
+  },
+  {
+   "fieldname": "teacher_remarks",
+   "fieldtype": "Small Text",
+   "label": "Class Teacher's Remarks"
+  },
+  {
+   "fieldname": "promoted_to",
+   "fieldtype": "Data",
+   "label": "Promoted To"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Student Report Card",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "issingle": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-10-21 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SchoolOS",
+ "name": "Student Report Card",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Education Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "School Principal",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Instructor",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "show_title_field_in_link": 0,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "student_name",
+ "track_changes": 1
+}
