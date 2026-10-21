@@ -7,7 +7,7 @@ everything lives in this app, so Frappe upgrades stay safe.
 > Code name "SchoolOS" is a placeholder. Rebrand by changing the app title in `hooks.py`
 > and the school name/logo/colour in **SchoolOS Settings** (per school, no code needed).
 
-## What's in v0.1
+## What's in v0.2
 
 | Area | What it does |
 |---|---|
@@ -15,10 +15,14 @@ everything lives in this app, so Frappe upgrades stay safe.
 | **Teacher dashboard** | Today's timetable (current period highlighted), my classes' attendance status, who's absent, assessments with marks still to enter, trend, students needing attention |
 | **Parent / student view** | Each child's attendance %, recent absences, latest results, today's timetable, circulars, report card PDF download |
 | **Alerts** | Absence alert (once per child per day), circulars to all / a class / a section, "report card published". WhatsApp via Meta's Cloud API directly (no reseller fees) + email. Every message logged in **SchoolOS Alert Log**, deduplicated, retried hourly. **Test Mode** logs without sending. Parent consent tick-box on Guardian. |
+| **Homework & diary** | Teachers post homework, classwork, projects or notes for a section from their phone (on `/school`) or desk. Parents get an email (WhatsApp optional, off by default to save cost); students and parents see what's due. |
+| **Installable app** | `/school` installs on Android / iPhone home screens with the school's own name, logo and colour (PWA). Last data shown when offline. |
+| **Excel import** | One sheet, one row per student: class, section, roll no, admission/GR no, parents' mobiles. Validate first, then import in the background. Siblings share parent records; re-uploading updates students instead of duplicating. See [docs/IMPORT.md](docs/IMPORT.md). |
+| **Marathi** | EN / मराठी switch on the dashboard, Marathi alert emails (SchoolOS Settings → Alert Language), Marathi report-card labels. |
 | **Report cards** | Template per class & year: exam columns (Assessment Groups), optional weightage, marks breakdown (PT / NB / SE / Exam), co-scholastic areas, attendance, remarks, signatures. One click generates cards for a whole section from submitted Assessment Results. PDF layout for **CBSE** and **Maharashtra State Board**. Preset grading scales (CBSE 8-point, Maharashtra 9-point). |
 
-Not in v0.1 (planned): fees & UPI payments, mobile app (Flutter), push notifications,
-transport, library, Marathi UI.
+Not yet (planned): fees & UPI payments, store mobile app (Flutter) with push notifications,
+transport, library.
 
 ## Run it on your Mac
 
@@ -41,6 +45,9 @@ Open `http://school.localhost:8000/school`.
 schoolos/
   api/dashboard.py     JSON endpoints for every dashboard (web page now, mobile app later)
   api/report_card.py   generate cards for a section; PDF download for parents
+  api/homework.py      post / list homework
+  api/pwa.py           per-school app manifest + offline service worker
+  importer/            Excel template, row checks (pure Python) and the import job
   api/compute.py       pure-Python number crunching (unit tested)
   alerts/engine.py     who to notify, WhatsApp/email delivery, logging, retries
   alerts/events.py     hooks: absence alert on attendance submit

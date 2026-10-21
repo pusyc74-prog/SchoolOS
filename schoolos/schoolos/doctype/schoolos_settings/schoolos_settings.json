@@ -17,11 +17,14 @@
   "alerts_enabled",
   "dry_run",
   "send_email",
+  "alert_language",
   "column_break_a1",
   "absence_alerts",
   "absence_only_today",
   "circular_alerts",
   "report_card_alerts",
+  "homework_alerts",
+  "homework_whatsapp",
   "whatsapp_section",
   "whatsapp_enabled",
   "whatsapp_phone_number_id",
@@ -32,6 +35,7 @@
   "absence_template",
   "circular_template",
   "report_card_template",
+  "homework_template",
   "dashboard_section",
   "low_attendance_threshold",
   "dashboard_window_days",
@@ -100,6 +104,14 @@
    "label": "Send Email"
   },
   {
+   "default": "en",
+   "description": "en = English, mr = Marathi. Applies to emails; WhatsApp uses the template language below.",
+   "fieldname": "alert_language",
+   "fieldtype": "Select",
+   "label": "Alert Language",
+   "options": "en\nmr"
+  },
+  {
    "fieldname": "column_break_a1",
    "fieldtype": "Column Break"
   },
@@ -127,6 +139,18 @@
    "fieldname": "report_card_alerts",
    "fieldtype": "Check",
    "label": "Report Card Alerts"
+  },
+  {
+   "default": "1",
+   "fieldname": "homework_alerts",
+   "fieldtype": "Check",
+   "label": "Homework Alerts (email)"
+  },
+  {
+   "description": "Off by default: daily homework on WhatsApp adds up in Meta charges. Teachers can tick it per post when allowed.",
+   "fieldname": "homework_whatsapp",
+   "fieldtype": "Check",
+   "label": "Allow Homework on WhatsApp"
   },
   {
    "description": "Uses Meta's WhatsApp Cloud API directly (no reseller fees). Templates must be approved in WhatsApp Manager with the body parameters listed below, in order.",
@@ -192,6 +216,13 @@
    "fieldname": "report_card_template",
    "fieldtype": "Data",
    "label": "Report Card Template"
+  },
+  {
+   "default": "school_homework",
+   "description": "Body params: 1 guardian name, 2 student name, 3 title, 4 due date, 5 school name",
+   "fieldname": "homework_template",
+   "fieldtype": "Data",
+   "label": "Homework Template"
   },
   {
    "fieldname": "dashboard_section",

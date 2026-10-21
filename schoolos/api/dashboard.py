@@ -12,6 +12,7 @@ from schoolos.api.common import (
     require_principal, require_student_access, roles, student_for_user,
 )
 from schoolos.api.compute import attendance_trend, status_counts, student_attendance_stats
+from schoolos.api.homework import homework_for_groups
 from schoolos.report_card.builder import attendance_summary
 
 
@@ -327,6 +328,10 @@ def teacher(date: str | None = None, days: int | None = None):
         "groups_today": _groups_today(groups, day),
         "absent_today": absent_today,
         "pending_marks": pending[:15],
+        "recent_posts": frappe.get_all(
+            "SchoolOS Homework", filters={"docstatus": 1, "instructor": instructor},
+            fields=["name", "entry_type", "title", "student_group", "course", "date", "due_date", "recipients_count"],
+            order_by="date desc, creation desc", limit=8),
         "trend": _att_trend(where, params, start, end),
         "low_attendance": student_attendance_stats(
             _att_by_student(where, params, start, end), threshold=cfg["threshold"], limit=10),
@@ -391,6 +396,7 @@ def student(student: str | None = None, days: int | None = None):
         "today_schedule": schedule,
         "results": results,
         "report_cards": cards,
+        "homework": homework_for_groups(groups, days=7, limit=10),
         "circulars": _recent_circulars([student], limit=5),
         "window": {"start": str(start), "end": str(end)},
     }
@@ -410,6 +416,7 @@ def parent():
             "attendance": s["attendance"],
             "absent_recently": s["recent_absences"][:3],
             "latest_result": s["results"][0] if s["results"] else None,
+            "homework_due": [h for h in s["homework"] if h.due_date and not h.overdue][:3],
             "report_cards": s["report_cards"][:2],
         })
     circulars = _recent_circulars([c["student"] for c in out], limit=5) if out else []

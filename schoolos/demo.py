@@ -5,7 +5,7 @@ Run after finishing the ERPNext setup wizard:
 
 Creates: academic year & terms, "Class 5" with 6 subjects, 30 students with
 guardians, 6 teachers, ~40 days of attendance, two exams with marks, today's
-timetable, a circular, a CBSE report-card template and report cards.
+timetable, homework, a circular, a CBSE report-card template and report cards.
 Logins (password Demo@12345): principal@demo.school, teacher@demo.school, parent@demo.school
 Test Mode stays ON, so no real WhatsApp or email goes out.
 """
@@ -65,6 +65,7 @@ def make_demo():
     make_attendance(group.name, students, holiday_list)
     make_timetable(group.name, courses, instructors, room)
     make_exams(group.name, courses, instructors, students, year, term1)
+    make_homework(group.name, courses, instructors)
     make_circular()
     make_report_cards(group.name, year)
 
@@ -288,6 +289,25 @@ def make_exams(group, courses, instructors, students, year, term):
                 })
                 res.insert()
                 res.submit()
+
+
+def make_homework(group, courses, instructors):
+    # (days ago, subject index, type, title, details, due in N days from posting)
+    items = [
+        (0, 1, "Homework", "Exercise 4.2, questions 1–10", "Show all working in the notebook.", 2),
+        (1, 0, "Homework", "Learn the poem 'Trees' (first two stanzas)", "", 3),
+        (2, 2, "Project", "Make a model of the water cycle", "Use waste material. Groups of 3.", 9),
+        (4, 3, "Note", "Bring an atlas tomorrow", "", 1),
+    ]
+    for i, subj, kind, title, details, due_in in items:
+        course, ins = courses[subj], instructors[subj]
+        hw = frappe.get_doc({
+            "doctype": "SchoolOS Homework", "entry_type": kind, "title": title, "details": details,
+            "student_group": group, "course": course, "instructor": ins,
+            "date": add_days(today(), -i), "due_date": add_days(today(), due_in - i), "notify_parents": 1,
+        })
+        hw.insert()
+        hw.submit()
 
 
 def configure_settings():

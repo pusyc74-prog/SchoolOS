@@ -6,6 +6,16 @@ from schoolos.utils.grading import PRESET_SCALES
 ROLES = ["School Principal"]
 
 CUSTOM_FIELDS = {
+    "Student": [
+        {
+            "fieldname": "schoolos_admission_no",
+            "fieldtype": "Data",
+            "label": "Admission / GR No.",
+            "insert_after": "joining_date",
+            "search_index": 1,
+            "in_standard_filter": 1,
+        },
+    ],
     "Guardian": [
         {
             "fieldname": "schoolos_alerts_opt_in",

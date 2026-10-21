@@ -37,6 +37,11 @@ Dear {{1}}, a new notice from {{3}}: "{{2}}". Read it here: {{4}}
 Dear {{1}}, {{2}}'s report card for {{3}} has been published by {{4}}. View or download it: {{5}}
 ```
 
+**school_homework** (only if you allow homework on WhatsApp)
+```
+Dear {{1}}, new homework for {{2}}: "{{3}}", due {{4}}. – {{5}}
+```
+
 Templates usually get approved within minutes to a day.
 
 ## 3. Turn it on in SchoolOS

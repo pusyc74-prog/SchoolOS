@@ -6,8 +6,15 @@
 	<meta name="theme-color" content="{{ primary_color }}">
 	<title>{{ school_name | e }}</title>
 	{% if logo %}<link rel="icon" href="{{ logo }}">{% endif %}
+	<link rel="manifest" href="/api/method/schoolos.api.pwa.manifest">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-title" content="{{ school_name | e }}">
+	<link rel="apple-touch-icon" href="{{ logo or '/assets/schoolos/images/logo.svg' }}">
 	<link rel="stylesheet" href="/assets/schoolos/css/school.css?v={{ version }}">
 	<style>:root { --brand: {{ primary_color }}; }</style>
+	<script>window.frappe = window.frappe || {};</script>
+	<!-- csrf_token -->
 </head>
 <body>
 	<header class="topbar">

@@ -10,6 +10,7 @@ TEMPLATE_PARAMS = {
     "Absence": ["guardian_name", "student_name", "date", "school_name"],
     "Circular": ["guardian_name", "title", "school_name", "portal_url"],
     "Report Card": ["guardian_name", "student_name", "exam", "school_name", "portal_url"],
+    "Homework": ["guardian_name", "student_name", "title", "due_date", "school_name"],
     "Test": ["guardian_name", "school_name"],
 }
 
@@ -30,8 +31,56 @@ DEFAULT_EMAIL = {
         'has been published. View or download it here: <a href="{portal_url}">{portal_url}</a>'
         "<br><br>{school_name}",
     ),
+    "Homework": (
+        "{entry_type} for {student_name}: {title}",
+        "Dear {guardian_name},<br><br><b>{entry_type}</b> for {student_name} ({subject}): <b>{title}</b>"
+        "<br>Due: {due_date}<br><br>{body}<br><br>See all homework on the school portal: "
+        '<a href="{portal_url}">{portal_url}</a><br><br>{school_name}',
+    ),
     "Test": ("Test message from {school_name}", "This is a test alert from {school_name}."),
 }
+
+
+# Marathi versions, used when SchoolOS Settings → Alert Language = mr
+DEFAULT_EMAIL_MR = {
+    "Absence": (
+        "{student_name} यांची {date} रोजी गैरहजेरी",
+        "प्रिय {guardian_name},<br><br>{student_name} यांची {date} रोजी <b>गैरहजेरी</b> नोंदवली आहे."
+        "<br>हे अनपेक्षित असल्यास कृपया शाळेशी संपर्क साधा.<br><br>{school_name}",
+    ),
+    "Circular": (
+        "{school_name}: {title}",
+        "प्रिय {guardian_name},<br><br>{body}<br><br>शाळेच्या पोर्टलवर पहा: "
+        '<a href="{portal_url}">{portal_url}</a><br><br>{school_name}',
+    ),
+    "Report Card": (
+        "{student_name} यांचे {exam} प्रगतीपत्रक तयार आहे",
+        "प्रिय {guardian_name},<br><br>{student_name} ({exam}) यांचे प्रगतीपत्रक प्रसिद्ध झाले आहे. "
+        'येथे पहा किंवा डाउनलोड करा: <a href="{portal_url}">{portal_url}</a><br><br>{school_name}',
+    ),
+    "Homework": (
+        "{student_name} साठी {entry_type}: {title}",
+        "प्रिय {guardian_name},<br><br>{student_name} साठी <b>{entry_type}</b> ({subject}): <b>{title}</b>"
+        "<br>मुदत: {due_date}<br><br>{body}<br><br>सर्व गृहपाठ शाळेच्या पोर्टलवर पहा: "
+        '<a href="{portal_url}">{portal_url}</a><br><br>{school_name}',
+    ),
+    "Test": ("{school_name} कडून चाचणी संदेश", "{school_name} कडून ही चाचणी सूचना आहे."),
+}
+
+ENTRY_TYPE_MR = {"Homework": "गृहपाठ", "Classwork": "वर्गकार्य", "Project": "प्रकल्प", "Note": "सूचना"}
+
+
+def email_template(alert_type, lang="en"):
+    """(subject, body) template for an alert type in the given language, English fallback."""
+    table = DEFAULT_EMAIL_MR if lang == "mr" else DEFAULT_EMAIL
+    return table.get(alert_type) or DEFAULT_EMAIL.get(alert_type) or ("{school_name}", "")
+
+
+def localise_context(context, lang="en"):
+    """Translate fixed values (e.g. entry type) that appear inside messages."""
+    if lang == "mr" and context.get("entry_type") in ENTRY_TYPE_MR:
+        return {**context, "entry_type": ENTRY_TYPE_MR[context["entry_type"]]}
+    return context
 
 
 def render(text, context):

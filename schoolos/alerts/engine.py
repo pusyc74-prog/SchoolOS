@@ -13,7 +13,7 @@ from frappe import _
 from frappe.utils import cint, get_url, now_datetime
 
 from schoolos.alerts.messages import (
-    DEFAULT_EMAIL, dedup_key, render, template_params, whatsapp_template_payload,
+    dedup_key, email_template, localise_context, render, template_params, whatsapp_template_payload,
 )
 from schoolos.utils.phone import normalize_mobile
 
@@ -132,13 +132,16 @@ def _template_for(alert_type, settings, override=None):
         "Absence": settings.absence_template,
         "Circular": settings.circular_template,
         "Report Card": settings.report_card_template,
+        "Homework": settings.homework_template,
     }.get(alert_type)
 
 
 def _make_log(alert_type, channel, recipient, contact, student, ref_dt, ref_name, key, ctx, settings, template):
     if frappe.db.exists("SchoolOS Alert Log", {"dedup_key": key}):
         return None
-    subject_tpl, body_tpl = DEFAULT_EMAIL.get(alert_type, ("{school_name}", ""))
+    lang = settings.alert_language or "en"
+    ctx = localise_context(ctx, lang)
+    subject_tpl, body_tpl = email_template(alert_type, lang)
     doc = frappe.get_doc({
         "doctype": "SchoolOS Alert Log",
         "alert_type": alert_type,
