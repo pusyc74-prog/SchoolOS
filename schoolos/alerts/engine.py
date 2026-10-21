@@ -133,6 +133,7 @@ def _template_for(alert_type, settings, override=None):
         "Circular": settings.circular_template,
         "Report Card": settings.report_card_template,
         "Homework": settings.homework_template,
+        "Fee Reminder": settings.fee_template,
     }.get(alert_type)
 
 

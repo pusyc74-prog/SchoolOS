@@ -313,3 +313,57 @@ tr:last-child td { border-bottom: 0; }
 	.subj { color: hsl(var(--h, 212) 80% 76%); background: hsl(var(--h, 212) 35% 19%); }
 	.initial { background: hsl(var(--h, 212) 40% 38%); }
 }
+
+/* ---------- v0.4: fees, progress, activity */
+.subnav { display: flex; gap: 6px; overflow-x: auto; padding: 4px; margin-bottom: 4px; background: var(--card); border: 1px solid var(--line);
+	border-radius: 14px; box-shadow: var(--shadow); width: max-content; max-width: 100%; }
+.subnav button { border: 0; background: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font: 600 15px var(--f-body); color: var(--muted); white-space: nowrap; }
+.subnav button[aria-selected="true"] { background: var(--brand); color: #fff; }
+
+.cols { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; align-items: end; height: 200px; padding-top: 18px; }
+.col { display: grid; grid-template-rows: auto 1fr auto; height: 100%; align-items: end; text-align: center; min-width: 0; }
+.col .b { width: 100%; max-width: 46px; margin: 0 auto; border-radius: 8px 8px 3px 3px; background: color-mix(in srgb, var(--brand) 55%, var(--soft)); align-self: end; }
+.col.last .b { background: var(--brand); }
+.col .v { font: 600 11px var(--f-display); color: var(--muted); white-space: nowrap; overflow: hidden; }
+.col .k { font-size: 12px; color: var(--muted); padding-top: 6px; }
+
+table.matrix th, table.matrix td { padding: 4px; text-align: center; border-bottom: 0; }
+table.matrix th:first-child, table.matrix td:first-child { text-align: left; white-space: nowrap; padding-right: 10px; }
+table.matrix .cell { min-height: 0; padding: 6px 4px; display: block; font: 700 13px var(--f-display); text-align: center; border-radius: 9px; font-variant-numeric: tabular-nums; }
+
+.sbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.sbar .track { position: relative; flex: 1 1 140px; height: 10px; border-radius: 8px; background: var(--soft); overflow: visible; }
+.sbar .fill { display: block; height: 100%; border-radius: 8px; background: var(--brand); }
+.sbar .exp { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--marigold); border-radius: 2px; }
+@media (prefers-color-scheme: dark) { .sbar .fill { background: #8fbfff; } }
+.subject-card h3 .subj { font-size: 13px; }
+.subj-stats { display: flex; align-items: center; gap: 16px; margin-top: 12px; }
+.subj-stats b { font: 700 20px var(--f-display); }
+.topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.topic { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--soft); color: var(--muted); }
+.topic.done { background: var(--good-bg); color: var(--good); }
+.topic.started { background: var(--warn-bg); color: var(--warn); }
+details summary { cursor: pointer; margin-top: 12px; }
+
+.act-day { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.act-day:last-child { border-bottom: 0; }
+.act-date { font: 600 13px var(--f-display); color: var(--muted); padding-top: 4px; }
+.act { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.act li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; }
+.act-ic { flex: none; width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-size: 13px; font-weight: 700;
+	color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); }
+
+.fee-strip { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; padding: 10px 12px; border-radius: 12px; font-size: 14px; }
+.fee-strip.good { background: var(--good-bg); color: var(--good); }
+.fee-strip.warn { background: var(--warn-bg); color: var(--warn); }
+.fee-strip.bad { background: var(--bad-bg); color: var(--bad); }
+.fee-strip .btn { flex: none; }
+.paybox-row { display: block !important; padding-top: 0 !important; }
+.paybox { background: var(--soft); border-radius: 12px; padding: 12px; }
+input[type="checkbox"] { accent-color: var(--brand); width: 16px; height: 16px; }
+
+@media (max-width: 640px) {
+	.act-day { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+	.cols { height: 170px; gap: 4px; }
+	.col .v { display: none; }
+}

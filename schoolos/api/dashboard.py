@@ -8,7 +8,7 @@ import frappe
 from frappe.utils import add_days, cint, flt, get_timedelta, getdate, nowtime, today
 
 from schoolos.api.common import (
-    guardian_children, instructor_for_user, is_principal, require_login,
+    FEE_ROLES, guardian_children, instructor_for_user, is_principal, require_login,
     require_principal, require_student_access, roles, student_for_user,
 )
 from schoolos.api.compute import attendance_trend, status_counts, student_attendance_stats
@@ -187,6 +187,8 @@ def get_context():
     views = []
     if is_principal():
         views.append("principal")
+    if roles() & FEE_ROLES:
+        views.append("fees")
     if instructor:
         views.append("teacher")
     if children:
@@ -403,6 +405,17 @@ def student(student: str | None = None, days: int | None = None):
     }
 
 
+def _fees_brief(student):
+    try:
+        from schoolos.api.fees import student_fees
+
+        f = student_fees(student)
+        return {k: f[k] for k in ("outstanding", "overdue", "paid", "total", "next_due", "currency", "pay_online")}
+    except Exception:
+        frappe.log_error(title="SchoolOS parent dashboard: fees")
+        return None
+
+
 @frappe.whitelist()
 def parent():
     """All children of the logged-in guardian with a short summary each."""
@@ -420,6 +433,7 @@ def parent():
             "enrollment": s["enrollment"],
             "latest_result": s["results"][0] if s["results"] else None,
             "homework_due": [h for h in s["homework"] if h.due_date and not h.overdue][:3],
+            "fees": _fees_brief(c.name),
             "report_cards": s["report_cards"][:2],
         })
     circulars = _recent_circulars([c["student"] for c in out], limit=5) if out else []

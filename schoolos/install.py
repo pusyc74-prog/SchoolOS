@@ -16,6 +16,15 @@ CUSTOM_FIELDS = {
             "in_standard_filter": 1,
         },
     ],
+    "Student Log": [
+        {
+            "fieldname": "schoolos_share_with_parent",
+            "fieldtype": "Check",
+            "label": "Show to parents",
+            "insert_after": "type",
+            "description": "Parents see this note in the app's activity and notes.",
+        },
+    ],
     "Guardian": [
         {
             "fieldname": "schoolos_alerts_opt_in",

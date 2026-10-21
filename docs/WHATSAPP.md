@@ -42,6 +42,11 @@ Dear {{1}}, {{2}}'s report card for {{3}} has been published by {{4}}. View or d
 Dear {{1}}, new homework for {{2}}: "{{3}}", due {{4}}. – {{5}}
 ```
 
+**school_fee_reminder**
+```
+Dear {{1}}, a fee of {{3}} is due for {{2}} (due date {{4}}). Pay online or see details: {{6}} – {{5}}
+```
+
 Templates usually get approved within minutes to a day.
 
 ## 3. Turn it on in SchoolOS

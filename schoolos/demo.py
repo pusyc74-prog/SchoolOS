@@ -66,8 +66,11 @@ def make_demo():
     make_timetable(group.name, courses, instructors, room)
     make_exams(group.name, courses, instructors, students, year, term1)
     make_homework(group.name, courses, instructors)
+    make_syllabus_and_lessons(group.name, courses, instructors, year)
+    make_teacher_notes(students)
     make_circular()
     make_report_cards(group.name, year)
+    make_fees(students, company, year)
 
     frappe.db.commit()
     print(f"""
@@ -308,6 +311,118 @@ def make_homework(group, courses, instructors):
         })
         hw.insert()
         hw.submit()
+
+
+SYLLABUS = {
+    "English": ["Nouns", "Pronouns", "Verbs", "Adjectives", "Tenses", "Poem: Trees", "Story: The Lost Kite", "Letter Writing",
+                "Comprehension", "Articles", "Prepositions", "Essay Writing"],
+    "Mathematics": ["Large Numbers", "Addition & Subtraction", "Multiplication", "Division", "Factors & Multiples", "Fractions",
+                    "Decimals", "Measurement", "Area & Perimeter", "Geometry: Angles", "Data Handling", "Patterns"],
+    "Science": ["Living & Non-living", "Plants: Photosynthesis", "Animals & Habitats", "Food & Nutrition", "Water Cycle",
+                "Air & Weather", "Our Body", "Health & Hygiene", "Light & Shadows", "Simple Machines", "Soil", "Natural Resources"],
+    "Social Studies": ["Our Country", "Maps & Directions", "Maharashtra", "Rivers of India", "Our Government", "Festivals",
+                       "Transport & Communication", "Early Humans", "Indus Valley", "Climate Zones", "Agriculture", "Industries"],
+    "Marathi": ["वर्णमाला", "शब्द व वाक्य", "कविता: पाऊस", "गोष्ट: चतुर कावळा", "नाम", "सर्वनाम", "क्रियापद", "पत्रलेखन",
+                "निबंध", "म्हणी", "समानार्थी शब्द", "वाचन"],
+    "Hindi": ["वर्णमाला", "संज्ञा", "सर्वनाम", "कविता: चिड़िया", "क्रिया", "विशेषण", "कहानी: ईमानदार लकड़हारा", "पत्र लेखन",
+              "निबंध", "मुहावरे", "विलोम शब्द", "पठन"],
+}
+
+
+def make_syllabus_and_lessons(group, courses, instructors, year):
+    """12 chapters per subject; lessons logged so coverage varies (Mathematics behind on purpose)."""
+    progress = {"English": 6, "Mathematics": 3, "Science": 6, "Social Studies": 5, "Marathi": 5, "Hindi": 7}
+    notes = {
+        "Nouns": "Common and proper nouns with examples from the classroom. Worksheet page 12.",
+        "Large Numbers": "Place value up to crores using the Indian system. Practise reading numbers aloud.",
+        "Plants: Photosynthesis": "Leaf experiment with iodine. Students drew the process in their notebooks.",
+        "Maps & Directions": "Used the school map to learn the four directions. Homework: draw your route home.",
+    }
+    for course, ins in zip(courses, instructors):
+        names = SYLLABUS.get(course, [])
+        doc = frappe.get_doc("Course", course)
+        if not doc.get("topics"):
+            for n in names:
+                if not frappe.db.exists("Topic", n):
+                    frappe.get_doc({"doctype": "Topic", "topic_name": n}).insert()
+                doc.append("topics", {"topic": n, "topic_name": n})
+            doc.save()
+        done = progress.get(course, 4)
+        for k, n in enumerate(names[: done + 1]):
+            frappe.get_doc({
+                "doctype": "SchoolOS Lesson Log", "student_group": group, "course": course, "topic": n,
+                "completed": 1 if k < done else 0, "instructor": ins,
+                "date": add_days(today(), -(done - k) * 9 - 1),
+                "notes": notes.get(n, f"Covered {n}. Revise the textbook exercise at home."),
+            }).insert()
+
+
+def make_teacher_notes(students):
+    for student, kind, text in [
+        (students[0], "Achievement", "Won second place in the inter-school spelling bee. Very proud of him!"),
+        (students[0], "Academic", "Needs more practice with long division; please revise exercise 4.2 at home."),
+        (students[1], "General", "Helpful and kind to classmates; volunteered to lead the morning assembly."),
+    ]:
+        frappe.get_doc({"doctype": "Student Log", "student": student, "type": kind, "date": add_days(today(), -random.randint(1, 12)),
+                        "log": text, "schoolos_share_with_parent": 1}).insert()
+
+
+def make_fees(students, company, year):
+    """Three quarterly instalments per student, most paid, a few defaulters."""
+    from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
+
+    for item, rate in (("Tuition Fee", 12000), ("Transport Fee", 3000), ("Activity Fee", 1500)):
+        if not frappe.db.exists("Item", item):
+            frappe.get_doc({"doctype": "Item", "item_code": item, "item_name": item, "item_group": "Services"
+                            if frappe.db.exists("Item Group", "Services") else "All Item Groups",
+                            "is_stock_item": 0, "stock_uom": "Nos", "standard_rate": rate}).insert()
+    if not frappe.db.exists("Mode of Payment", "UPI"):
+        cash = frappe.db.get_value("Company", company, "default_cash_account")
+        frappe.get_doc({"doctype": "Mode of Payment", "mode_of_payment": "UPI", "type": "Bank",
+                        "accounts": [{"company": company, "default_account": cash}] if cash else []}).insert()
+    ys = getdate(frappe.db.get_value("Academic Year", year, "year_start_date"))
+    dues = [getdate(f"{ys.year}-06-10"), getdate(f"{ys.year}-09-10"), getdate(f"{ys.year}-12-10")]
+    defaulters = {5, 12, 21}
+    partial = {3, 17}
+    errors = 0
+    for i, student in enumerate(students):
+        customer = frappe.db.get_value("Student", student, "customer")
+        if not customer:
+            continue
+        for q, due in enumerate(dues):
+            items = [{"item_code": "Tuition Fee", "qty": 1, "rate": 12000}]
+            if i % 3 == 0:
+                items.append({"item_code": "Transport Fee", "qty": 1, "rate": 3000})
+            if q == 0:
+                items.append({"item_code": "Activity Fee", "qty": 1, "rate": 1500})
+            posting = min(add_days(due, -25), getdate(today()))
+            try:
+                si = frappe.get_doc({"doctype": "Sales Invoice", "customer": customer, "company": company, "student": student,
+                                     "set_posting_time": 1, "posting_date": posting, "due_date": max(due, posting), "items": items})
+                si.insert()
+                si.submit()
+            except Exception as e:
+                errors += 1
+                if errors == 1:
+                    print("Demo fees skipped (check Accounts setup):", e)
+                break
+            if due > getdate(today()) or i in defaulters or (q == 1 and i % 4 == 1):
+                continue
+            pe = get_payment_entry("Sales Invoice", si.name)
+            pe.mode_of_payment = random.choice(["UPI", "UPI", "UPI", "Cash"])
+            pe.posting_date = min(add_days(due, random.randint(-8, 6)), getdate(today()))
+            pe.reference_no = f"UPI{random.randint(10**9, 10**10 - 1)}"
+            pe.reference_date = pe.posting_date
+            if i in partial and q == 1:
+                half = si.grand_total / 2
+                pe.paid_amount = pe.received_amount = half
+                pe.references[0].allocated_amount = half
+            try:
+                pe.insert()
+                pe.submit()
+            except Exception as e:
+                print("Demo payment skipped:", e)
+                return
 
 
 def configure_settings():

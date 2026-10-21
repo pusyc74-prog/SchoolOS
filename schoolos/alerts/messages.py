@@ -11,6 +11,7 @@ TEMPLATE_PARAMS = {
     "Circular": ["guardian_name", "title", "school_name", "portal_url"],
     "Report Card": ["guardian_name", "student_name", "exam", "school_name", "portal_url"],
     "Homework": ["guardian_name", "student_name", "title", "due_date", "school_name"],
+    "Fee Reminder": ["guardian_name", "student_name", "amount", "due_date", "school_name", "portal_url"],
     "Test": ["guardian_name", "school_name"],
 }
 
@@ -36,6 +37,13 @@ DEFAULT_EMAIL = {
         "Dear {guardian_name},<br><br><b>{entry_type}</b> for {student_name} ({subject}): <b>{title}</b>"
         "<br>Due: {due_date}<br><br>{body}<br><br>See all homework on the school portal: "
         '<a href="{portal_url}">{portal_url}</a><br><br>{school_name}',
+    ),
+    "Fee Reminder": (
+        "Fee reminder for {student_name}: {amount} due",
+        "Dear {guardian_name},<br><br>This is a reminder that <b>{amount}</b> is due for {student_name} "
+        "(due date {due_date}).<br>You can pay online or see the details here: "
+        '<a href="{portal_url}">{portal_url}</a><br><br>If you have already paid, please ignore this message.'
+        "<br><br>{school_name}",
     ),
     "Test": ("Test message from {school_name}", "This is a test alert from {school_name}."),
 }
@@ -63,6 +71,12 @@ DEFAULT_EMAIL_MR = {
         "प्रिय {guardian_name},<br><br>{student_name} साठी <b>{entry_type}</b> ({subject}): <b>{title}</b>"
         "<br>मुदत: {due_date}<br><br>{body}<br><br>सर्व गृहपाठ शाळेच्या पोर्टलवर पहा: "
         '<a href="{portal_url}">{portal_url}</a><br><br>{school_name}',
+    ),
+    "Fee Reminder": (
+        "{student_name} यांचे {amount} शुल्क बाकी",
+        "प्रिय {guardian_name},<br><br>{student_name} यांचे <b>{amount}</b> शुल्क बाकी आहे (देय तारीख {due_date})."
+        '<br>ऑनलाइन भरण्यासाठी किंवा तपशील पाहण्यासाठी: <a href="{portal_url}">{portal_url}</a>'
+        "<br><br>आपण आधीच भरले असल्यास कृपया या संदेशाकडे दुर्लक्ष करा.<br><br>{school_name}",
     ),
     "Test": ("{school_name} कडून चाचणी संदेश", "{school_name} कडून ही चाचणी सूचना आहे."),
 }

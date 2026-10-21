@@ -36,3 +36,18 @@ classes, sections, parents, enrolments and class lists.
   `098765 43210`); they're stored in WhatsApp format.
 - Dates as **DD-MM-YYYY**. Gender as Male / Female / Other (M / F accepted).
 - Each row is saved on its own: a problem in one row never leaves half-created records.
+
+## Fees and online payment
+
+Fees come from Frappe Education's own setup: **Fee Structure → Fee Schedule**, which creates
+one invoice per student. SchoolOS reads those invoices and their payments; nothing extra to set up.
+
+- **Online payment**: Desk → **Education Settings** → enter the school's Razorpay key and secret.
+  Parents then see **Pay** on every unpaid fee. Without a key they're asked to pay at the office.
+- **Reminders**: SchoolOS Settings → *Automatic Fee Reminders* (days before due, repeat interval).
+  The Fees tab also has **Remind all overdue** and per-student reminders.
+
+## Syllabus
+
+Each subject's chapters live in Desk → **Course** → *Topics*. Teachers then log lessons from
+`/school` (My classes → *Log today's lesson*) and coverage updates automatically.

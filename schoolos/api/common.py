@@ -5,6 +5,7 @@ from frappe import _
 
 PRINCIPAL_ROLES = {"School Principal", "Education Manager", "System Manager"}
 STAFF_ROLES = PRINCIPAL_ROLES | {"Academics User", "Instructor"}
+FEE_ROLES = PRINCIPAL_ROLES | {"Accounts Manager", "Accounts User"}
 
 
 def roles(user=None):
@@ -80,3 +81,16 @@ def can_view_student(student, user=None):
 def require_student_access(student):
     if not student or not can_view_student(student):
         raise frappe.PermissionError(_("You can't view this student"))
+
+
+def require_teaches_group(student_group):
+    """Teachers (without admin/academics roles) may only post for sections they teach."""
+    r = roles()
+    if r & PRINCIPAL_ROLES or "Academics User" in r:
+        return
+    mine = instructor_for_user()
+    if not mine:
+        frappe.throw(_("Your user isn't linked to an Instructor"), frappe.PermissionError)
+    if not frappe.db.exists("Student Group Instructor",
+                            {"parent": student_group, "parenttype": "Student Group", "instructor": mine}):
+        frappe.throw(_("You don't teach {0}").format(student_group), frappe.PermissionError)

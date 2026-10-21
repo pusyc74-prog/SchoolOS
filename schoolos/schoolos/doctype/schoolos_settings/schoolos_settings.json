@@ -24,6 +24,9 @@
   "circular_alerts",
   "report_card_alerts",
   "homework_alerts",
+  "fee_reminders",
+  "fee_days_before",
+  "fee_overdue_every",
   "homework_whatsapp",
   "whatsapp_section",
   "whatsapp_enabled",
@@ -35,6 +38,7 @@
   "absence_template",
   "circular_template",
   "report_card_template",
+  "fee_template",
   "homework_template",
   "dashboard_section",
   "low_attendance_threshold",
@@ -147,6 +151,27 @@
    "label": "Homework Alerts (email)"
   },
   {
+   "default": "1",
+   "description": "Daily: a few days before the due date, on the due date, then every few days while overdue.",
+   "fieldname": "fee_reminders",
+   "fieldtype": "Check",
+   "label": "Automatic Fee Reminders"
+  },
+  {
+   "default": "3",
+   "depends_on": "fee_reminders",
+   "fieldname": "fee_days_before",
+   "fieldtype": "Int",
+   "label": "Remind Days Before Due"
+  },
+  {
+   "default": "7",
+   "depends_on": "fee_reminders",
+   "fieldname": "fee_overdue_every",
+   "fieldtype": "Int",
+   "label": "Repeat Overdue Reminder Every (days)"
+  },
+  {
    "description": "Off by default: daily homework on WhatsApp adds up in Meta charges. Teachers can tick it per post when allowed.",
    "fieldname": "homework_whatsapp",
    "fieldtype": "Check",
@@ -216,6 +241,13 @@
    "fieldname": "report_card_template",
    "fieldtype": "Data",
    "label": "Report Card Template"
+  },
+  {
+   "default": "school_fee_reminder",
+   "description": "Body params: 1 guardian name, 2 student name, 3 amount, 4 due date, 5 school name, 6 portal link",
+   "fieldname": "fee_template",
+   "fieldtype": "Data",
+   "label": "Fee Reminder Template"
   },
   {
    "default": "school_homework",

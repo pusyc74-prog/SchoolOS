@@ -36,6 +36,9 @@ scheduler_events = {
     "hourly": [
         "schoolos.alerts.engine.retry_failed",
     ],
+    "daily": [
+        "schoolos.api.fees.send_scheduled_reminders",
+    ],
 }
 
 # Keep the alert log from growing forever

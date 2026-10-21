@@ -1,0 +1,183 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-10-21 12:00:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "student_group",
+  "course",
+  "topic",
+  "column_break_1",
+  "completed",
+  "instructor",
+  "instructor_name",
+  "notes_section",
+  "notes",
+  "attachment",
+  "homework"
+ ],
+ "fields": [
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "student_group",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Class / Section",
+   "options": "Student Group",
+   "reqd": 1
+  },
+  {
+   "fieldname": "course",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Subject",
+   "options": "Course",
+   "reqd": 1
+  },
+  {
+   "description": "From the subject's syllabus (Course \u2192 Topics). Leave blank for revision or tests.",
+   "fieldname": "topic",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Topic / Chapter",
+   "options": "Topic"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "Untick if the topic continues next class. Only finished topics count towards syllabus coverage.",
+   "fieldname": "completed",
+   "fieldtype": "Check",
+   "label": "Topic finished"
+  },
+  {
+   "fieldname": "instructor",
+   "fieldtype": "Link",
+   "label": "Teacher",
+   "options": "Instructor"
+  },
+  {
+   "fetch_from": "instructor.instructor_name",
+   "fieldname": "instructor_name",
+   "fieldtype": "Data",
+   "label": "Teacher Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Class Notes"
+  },
+  {
+   "description": "Parents and students see these notes in the app.",
+   "fieldname": "notes",
+   "fieldtype": "Text Editor",
+   "label": "What was taught / class notes"
+  },
+  {
+   "fieldname": "attachment",
+   "fieldtype": "Attach",
+   "label": "Notes / Worksheet (file)"
+  },
+  {
+   "fieldname": "homework",
+   "fieldtype": "Link",
+   "label": "Homework Given",
+   "options": "SchoolOS Homework"
+  }
+ ],
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-10-21 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SchoolOS",
+ "name": "SchoolOS Lesson Log",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Education Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "School Principal",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Instructor",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "show_title_field_in_link": 0,
+ "sort_field": "date",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "topic",
+ "track_changes": 1
+}
