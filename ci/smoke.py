@@ -121,5 +121,61 @@ if others:
     call(pa, "dashboard.student", expect=403, student=others[0]["student"])
     call(pa, "fees.for_student", expect=403, student=others[0]["student"])
 
+# ---------------------------------------------------------------- actions (POST with the page's CSRF token)
+import re
+from datetime import timedelta
+
+
+def csrf(s):
+    html = s.get(f"{BASE}/school", timeout=60).text
+    m = re.search(r'csrf_token\s*=\s*"([^"]+)"', html)
+    check(bool(m), "csrf token present in /school")
+    return m.group(1) if m else ""
+
+
+def post(s, method, token, expect=200, **data):
+    r = s.post(f"{BASE}/api/method/schoolos.api.{method}", data=data, timeout=120,
+               headers={"X-Frappe-CSRF-Token": token} if token else {})
+    check(r.status_code == expect, f"POST {method} -> {expect}", r)
+    try:
+        return r.json().get("message")
+    except Exception:
+        return None
+
+
+def weekday(offset):
+    d = today + timedelta(days=offset)
+    while d.weekday() >= 5:
+        d += timedelta(days=1)
+    return d.isoformat()
+
+
+tt = csrf(t)
+hw = post(t, "homework.post", tt, student_group="Class 5 - A", title="Smoke test homework",
+          entry_type="Homework", details="Page 12", due_date=weekday(2))
+check(bool(hw) and hw.get("students") == 30, "teacher: homework reaches 30 students")
+titles = [h["title"] for h in (call(pa, "homework.for_student", student=kids[0]) or [])]
+check("Smoke test homework" in titles, "parent: sees the new homework")
+
+pt = csrf(pa)
+r = pa.post(f"{BASE}/api/method/schoolos.api.leave.apply", timeout=60,
+            data={"student": kids[1], "from_date": weekday(40), "to_date": weekday(40), "reason": "x"})
+check(r.status_code in (400, 403), "POST without CSRF token is refused", r)
+lv = post(pa, "leave.apply", pt, student=kids[1], from_date=weekday(40), to_date=weekday(40), reason="Smoke test")
+check(bool(lv) and lv.get("status") == "Pending", "parent: leave request pending")
+post(pa, "leave.apply", pt, expect=417, student=kids[1], from_date=weekday(40), to_date=weekday(40), reason="again")
+pending = [x["name"] for x in (call(t, "leave.pending") or [])]
+check(bool(lv) and lv["name"] in pending, "teacher: sees the leave request")
+if lv:
+    dec = post(t, "leave.decide", tt, name=lv["name"], approve=1, note="OK")
+    check(bool(dec) and dec.get("status") == "Approved", "teacher: approves leave")
+    mine = {x["name"]: x["status"] for x in (call(pa, "leave.for_student", student=kids[1]) or [])}
+    check(mine.get(lv["name"]) == "Approved", "parent: sees the approval")
+post(pa, "homework.post", pt, expect=403, student_group="Class 5 - A", title="parent can't post")
+
+ptk = csrf(p)
+rem = post(p, "fees.remind", ptk)
+check(bool(rem) and rem.get("students", 0) > 0, "principal: fee reminders queued (Test Mode)")
+
 print(f"\n{len(failures)} failure(s)")
 sys.exit(1 if failures else 0)
