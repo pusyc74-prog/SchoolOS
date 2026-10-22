@@ -71,6 +71,9 @@ def make_demo():
     make_circular()
     make_report_cards(group.name, year)
     make_fees(students, company, year)
+    make_calendar_and_gallery(group.name, holiday_list)
+    make_leave_request(students[0], group.name)
+    make_bills_for_approval(company)
 
     frappe.db.commit()
     print(f"""
@@ -423,6 +426,83 @@ def make_fees(students, company, year):
             except Exception as e:
                 print("Demo payment skipped:", e)
                 return
+
+
+def make_calendar_and_gallery(group, holiday_list):
+    t = getdate(today())
+    events = [
+        ("Parent-Teacher Meeting", "PTM", 3, None, "09:00", "Classrooms"),
+        ("Unit Test 2 begins", "Exam", 6, 10, None, None),
+        ("Annual Sports Day", "Sports", 14, None, "08:00", "School ground"),
+        ("Science Exhibition", "Event", 21, None, "10:00", "Hall"),
+        ("Diwali vacation", "Holiday", 9, 15, None, None),
+        ("Class 5 trip to Panhala", "Trip", 18, None, "07:00", "Panhala Fort"),
+    ]
+    for title, kind, start, end, time, place in events:
+        frappe.get_doc({"doctype": "SchoolOS Event", "title": title, "event_type": kind,
+                        "start_date": add_days(t, start), "end_date": add_days(t, end) if end else None,
+                        "start_time": time, "location": place, "audience": "All Students" if kind != "Trip" else "Student Group",
+                        "student_group": group if kind == "Trip" else None, "published": 1,
+                        "description": f"{title}. More details from the class teacher."}).insert()
+    for d, name in [(add_days(t, 25), "Guru Nanak Jayanti")]:
+        if holiday_list and not frappe.db.exists("Holiday", {"parent": holiday_list, "holiday_date": d}):
+            hl = frappe.get_doc("Holiday List", holiday_list)
+            if getdate(hl.from_date) <= getdate(d) <= getdate(hl.to_date):
+                hl.append("holidays", {"holiday_date": d, "description": name, "weekly_off": 0})
+                hl.save()
+    try:
+        photos = [_demo_photo(f"Sports Day {i + 1}", hue) for i, hue in enumerate([(31, 120, 180), (220, 140, 40), (40, 150, 90), (170, 60, 90), (90, 80, 170)])]
+        frappe.get_doc({"doctype": "SchoolOS Album", "title": "Independence Day & Sports Week", "date": add_days(t, -12),
+                        "audience": "All Students", "published": 1, "description": "Flag hoisting, march past and races.",
+                        "photos": [{"image": url, "caption": cap} for url, cap in photos]}).insert()
+    except Exception as e:
+        print("Demo album skipped:", e)
+
+
+def _demo_photo(caption, rgb):
+    """A simple generated image so the demo gallery has something to show."""
+    import io
+
+    from PIL import Image, ImageDraw
+
+    img = Image.new("RGB", (960, 640), rgb)
+    d = ImageDraw.Draw(img)
+    for k in range(0, 960, 60):
+        d.line([(k, 640), (k + 300, 0)], fill=tuple(min(255, c + 25) for c in rgb), width=18)
+    d.text((40, 580), caption, fill=(255, 255, 255))
+    buf = io.BytesIO()
+    img.save(buf, "JPEG", quality=82)
+    f = frappe.get_doc({"doctype": "File", "file_name": caption.lower().replace(" ", "-") + ".jpg", "is_private": 0,
+                        "content": buf.getvalue()}).insert()
+    return f.file_url, caption
+
+
+def make_leave_request(student, group):
+    try:
+        frappe.get_doc({"doctype": "Student Leave Application", "student": student, "student_group": group,
+                        "attendance_based_on": "Student Group", "from_date": add_days(today(), 2), "to_date": add_days(today(), 3),
+                        "reason": "Family function in Kolhapur.", "schoolos_status": "Pending"}).insert(ignore_permissions=True)
+    except Exception as e:
+        print("Demo leave request skipped:", e)
+
+
+def make_bills_for_approval(company):
+    """Two supplier bills waiting for the principal (skipped if the books aren't set up)."""
+    try:
+        for name in ("Sai Stationers", "MSEDCL"):
+            if not frappe.db.exists("Supplier", name):
+                frappe.get_doc({"doctype": "Supplier", "supplier_name": name,
+                                "supplier_group": frappe.db.get_value("Supplier Group", {"is_group": 0}) or "All Supplier Groups"}).insert()
+        if not frappe.db.exists("Item", "School Supplies"):
+            frappe.get_doc({"doctype": "Item", "item_code": "School Supplies", "item_name": "School Supplies", "is_stock_item": 0,
+                            "item_group": frappe.db.get_value("Item Group", {"is_group": 0}) or "All Item Groups", "stock_uom": "Nos"}).insert()
+        for supplier, amount, remark in (("Sai Stationers", 38500, "Notebooks and chart paper for October"),
+                                         ("MSEDCL", 42150, "Electricity bill, September")):
+            frappe.get_doc({"doctype": "Purchase Invoice", "supplier": supplier, "company": company, "posting_date": today(),
+                            "due_date": add_days(today(), 10), "remarks": remark,
+                            "items": [{"item_code": "School Supplies", "qty": 1, "rate": amount}]}).insert()
+    except Exception as e:
+        print("Demo bills skipped (finish the Accounts setup first):", e)
 
 
 def configure_settings():

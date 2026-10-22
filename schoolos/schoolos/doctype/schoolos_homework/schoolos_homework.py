@@ -42,7 +42,9 @@ class SchoolOSHomework(Document):
         )
         self.db_set("recipients_count", len(students))
         settings = get_settings()
-        if not (cint(self.notify_parents) and cint(settings.homework_alerts)):
+        from schoolos.modules import enabled
+
+        if not (enabled("homework") and cint(self.notify_parents) and cint(settings.homework_alerts)):
             return
         channels = ["Email"] + (["WhatsApp"] if cint(self.send_whatsapp) and cint(settings.homework_whatsapp) else [])
         subject = (frappe.db.get_value("Course", self.course, "course_name") or self.course) if self.course else ""

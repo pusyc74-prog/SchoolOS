@@ -25,6 +25,22 @@ CUSTOM_FIELDS = {
             "description": "Parents see this note in the app's activity and notes.",
         },
     ],
+    "Student Leave Application": [
+        {"fieldname": "schoolos_status", "fieldtype": "Select", "label": "Request Status", "options": "Pending\nApproved\nRejected",
+         "default": "Pending", "insert_after": "reason", "read_only": 1, "allow_on_submit": 1, "in_list_view": 1, "in_standard_filter": 1},
+        {"fieldname": "schoolos_decision_note", "fieldtype": "Small Text", "label": "Teacher's Note", "insert_after": "schoolos_status",
+         "allow_on_submit": 1},
+        {"fieldname": "schoolos_applied_by", "fieldtype": "Link", "options": "User", "label": "Applied By",
+         "insert_after": "schoolos_decision_note", "read_only": 1},
+        {"fieldname": "schoolos_decided_by", "fieldtype": "Link", "options": "User", "label": "Decided By",
+         "insert_after": "schoolos_applied_by", "read_only": 1, "allow_on_submit": 1},
+    ],
+    "Purchase Invoice": [
+        {"fieldname": "schoolos_rejected", "fieldtype": "Check", "label": "Rejected by Principal", "insert_after": "remarks",
+         "read_only": 1, "no_copy": 1},
+        {"fieldname": "schoolos_rejection_note", "fieldtype": "Small Text", "label": "Rejection Note",
+         "insert_after": "schoolos_rejected", "read_only": 1, "no_copy": 1, "depends_on": "schoolos_rejected"},
+    ],
     "Guardian": [
         {
             "fieldname": "schoolos_alerts_opt_in",

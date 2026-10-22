@@ -2,6 +2,7 @@ import frappe
 from frappe import _
 
 from schoolos.api.common import require_staff, require_student_access
+from schoolos.modules import require
 
 PRINT_FORMAT = "SchoolOS Report Card"
 
@@ -9,6 +10,7 @@ PRINT_FORMAT = "SchoolOS Report Card"
 @frappe.whitelist()
 def download(name: str):
     """PDF of a published report card for the student, their guardians, or staff."""
+    require("report_cards")
     doc = frappe.get_doc("Student Report Card", name)
     if doc.docstatus != 1:
         frappe.throw(_("This report card is not published yet"), frappe.PermissionError)
@@ -26,6 +28,7 @@ def download(name: str):
 @frappe.whitelist(methods=["POST"])
 def generate(template: str, student_group: str, submit: int = 0):
     """Create (or refresh) draft report cards for every active student in a group."""
+    require("report_cards")
     require_staff()
     frappe.has_permission("Student Report Card", "create", throw=True)
     group = frappe.get_doc("Student Group", student_group)

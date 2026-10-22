@@ -12,6 +12,7 @@ TEMPLATE_PARAMS = {
     "Report Card": ["guardian_name", "student_name", "exam", "school_name", "portal_url"],
     "Homework": ["guardian_name", "student_name", "title", "due_date", "school_name"],
     "Fee Reminder": ["guardian_name", "student_name", "amount", "due_date", "school_name", "portal_url"],
+    "Leave": ["guardian_name", "student_name", "status", "dates", "school_name"],
     "Test": ["guardian_name", "school_name"],
 }
 
@@ -44,6 +45,11 @@ DEFAULT_EMAIL = {
         "(due date {due_date}).<br>You can pay online or see the details here: "
         '<a href="{portal_url}">{portal_url}</a><br><br>If you have already paid, please ignore this message.'
         "<br><br>{school_name}",
+    ),
+    "Leave": (
+        "Leave for {student_name}: {status}",
+        "Dear {guardian_name},<br><br>Your leave request for {student_name} ({dates}) has been <b>{status}</b>."
+        "<br>{note}<br><br>{school_name}",
     ),
     "Test": ("Test message from {school_name}", "This is a test alert from {school_name}."),
 }
@@ -78,10 +84,16 @@ DEFAULT_EMAIL_MR = {
         '<br>ऑनलाइन भरण्यासाठी किंवा तपशील पाहण्यासाठी: <a href="{portal_url}">{portal_url}</a>'
         "<br><br>आपण आधीच भरले असल्यास कृपया या संदेशाकडे दुर्लक्ष करा.<br><br>{school_name}",
     ),
+    "Leave": (
+        "{student_name} यांची रजा: {status}",
+        "प्रिय {guardian_name},<br><br>{student_name} यांच्या रजेचा अर्ज ({dates}) <b>{status}</b> झाला आहे."
+        "<br>{note}<br><br>{school_name}",
+    ),
     "Test": ("{school_name} कडून चाचणी संदेश", "{school_name} कडून ही चाचणी सूचना आहे."),
 }
 
 ENTRY_TYPE_MR = {"Homework": "गृहपाठ", "Classwork": "वर्गकार्य", "Project": "प्रकल्प", "Note": "सूचना"}
+STATUS_MR = {"approved": "मंजूर", "rejected": "नामंजूर"}
 
 
 def email_template(alert_type, lang="en"):
@@ -92,9 +104,14 @@ def email_template(alert_type, lang="en"):
 
 def localise_context(context, lang="en"):
     """Translate fixed values (e.g. entry type) that appear inside messages."""
-    if lang == "mr" and context.get("entry_type") in ENTRY_TYPE_MR:
-        return {**context, "entry_type": ENTRY_TYPE_MR[context["entry_type"]]}
-    return context
+    if lang != "mr":
+        return context
+    out = dict(context)
+    if out.get("entry_type") in ENTRY_TYPE_MR:
+        out["entry_type"] = ENTRY_TYPE_MR[out["entry_type"]]
+    if out.get("status") in STATUS_MR:
+        out["status"] = STATUS_MR[out["status"]]
+    return out
 
 
 def render(text, context):

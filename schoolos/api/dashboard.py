@@ -13,6 +13,7 @@ from schoolos.api.common import (
 )
 from schoolos.api.compute import attendance_trend, status_counts, student_attendance_stats
 from schoolos.api.homework import homework_for_groups
+from schoolos.modules import all_enabled, enabled
 from schoolos.report_card.builder import attendance_summary
 
 
@@ -184,18 +185,25 @@ def get_context():
     instructor = instructor_for_user()
     student = student_for_user()
     children = guardian_children()
+    mods = all_enabled()
     views = []
     if is_principal():
         views.append("principal")
-    if roles() & FEE_ROLES:
+    if roles() & FEE_ROLES and mods["fees"]:
         views.append("fees")
+    if roles() & FEE_ROLES and mods["accounts"]:
+        views.append("accounts")
     if instructor:
         views.append("teacher")
     if children:
         views.append("parent")
     if student:
         views.append("student")
+    if mods["calendar"] and views:
+        views.append("calendar")
     return {
+        "modules": mods,
+        "accounts_mode": "tally" if (s.accounts_mode or "").startswith("Tally") else "full",
         "user": frappe.session.user,
         "full_name": frappe.utils.get_fullname(frappe.session.user),
         "views": views,
@@ -259,7 +267,7 @@ def principal(date: str | None = None, days: int | None = None):
         "trend": _att_trend("1=1", {}, start, end),
         "low_attendance": student_attendance_stats(
             _att_by_student("1=1", {}, start, end), threshold=cfg["threshold"], limit=15),
-        "staff_today": _staff_today(day),
+        "staff_today": _staff_today(day) if enabled("staff") else None,
         "subject_performance": _subject_performance(perf_filters),
         "alerts_today": {r.status: r.count for r in alerts},
         "upcoming_exams": upcoming,
@@ -330,7 +338,7 @@ def teacher(date: str | None = None, days: int | None = None):
         "groups_today": _groups_today(groups, day),
         "absent_today": absent_today,
         "pending_marks": pending[:15],
-        "recent_posts": frappe.get_all(
+        "recent_posts": [] if not enabled("homework") else frappe.get_all(
             "SchoolOS Homework", filters={"docstatus": 1, "instructor": instructor},
             fields=["name", "entry_type", "title", "student_group", "course", "date", "due_date", "recipients_count"],
             order_by="date desc, creation desc", limit=8),
@@ -387,7 +395,7 @@ def student(student: str | None = None, days: int | None = None):
         r["percentage"] = round(flt(r.total_score) * 100 / flt(r.maximum_score), 1) if r.maximum_score else None
         r["assessment_name"] = frappe.db.get_value("Assessment Plan", r.assessment_plan, "assessment_name")
 
-    cards = frappe.get_all("Student Report Card", filters={"student": student, "docstatus": 1},
+    cards = [] if not enabled("report_cards") else frappe.get_all("Student Report Card", filters={"student": student, "docstatus": 1},
                            fields=["name", "template", "overall_percentage", "overall_grade", "result", "modified"],
                            order_by="modified desc", limit=5)
     return {
@@ -406,6 +414,8 @@ def student(student: str | None = None, days: int | None = None):
 
 
 def _fees_brief(student):
+    if not enabled("fees"):
+        return None
     try:
         from schoolos.api.fees import student_fees
 

@@ -6,6 +6,18 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "modules_section",
+  "module_fees",
+  "module_accounts",
+  "module_homework",
+  "column_break_m3",
+  "module_learning",
+  "module_report_cards",
+  "module_circulars",
+  "column_break_m6",
+  "module_leave",
+  "module_calendar",
+  "module_staff",
   "branding_section",
   "school_display_name",
   "school_logo",
@@ -40,6 +52,19 @@
   "report_card_template",
   "fee_template",
   "homework_template",
+  "accounts_section",
+  "accounts_mode",
+  "tally_company",
+  "tally_party_mode",
+  "tally_party_ledger",
+  "column_break_t1",
+  "tally_income_ledger",
+  "tally_income_group",
+  "tally_debtors_group",
+  "tally_cash_ledger",
+  "tally_bank_ledger",
+  "tally_last_export_on",
+  "tally_last_export_range",
   "dashboard_section",
   "low_attendance_threshold",
   "dashboard_window_days",
@@ -47,6 +72,74 @@
   "count_leave_as_present"
  ],
  "fields": [
+  {
+   "description": "Everything is on by default. Turn off what this school doesn't use; its screens, alerts and menus disappear. Data is kept, so turning a module back on restores it.",
+   "fieldname": "modules_section",
+   "fieldtype": "Section Break",
+   "label": "Modules"
+  },
+  {
+   "default": "1",
+   "fieldname": "module_fees",
+   "fieldtype": "Check",
+   "label": "Fees & online payment"
+  },
+  {
+   "default": "1",
+   "fieldname": "module_accounts",
+   "fieldtype": "Check",
+   "label": "Accounts dashboard & Tally export"
+  },
+  {
+   "default": "1",
+   "fieldname": "module_homework",
+   "fieldtype": "Check",
+   "label": "Homework & diary"
+  },
+  {
+   "fieldname": "column_break_m3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "module_learning",
+   "fieldtype": "Check",
+   "label": "Lessons, syllabus & teacher notes"
+  },
+  {
+   "default": "1",
+   "fieldname": "module_report_cards",
+   "fieldtype": "Check",
+   "label": "Report cards"
+  },
+  {
+   "default": "1",
+   "fieldname": "module_circulars",
+   "fieldtype": "Check",
+   "label": "Circulars"
+  },
+  {
+   "fieldname": "column_break_m6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "module_leave",
+   "fieldtype": "Check",
+   "label": "Leave requests from parents"
+  },
+  {
+   "default": "1",
+   "fieldname": "module_calendar",
+   "fieldtype": "Check",
+   "label": "Calendar & photo gallery"
+  },
+  {
+   "default": "1",
+   "fieldname": "module_staff",
+   "fieldtype": "Check",
+   "label": "Staff attendance on dashboard"
+  },
   {
    "fieldname": "branding_section",
    "fieldtype": "Section Break",
@@ -255,6 +348,87 @@
    "fieldname": "homework_template",
    "fieldtype": "Data",
    "label": "Homework Template"
+  },
+  {
+   "depends_on": "module_accounts",
+   "fieldname": "accounts_section",
+   "fieldtype": "Section Break",
+   "label": "Accounts"
+  },
+  {
+   "default": "Full accounting in SchoolOS",
+   "description": "Full: the accountant works in SchoolOS (ERPNext) and the principal sees income, expenses and balances. Tally: SchoolOS handles fees and exports them for the CA's Tally.",
+   "fieldname": "accounts_mode",
+   "fieldtype": "Select",
+   "label": "How this school keeps its books",
+   "options": "Full accounting in SchoolOS\nTally (export fees to Tally)"
+  },
+  {
+   "description": "Exactly as it appears in Tally.",
+   "fieldname": "tally_company",
+   "fieldtype": "Data",
+   "label": "Tally Company Name"
+  },
+  {
+   "default": "One ledger per student",
+   "fieldname": "tally_party_mode",
+   "fieldtype": "Select",
+   "label": "Student ledgers in Tally",
+   "options": "One ledger per student\nOne common ledger"
+  },
+  {
+   "default": "Student Fees Receivable",
+   "depends_on": "eval:doc.tally_party_mode==\"One common ledger\"",
+   "fieldname": "tally_party_ledger",
+   "fieldtype": "Data",
+   "label": "Common Student Ledger"
+  },
+  {
+   "fieldname": "column_break_t1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Blank = one income ledger per fee head (Tuition Fee, Transport Fee\u2026).",
+   "fieldname": "tally_income_ledger",
+   "fieldtype": "Data",
+   "label": "Fee Income Ledger"
+  },
+  {
+   "default": "Direct Incomes",
+   "fieldname": "tally_income_group",
+   "fieldtype": "Data",
+   "label": "Income Group"
+  },
+  {
+   "default": "Sundry Debtors",
+   "fieldname": "tally_debtors_group",
+   "fieldtype": "Data",
+   "label": "Students Group"
+  },
+  {
+   "default": "Cash",
+   "fieldname": "tally_cash_ledger",
+   "fieldtype": "Data",
+   "label": "Cash Ledger"
+  },
+  {
+   "default": "Bank",
+   "fieldname": "tally_bank_ledger",
+   "fieldtype": "Data",
+   "label": "Bank Ledger"
+  },
+  {
+   "fieldname": "tally_last_export_on",
+   "fieldtype": "Date",
+   "label": "Last Tally Export",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tally_last_export_range",
+   "fieldtype": "Data",
+   "label": "Last Export Covered",
+   "length": 200,
+   "read_only": 1
   },
   {
    "fieldname": "dashboard_section",

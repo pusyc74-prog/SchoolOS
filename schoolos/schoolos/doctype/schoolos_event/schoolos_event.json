@@ -1,0 +1,177 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-10-21 12:00:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "event_type",
+  "start_date",
+  "end_date",
+  "start_time",
+  "column_break_1",
+  "audience",
+  "program",
+  "student_group",
+  "location",
+  "published",
+  "details_section",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "default": "Event",
+   "fieldname": "event_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Type",
+   "options": "Event\nHoliday\nExam\nPTM\nCelebration\nSports\nTrip\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Start Date",
+   "reqd": 1
+  },
+  {
+   "description": "Blank = one-day event.",
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "label": "Time"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "All Students",
+   "fieldname": "audience",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "For",
+   "options": "All Students\nProgram\nStudent Group",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.audience==\"Program\"",
+   "fieldname": "program",
+   "fieldtype": "Link",
+   "label": "Program",
+   "mandatory_depends_on": "eval:doc.audience==\"Program\"",
+   "options": "Program"
+  },
+  {
+   "depends_on": "eval:doc.audience==\"Student Group\"",
+   "fieldname": "student_group",
+   "fieldtype": "Link",
+   "label": "Student Group",
+   "mandatory_depends_on": "eval:doc.audience==\"Student Group\"",
+   "options": "Student Group"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Place"
+  },
+  {
+   "default": "1",
+   "fieldname": "published",
+   "fieldtype": "Check",
+   "label": "Show on calendar"
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Details"
+  }
+ ],
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-10-21 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SchoolOS",
+ "name": "SchoolOS Event",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Education Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "School Principal",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "show_title_field_in_link": 0,
+ "sort_field": "start_date",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "title",
+ "track_changes": 1
+}

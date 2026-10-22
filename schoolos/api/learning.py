@@ -11,6 +11,7 @@ from schoolos.api.common import (
     require_student_access, require_teaches_group, roles, STAFF_ROLES,
 )
 from schoolos.api.compute_fees import coverage, merge_activity
+from schoolos.modules import enabled, require
 
 LESSON_FIELDS = ["name", "date", "student_group", "course", "topic", "completed", "instructor_name",
                  "notes", "attachment", "homework", "creation"]
@@ -94,6 +95,7 @@ def _author(user):
 @frappe.whitelist()
 def student_progress(student: str):
     """Everything a parent needs to follow one child's learning."""
+    require("learning")
     require_login()
     require_student_access(student)
     staff = bool(roles() & STAFF_ROLES)
@@ -154,11 +156,12 @@ def activity(student: str, days: int = 30):
     att = [{"date": str(a.date), "kind": "attendance", "status": a.status, "title": a.status, "order": 1}
            for a in frappe.get_all("Student Attendance", filters={"student": student, "docstatus": 1, "status": ["!=", "Present"],
                                                                     "date": [">=", since]}, fields=["date", "status"])]
-    hw = [{"date": str(h.creation)[:19], "kind": "homework", "title": h.title, "course": h.course, "entry_type": h.entry_type,
+    on = {k: enabled(k) for k in ("homework", "learning", "fees", "report_cards", "leave")}
+    hw = [] if not on["homework"] else [{"date": str(h.creation)[:19], "kind": "homework", "title": h.title, "course": h.course, "entry_type": h.entry_type,
            "due_date": str(h.due_date) if h.due_date else None, "order": 2}
           for h in frappe.get_all("SchoolOS Homework", filters={"docstatus": 1, "student_group": ["in", groups or [""]], "date": [">=", since]},
                                   fields=["title", "course", "entry_type", "due_date", "creation"])]
-    lessons = [{"date": str(l.date), "kind": "lesson", "title": l.topic or _("Class"), "course": l.course,
+    lessons = [] if not on["learning"] else [{"date": str(l.date), "kind": "lesson", "title": l.topic or _("Class"), "course": l.course,
                 "completed": cint(l.completed), "notes": strip_html(l.notes or "")[:200], "order": 3}
                for l in frappe.get_all("SchoolOS Lesson Log", filters={"student_group": ["in", groups or [""]], "date": [">=", since]},
                                        fields=["date", "topic", "course", "completed", "notes"])]
@@ -168,29 +171,36 @@ def activity(student: str, days: int = 30):
         marks.append({"date": str(r.modified)[:19], "kind": "marks", "course": r.course,
                       "title": frappe.db.get_value("Assessment Plan", r.assessment_plan, "assessment_name") or r.course,
                       "score": flt(r.total_score), "max": flt(r.maximum_score), "grade": r.grade, "order": 4})
-    notes = [{"date": str(n.date), "kind": "note", "title": n.type, "text": strip_html(n.log or "")[:240],
+    notes = [] if not on["learning"] else [{"date": str(n.date), "kind": "note", "title": n.type, "text": strip_html(n.log or "")[:240],
               "author": _author(n.owner), "order": 5}
              for n in _teacher_notes(student, limit=30, staff=staff) if n.date and getdate(n.date) >= getdate(since)]
     payments = []
-    try:
-        from schoolos.api.fees import student_fees
+    if on["fees"]:
+        try:
+            from schoolos.api.fees import student_fees
 
-        for p in student_fees(student)["payments"]:
-            if getdate(p["date"]) >= getdate(since):
-                payments.append({"date": p["date"], "kind": "payment", "title": p.get("mode") or _("Payment"),
-                                 "amount": p["amount"], "order": 6})
-    except Exception:
-        frappe.log_error(title="SchoolOS activity: fees")
-    cards = [{"date": str(c.modified)[:19], "kind": "report_card", "title": c.template, "grade": c.overall_grade, "name": c.name, "order": 7}
+            for p in student_fees(student)["payments"]:
+                if getdate(p["date"]) >= getdate(since):
+                    payments.append({"date": p["date"], "kind": "payment", "title": p.get("mode") or _("Payment"),
+                                     "amount": p["amount"], "order": 6})
+        except Exception:
+            frappe.log_error(title="SchoolOS activity: fees")
+    leaves = [] if not on["leave"] else [
+        {"date": str(l.creation)[:19], "kind": "leave", "title": l.schoolos_status or "Pending", "from_date": str(l.from_date),
+         "to_date": str(l.to_date), "reason": l.reason, "order": 8}
+        for l in frappe.get_all("Student Leave Application", filters={"student": student, "creation": [">=", since], "docstatus": ["<", 2]},
+                                fields=["creation", "schoolos_status", "from_date", "to_date", "reason"])]
+    cards = [] if not on["report_cards"] else [{"date": str(c.modified)[:19], "kind": "report_card", "title": c.template, "grade": c.overall_grade, "name": c.name, "order": 7}
              for c in frappe.get_all("Student Report Card", filters={"student": student, "docstatus": 1, "modified": [">=", since]},
                                      fields=["name", "template", "overall_grade", "modified"])]
-    return merge_activity(att, hw, lessons, marks, notes, payments, cards, limit=80)
+    return merge_activity(att, hw, lessons, marks, notes, payments, cards, leaves, limit=80)
 
 
 # ------------------------------------------------------------------ teachers
 @frappe.whitelist()
 def lesson_options():
     """Sections, subjects and syllabus topics the current teacher can log lessons for."""
+    require("learning")
     require_staff()
     from schoolos.api.homework import teacher_groups
 
@@ -213,6 +223,7 @@ def lesson_options():
 @frappe.whitelist(methods=["POST"])
 def post_lesson(student_group: str, course: str, topic: str | None = None, completed: int = 1,
                 notes: str | None = None, date: str | None = None):
+    require("learning")
     require_staff()
     require_teaches_group(student_group)
     doc = frappe.get_doc({
@@ -227,6 +238,7 @@ def post_lesson(student_group: str, course: str, topic: str | None = None, compl
 @frappe.whitelist(methods=["POST"])
 def post_note(student: str, log: str, type: str = "General", share: int = 1):
     """A teacher's note about one student, optionally visible to parents."""
+    require("learning")
     require_staff()
     if type not in ("General", "Academic", "Medical", "Achievement"):
         frappe.throw(_("Unknown note type"))
@@ -251,6 +263,7 @@ def group_students(student_group: str):
 @frappe.whitelist()
 def syllabus_overview():
     """Coverage for every active section × subject this year."""
+    require("learning")
     require_principal()
     year = frappe.db.get_single_value("Education Settings", "current_academic_year")
     filters = {"disabled": 0, "group_based_on": "Batch"}

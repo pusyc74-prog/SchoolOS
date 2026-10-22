@@ -9,9 +9,11 @@ from frappe.utils import add_days, cint, flt, fmt_money, formatdate, getdate, to
 from schoolos.alerts.engine import get_settings, queue_for_students
 from schoolos.api.common import FEE_ROLES, require_login, require_student_access, roles
 from schoolos.api.compute_fees import collection_series, next_due, reminder_due, split_by, summarize_invoices
+from schoolos.modules import enabled, require
 
 
 def require_fee_staff():
+    require("fees")
     if not roles() & FEE_ROLES:
         raise frappe.PermissionError(_("Only the principal or accounts staff can see fees"))
 
@@ -192,7 +194,7 @@ def _queue_reminders(per_student, ref):
 def send_scheduled_reminders():
     """Daily: a few days before the due date, on the due date, then every N days while overdue."""
     s = get_settings()
-    if not (cint(s.alerts_enabled) and cint(s.fee_reminders)):
+    if not (enabled("fees") and cint(s.alerts_enabled) and cint(s.fee_reminders)):
         return
     year, ys, ye = _year()
     t = getdate(today())
@@ -244,6 +246,7 @@ def student_fees(student):
 
 @frappe.whitelist()
 def for_student(student: str):
+    require("fees")
     require_login()
     require_student_access(student)
     return student_fees(student)
@@ -252,6 +255,7 @@ def for_student(student: str):
 @frappe.whitelist()
 def receipt(invoice: str):
     """PDF of a fee invoice / receipt for the student, their guardians or staff."""
+    require("fees")
     doc = frappe.get_doc("Sales Invoice", invoice)
     if not doc.get("student") or doc.docstatus != 1:
         raise frappe.PermissionError

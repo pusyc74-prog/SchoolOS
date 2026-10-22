@@ -13,7 +13,9 @@ class SchoolOSCircular(Document):
         students = get_audience(self.audience, self.program, self.student_group)
         self.db_set("recipients_count", len(students))
         settings = get_settings()
-        if not cint(settings.circular_alerts):
+        from schoolos.modules import enabled
+
+        if not (enabled("circulars") and cint(settings.circular_alerts)):
             return
         channels = [c for c, on in (("WhatsApp", self.send_whatsapp), ("Email", self.send_email)) if cint(on)]
         if not channels:

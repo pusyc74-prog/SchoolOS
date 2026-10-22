@@ -70,7 +70,9 @@ class StudentReportCard(Document):
 
     def on_submit(self):
         settings = get_settings()
-        if not cint(settings.report_card_alerts):
+        from schoolos.modules import enabled
+
+        if not (enabled("report_cards") and cint(settings.report_card_alerts)):
             return
         title = frappe.db.get_value("Report Card Template", self.template, "report_title") or self.template
         queue_for_students(

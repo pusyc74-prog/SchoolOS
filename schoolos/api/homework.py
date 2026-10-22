@@ -4,13 +4,14 @@ import frappe
 from frappe.utils import add_days, cint, getdate, today
 
 from schoolos.api.common import instructor_for_user, is_principal, require_login, require_staff, require_student_access
+from schoolos.modules import enabled, require
 
 FIELDS = ["name", "entry_type", "title", "student_group", "course", "date", "due_date",
           "instructor_name", "details", "attachment"]
 
 
 def homework_for_groups(groups, days=14, limit=30):
-    if not groups:
+    if not groups or not enabled("homework"):
         return []
     since = add_days(today(), -cint(days or 14))
     rows = frappe.get_all(
@@ -53,6 +54,7 @@ def for_student(student: str, days: int = 14):
 @frappe.whitelist()
 def post_options():
     """Sections and subjects the current user can post homework for."""
+    require("homework")
     require_staff()
     instructor = instructor_for_user()
     if is_principal() and not instructor:
@@ -74,6 +76,7 @@ def post_options():
 def post(student_group: str, title: str, entry_type: str = "Homework", course: str | None = None,
          details: str | None = None, due_date: str | None = None, send_whatsapp: int = 0):
     """Create and publish a homework / diary entry. Parents are notified on publish."""
+    require("homework")
     require_staff()
     doc = frappe.get_doc({
         "doctype": "SchoolOS Homework",

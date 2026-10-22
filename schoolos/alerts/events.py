@@ -14,6 +14,11 @@ def on_student_attendance_submit(doc, method=None):
         return
     if cint(settings.absence_only_today) and getdate(doc.date) != getdate(today()):
         return
+    # no absence alert when the parent already has approved leave for that day
+    if doc.leave_application or frappe.db.exists("Student Leave Application", {
+        "student": doc.student, "docstatus": 1, "from_date": ["<=", doc.date], "to_date": [">=", doc.date],
+    }):
+        return
     # One alert per student per day, even with period-wise (course schedule) attendance.
     queue_for_students(
         "Absence",

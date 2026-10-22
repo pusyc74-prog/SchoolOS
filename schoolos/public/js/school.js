@@ -62,6 +62,28 @@
 		"General": "सामान्य", "Academic": "शैक्षणिक", "Achievement": "यश", "Medical": "वैद्यकीय", "Log today's lesson": "आजचा धडा नोंदवा",
 		"Syllabus progress": "अभ्यासक्रम प्रगती", "Note about a student": "विद्यार्थ्याबद्दल नोंद", "Saved": "जतन केले", "Overview": "आढावा", "Progress": "प्रगती",
 		"Fee due": "शुल्क बाकी", "Collection": "जमा",
+		"Accounts": "हिशेब", "Financial year": "आर्थिक वर्ष", "surplus": "शिल्लक", "deficit": "तूट", "Income": "उत्पन्न", "Expenses": "खर्च",
+		"Cash & bank": "रोख व बँक", "Bills to pay": "देय बिले", "Waiting for approval": "मंजुरीसाठी", "of income spent": "उत्पन्नापैकी खर्च",
+		"Income this month": "या महिन्याचे उत्पन्न", "Expenses this month": "या महिन्याचा खर्च", "Salaries this year": "या वर्षीचे पगार", "of income": "उत्पन्नाच्या",
+		"Income vs expenses by month": "महिनावार उत्पन्न व खर्च", "Income vs expenses": "उत्पन्न व खर्च", "Number above = surplus": "वरील आकडा = शिल्लक",
+		"Cash": "रोख", "Bank": "बँक", "No cash or bank accounts yet": "अजून रोख किंवा बँक खाते नाही", "Waiting for your approval": "तुमच्या मंजुरीसाठी",
+		"Staff expense": "कर्मचारी खर्च", "Bill": "बिल", "by": "", "Approve": "मंजूर करा", "Reject": "नामंजूर करा", "Nothing waiting": "काहीही प्रलंबित नाही",
+		"Where the money goes": "पैसा कुठे जातो", "this year": "हे वर्ष", "Total": "एकूण", "Due this week": "या आठवड्यात देय", "days late": "दिवस उशीर",
+		"No unpaid bills": "बाकी बिले नाहीत", "Income by head": "उत्पन्नाचे स्रोत", "Recent payments in and out": "अलीकडील जमा व खर्च",
+		"Reason for rejecting": "नामंजुरीचे कारण", "Approved": "मंजूर", "Rejected": "नामंजूर", "Pending": "प्रलंबित",
+		"Figures come straight from the school's books. Full reports (balance sheet, ledgers, trial balance) are in Admin → Accounting.": "आकडे थेट शाळेच्या हिशेबातून. पूर्ण अहवाल प्रशासन → हिशेब येथे.",
+		"From": "पासून", "To": "पर्यंत", "Check what will be exported": "निर्यात तपासा", "1. Ledgers (first time only)": "१. खाती (फक्त पहिल्यांदा)",
+		"2. Vouchers for Tally": "२. टॅलीसाठी व्हाउचर", "Excel copy": "एक्सेल प्रत", "Fees ready for Tally": "टॅलीसाठी शुल्क तयार",
+		"Fee bills this month": "या महिन्याची शुल्क बिले", "Receipts this month": "या महिन्याच्या पावत्या", "Received": "जमा", "Last export": "शेवटची निर्यात",
+		"Never": "कधीच नाही", "Export for Tally": "टॅलीसाठी निर्यात", "How it maps": "कसे जुळते", "School calendar": "शाळेचे दिनदर्शिका",
+		"dates this month": "या महिन्यातील तारखा", "holidays": "सुट्ट्या", "Previous": "मागील", "This month": "हा महिना", "Next": "पुढील",
+		"Coming up": "आगामी", "next 30 days": "पुढील ३० दिवस", "Nothing on this day": "या दिवशी काही नाही", "Nothing in the next 30 days": "पुढील ३० दिवसांत काही नाही",
+		"Photo gallery": "फोटो गॅलरी", "photos": "फोटो", "Close": "बंद", "Holiday": "सुट्टी", "Exam": "परीक्षा", "PTM": "पालक सभा", "Event": "कार्यक्रम",
+		"Celebration": "उत्सव", "Sports": "क्रीडा", "Trip": "सहल", "Other": "इतर", "Apply for leave": "रजेसाठी अर्ज", "Reason": "कारण",
+		"Send to class teacher": "वर्गशिक्षकांना पाठवा", "Leave requests": "रजेचे अर्ज", "No leave requests yet": "अजून रजेचे अर्ज नाहीत", "Withdraw": "मागे घ्या",
+		"Once approved, these days show as leave, not absent, and you won't get an absence alert.": "मंजूर झाल्यावर हे दिवस गैरहजर नव्हे तर रजा म्हणून दिसतील.",
+		"No requests waiting": "कोणतेही अर्ज प्रलंबित नाहीत", "Reason (the parent will see this)": "कारण (पालकांना दिसेल)", "Leave": "रजा", "Calendar": "दिनदर्शिका",
+		"Sent": "पाठवले", "Leave request": "रजेचा अर्ज",
 	};
 	let lang = "en";
 	try {
@@ -275,7 +297,7 @@
 		const [d, fees, syl] = await Promise.all([
 			call("principal"),
 			ctx.views.includes("fees") ? call("schoolos.api.fees.summary").catch(() => null) : null,
-			call("schoolos.api.learning.syllabus_overview").catch(() => null),
+			on("learning") ? call("schoolos.api.learning.syllabus_overview").catch(() => null) : null,
 		]);
 		const a = d.attendance_today, th = d.window.threshold, staff = d.staff_today;
 		const groups = d.groups_today || [];
@@ -322,10 +344,11 @@
 	}
 
 	async function teacherView() {
-		const [d, opts, lessons] = await Promise.all([
+		const [d, opts, lessons, leaves] = await Promise.all([
 			call("teacher"),
-			call("schoolos.api.homework.post_options").catch(() => null),
-			call("schoolos.api.learning.lesson_options").catch(() => null),
+			on("homework") ? call("schoolos.api.homework.post_options").catch(() => null) : null,
+			on("learning") ? call("schoolos.api.learning.lesson_options").catch(() => null) : null,
+			on("leave") ? call("schoolos.api.leave.pending").catch(() => null) : null,
 		]);
 		const th = d.window.threshold;
 		const unmarked = d.groups_today.filter((g) => !g.marked);
@@ -356,11 +379,12 @@
 			</div>
 			<div class="grid">
 				${card(t("Today's timetable"), timeline(d.schedule))}
+				${leaves ? card(t("Leave requests"), leaveRequests(leaves), { sub: leaves.length ? num(leaves.length) : "" }) : ""}
 				${card(t("My classes today"), `<ul class="list">${d.groups_today.map((g) => `<li><div class="person">${ring(g.marked ? g.percentage : null, 44, 5)}<div><b>${esc(g.student_group.replace(/\s*\(.*\)$/, ""))}</b>
 					<div class="meta">${num(g.strength)} ${esc(t("Student").toLowerCase())}${g.marked ? ` · ${num(g.absent || 0)} ${esc(t("Absent").toLowerCase())}` : ""}</div></div></div>
 					${g.marked ? `<span class="pill good">✓</span>` : `<a class="btn primary" href="/desk/student-attendance-tool">${esc(t("Take attendance"))}</a>`}</li>`).join("")}</ul>`, { cls: "span2" })}
 				${opts && opts.groups.length ? card(t("Post homework or a note"), homeworkForm(opts), { cls: "span2" }) : ""}
-				${card(t("My recent posts"), homeworkList(d.recent_posts || [], true))}
+				${on("homework") ? card(t("My recent posts"), homeworkList(d.recent_posts || [], true)) : ""}
 				${lessons && lessons.groups.length ? card(t("Log today's lesson"), lessonForm(lessons), { cls: "span2" }) : ""}
 				${lessons && lessons.groups.length ? card(t("Syllabus progress"), syllabusList(lessons)) : ""}
 				${lessons && lessons.groups.length ? card(t("Note about a student"), noteForm(lessons), { cls: "span2" }) : ""}
@@ -394,12 +418,14 @@
 	async function studentView(studentId, back, sub = "overview") {
 		const d = await call("student", studentId ? { student: studentId } : {});
 		const sid = studentId || d.student.name;
-		const subs = [["overview", "Overview"], ["progress", "Progress"], ["fees", "Fees"], ["activity", "Activity"]];
+		const subs = [["overview", "Overview"], ["progress", "Progress", "learning"], ["fees", "Fees", "fees"], ["activity", "Activity"], ["leave", "Leave", "leave"]]
+			.filter(([, , m]) => !m || on(m));
 		const subnav = `<nav class="subnav" role="tablist">${subs.map(([k, l]) => `<button type="button" role="tab" data-sv="${k}" aria-selected="${k === sub}">${esc(t(l))}</button>`).join("")}</nav>`;
 		let panel = null;
 		if (sub === "progress") panel = await progressPanel(sid);
 		else if (sub === "fees") panel = await feesPanel(sid);
 		else if (sub === "activity") panel = `<div class="grid">${await activityPanel(sid)}</div>`;
+		else if (sub === "leave") panel = await leavePanel(sid);
 		const a = d.attendance;
 		const due = (d.homework || []).filter((h) => h.due_date && !h.overdue);
 		const title = studentId ? esc(d.student.student_name) : `${esc(greeting())}, ${esc(firstName(d.student.student_name))}`;
@@ -439,7 +465,7 @@
 			${c.fees ? `<div class="fee-strip ${c.fees.overdue > 0 ? "bad" : c.fees.outstanding > 0 ? "warn" : "good"}">
 				<span>${c.fees.outstanding > 0 ? `<b>${esc(inr(c.fees.outstanding, c.fees.currency))}</b> ${esc(t("Fee due"))}${c.fees.next_due ? ` · ${esc(t(c.fees.next_due.overdue ? "Overdue since" : "Next due"))} ${fmtDate(c.fees.next_due.date)}` : ""}` : `✓ ${esc(t("All fees paid"))}`}</span>
 				<button class="btn ${c.fees.outstanding > 0 ? "primary" : ""}" data-student="${esc(c.student)}" data-sub="fees">${esc(c.fees.outstanding > 0 ? t("Pay") : t("Receipt"))}</button></div>` : ""}
-			${(c.report_cards || []).length ? `<div class="actions">${reportButtons(c.report_cards)}</div>` : ""}
+			<div class="actions">${reportButtons(c.report_cards)}${on("leave") ? `<button class="btn" data-student="${esc(c.student)}" data-sub="leave">${esc(t("Apply for leave"))}</button>` : ""}</div>
 		</section>`).join("");
 		return `
 		${hero(`<div class="eyebrow">${esc(longDate())}</div><h1>${esc(greeting())}, ${esc(firstName(ctx.full_name))}</h1><p>${esc(summary)}</p>
@@ -578,7 +604,7 @@
 
 	const ACT = {
 		attendance: ["●", "var(--bad)"], homework: ["✎", "var(--brand)"], lesson: ["❏", "#3aa6b9"], marks: ["★", "var(--marigold)"],
-		note: ["❝", "#8b6fd6"], payment: ["₹", "var(--good)"], report_card: ["▤", "var(--brand)"],
+		note: ["❝", "#8b6fd6"], payment: ["₹", "var(--good)"], report_card: ["▤", "var(--brand)"], leave: ["✈", "var(--warn)"],
 	};
 	async function activityPanel(student) {
 		const items = await call("schoolos.api.learning.activity", { student, days: 45 });
@@ -595,6 +621,7 @@
 			else if (i.kind === "note") text = `<span class="tag">${esc(t(i.title))}</span> ${esc(i.text)} <span class="meta">— ${esc(i.author)}</span>`;
 			else if (i.kind === "payment") text = `${esc(t("Fee paid"))}: <b>${esc(inr(i.amount))}</b> <span class="meta">${esc(i.title)}</span>`;
 			else if (i.kind === "report_card") text = `${esc(t("Report card"))}: <b>${esc(i.title)}</b>${i.grade ? ` · ${esc(i.grade)}` : ""}`;
+			else if (i.kind === "leave") text = `${esc(t("Leave request"))} ${fmtDate(i.from_date)}${i.to_date !== i.from_date ? ` – ${fmtDate(i.to_date)}` : ""}: <b>${esc(t(i.title))}</b>`;
 			return `<li><span class="act-ic" style="--c:${col}">${ic}</span><div style="min-width:0">${text}</div></li>`;
 		};
 		return card(t("Activity"), Object.entries(groups).map(([d, list]) => `<div class="act-day"><div class="act-date">${esc(new Date(d + "T00:00:00").toLocaleDateString(loc(), { weekday: "short", day: "numeric", month: "short" }))}</div><ul class="act">${list.map(line).join("")}</ul></div>`).join(""), { cls: "span3", sub: t("last 45 days") });
@@ -709,13 +736,289 @@
 		} catch (e) { sel.innerHTML = `<option value="">${esc(e.message)}</option>`; }
 	}
 
+	// ---------- modules
+	const on = (m) => !ctx || !ctx.modules || ctx.modules[m] !== false;
+
+	// ---------- accounts
+	function pairCols(series) {
+		if (!series || !series.length) return empty("No data yet");
+		const max = Math.max(...series.map((s) => Math.max(s.income, s.expense)), 1);
+		const cur = new Date().toISOString().slice(0, 7);
+		return `<div class="cols pair" role="img" aria-label="${esc(t("Income vs expenses"))}">${series.map((s) => `<div class="col ${s.key === cur ? "last" : ""}" title="${esc(monthLabel(s.key))}: ${esc(t("Income"))} ${esc(inr(s.income))} · ${esc(t("Expenses"))} ${esc(inr(s.expense))}">
+			<span class="v">${s.income || s.expense ? esc(inrShort(s.income - s.expense)) : ""}</span>
+			<span class="bb"><span class="b in" style="height:${Math.max(1, (s.income / max) * 100)}%"></span><span class="b ex" style="height:${Math.max(1, (s.expense / max) * 100)}%"></span></span>
+			<span class="k">${esc(monthLabel(s.key))}</span></div>`).join("")}</div>
+			<div class="legend"><span><i style="background:var(--good)"></i>${esc(t("Income"))}</span><span><i style="background:var(--bad)"></i>${esc(t("Expenses"))}</span><span>${esc(t("Number above = surplus"))}</span></div>`;
+	}
+
+	async function accountsView() {
+		const a = await call("schoolos.api.accounts.summary");
+		if (a.mode === "tally") return tallyView(a);
+		const y = a.year, cur = a.currency;
+		const cash = a.balances.filter((b) => b.type === "Cash").reduce((s, b) => s + b.balance, 0);
+		const bank = a.balances.filter((b) => b.type === "Bank").reduce((s, b) => s + b.balance, 0);
+		const body = `
+		${hero(`<div class="eyebrow">${esc(t("Accounts"))} · ${esc(t("Financial year"))} ${esc(a.fiscal_year)}</div>
+			<h1>${esc(inrShort(y.surplus))} ${esc(t(y.surplus >= 0 ? "surplus" : "deficit"))}</h1>
+			<p>${esc(t("Income"))} ${esc(inr(y.income, cur))} · ${esc(t("Expenses"))} ${esc(inr(y.expense, cur))}</p>
+			<div class="chips">${chip("Cash & bank", esc(inrShort(cash + bank)))}${chip("Bills to pay", esc(inrShort(a.payables.total)), a.payables.overdue > 0)}${chip("Waiting for approval", num(a.approvals.length), a.approvals.length)}</div>`,
+			gauge(y.income ? Math.max(0, Math.min(100, (y.expense / y.income) * 100)) : null, `${esc(t("of income spent"))}`))}
+		<div class="wrap lift">
+			<div class="tiles">
+				${tile("Income this month", `<span style="color:var(--good)">${esc(inrShort(a.this_month.income))}</span>`, "&nbsp;")}
+				${tile("Expenses this month", `<span style="color:var(--bad)">${esc(inrShort(a.this_month.expense))}</span>`, "&nbsp;")}
+				${tile("Today", esc(inrShort(a.cash_today.received - a.cash_today.paid)), `+${esc(inrShort(a.cash_today.received))} / −${esc(inrShort(a.cash_today.paid))}`)}
+				${tile("Salaries this year", esc(inrShort(a.salary.amount)), a.salary.share_of_income !== null ? `${pct(a.salary.share_of_income)} ${esc(t("of income"))}` : "&nbsp;", ring(a.salary.share_of_income, 46, 6, "var(--brand)"))}
+			</div>
+			<div class="grid">
+				${card(t("Income vs expenses by month"), pairCols(a.monthly), { cls: "span2", sub: a.fiscal_year })}
+				${card(t("Cash & bank"), a.balances.length ? `<ul class="list">${a.balances.map((b) => `<li><div class="person"><span class="act-ic" style="--c:${b.type === "Cash" ? "var(--marigold)" : "var(--brand)"}">${b.type === "Cash" ? "₹" : "▤"}</span><div><b>${esc(b.account)}</b><div class="meta">${esc(t(b.type))}</div></div></div><b style="font-variant-numeric:tabular-nums">${esc(inr(b.balance, cur))}</b></li>`).join("")}</ul>` : empty("No cash or bank accounts yet"))}
+				${card(t("Waiting for your approval"), a.approvals.length ? `<ul class="list">${a.approvals.map((x) => `<li style="display:block" data-approval="${esc(x.doctype)}|${esc(x.name)}">
+					<div style="display:flex;justify-content:space-between;gap:10px"><div style="min-width:0"><span class="tag">${esc(t(x.doctype === "Expense Claim" ? "Staff expense" : "Bill"))}</span> <b>${esc(x.who)}</b>
+						<div class="meta">${esc(x.what)} · ${fmtDate(x.date)}${x.by ? ` · ${esc(t("by"))} ${esc(x.by)}` : ""}</div></div><b style="flex:none">${esc(inr(x.amount, cur))}</b></div>
+					${a.can_approve ? `<div class="actions" style="margin-top:8px"><button class="btn primary" data-decide="1">${esc(t("Approve"))}</button><button class="btn" data-decide="0">${esc(t("Reject"))}</button><span class="form-msg"></span></div>` : ""}</li>`).join("")}</ul>` : `<div class="empty" style="color:var(--good)">✓ ${esc(t("Nothing waiting"))}</div>`, { cls: "span2", sub: num(a.approvals.length) })}
+				${card(t("Where the money goes"), bars(a.expense_heads, "label", "amount", { colorBy: "subject", max: Math.max(...a.expense_heads.map((h) => h.amount), 1), fmt: inrShort }), { sub: t("this year") })}
+				${card(t("Bills to pay"), `<div class="kv3"><div><span>${esc(t("Total"))}</span><b>${esc(inrShort(a.payables.total))}</b></div><div><span style="color:var(--bad)">${esc(t("Overdue"))}</span><b style="color:var(--bad)">${esc(inrShort(a.payables.overdue))}</b></div><div><span>${esc(t("Due this week"))}</span><b>${esc(inrShort(a.payables.due_this_week))}</b></div></div>
+					${a.payables.bills.length ? `<ul class="list">${a.payables.bills.map((b) => `<li><div style="min-width:0"><b>${esc(b.supplier)}</b><div class="meta">${esc(b.bill_no || b.name)} · ${esc(t("Due"))} ${fmtDate(b.due_date)}</div></div>
+						<div style="text-align:right"><b>${esc(inr(b.outstanding, cur))}</b><div>${b.overdue ? `<span class="pill bad">${num(-b.days)} ${esc(t("days late"))}</span>` : b.days !== null && b.days <= 7 ? `<span class="pill warn">${b.days === 0 ? esc(t("Today")) : `${esc(t("in"))} ${num(b.days)} ${esc(t("days"))}`}</span>` : ""}</div></div></li>`).join("")}</ul>` : empty("No unpaid bills")}`, { cls: "span2" })}
+				${card(t("Income by head"), bars(a.income_heads, "label", "amount", { color: "var(--good)", max: Math.max(...a.income_heads.map((h) => h.amount), 1), fmt: inrShort }), { sub: t("this year") })}
+				${card(t("Recent payments in and out"), a.recent.length ? `<ul class="list">${a.recent.map((r) => `<li><div class="person"><span class="act-ic" style="--c:${r.type === "Pay" ? "var(--bad)" : "var(--good)"}">${r.type === "Pay" ? "↑" : "↓"}</span><div><b>${esc(r.party || "")}</b><div class="meta">${esc(r.mode || "")} · ${fmtDate(r.date)}</div></div></div>
+					<b style="color:${r.type === "Pay" ? "var(--bad)" : "var(--good)"}">${r.type === "Pay" ? "−" : "+"}${esc(inr(r.amount, cur))}</b></li>`).join("")}</ul>` : empty("No payments yet"), { cls: "span3" })}
+			</div>
+			<p class="meta" style="margin-top:14px">${esc(t("Figures come straight from the school's books. Full reports (balance sheet, ledgers, trial balance) are in Admin → Accounting."))}</p>
+		</div>`;
+		setTimeout(() => wireApprovals(), 0);
+		return body;
+	}
+
+	function wireApprovals() {
+		app.querySelectorAll("[data-approval] [data-decide]").forEach((b) => (b.onclick = async () => {
+			const li = b.closest("[data-approval]");
+			const [doctype, name] = li.dataset.approval.split("|");
+			const msg = li.querySelector(".form-msg");
+			let note = "";
+			if (b.dataset.decide === "0") {
+				let box = li.querySelector("input.reject-note");
+				if (!box) {
+					li.querySelector(".actions").insertAdjacentHTML("beforebegin", `<div class="form" style="margin-top:8px"><input class="reject-note" placeholder="${esc(t("Reason for rejecting"))}"></div>`);
+					li.querySelector("input.reject-note").focus();
+					return;
+				}
+				note = box.value.trim();
+				if (!note) { box.focus(); return; }
+			}
+			li.querySelectorAll("button").forEach((x) => (x.disabled = true));
+			msg.textContent = "…";
+			try {
+				const r = await post("schoolos.api.accounts.decide", { doctype, name, approve: b.dataset.decide, note });
+				li.innerHTML = `<div class="meta">${esc(t(r.status))}: ${esc(name)}</div>`;
+			} catch (e) {
+				msg.textContent = e.message;
+				li.querySelectorAll("button").forEach((x) => (x.disabled = false));
+			}
+		}));
+	}
+
+	function tallyCard(defaultFrom, defaultTo) {
+		return `<form id="tally-form" class="form">
+			<div class="row2"><label>${t("From")}<input type="date" name="from_date" value="${defaultFrom}" required></label><label>${t("To")}<input type="date" name="to_date" value="${defaultTo}" required></label></div>
+			<div class="actions" style="margin-top:0"><button class="btn" type="button" data-tally="preview">${esc(t("Check what will be exported"))}</button></div>
+			<div class="tally-preview"></div>
+			<div class="actions" style="margin-top:0">
+				<a class="btn" data-tally="masters" href="#">${esc(t("1. Ledgers (first time only)"))}</a>
+				<a class="btn primary" data-tally="vouchers" href="#">${esc(t("2. Vouchers for Tally"))}</a>
+				<a class="btn" data-tally="xlsx" href="#">${esc(t("Excel copy"))}</a></div>
+			<p class="meta">${esc(t("In Tally: Gateway → Import → Masters (file 1, once), then Import → Transactions (file 2). Import into a test company first the first time."))}</p>
+		</form>`;
+	}
+
+	function tallyView(a) {
+		const now = todayISO();
+		const first = now.slice(0, 8) + "01";
+		return `
+		${hero(`<div class="eyebrow">${esc(t("Accounts"))} · Tally</div><h1>${esc(t("Fees ready for Tally"))}</h1>
+			<p>${esc(t("Books are kept in Tally by the school's accountant. Export fee bills and receipts here and import them into"))} <b>${esc(a.tally_company)}</b>.</p>
+			<div class="chips">${chip("Fee bills this month", num(a.month_invoices))}${chip("Receipts this month", num(a.month_receipts))}${chip("Received", esc(inrShort(a.month_received)))}</div>`,
+			`<div class="now-card"><div class="k">${esc(t("Last export"))}</div><b>${a.last_export ? esc(fmtDate(a.last_export.on)) : esc(t("Never"))}</b><div class="meta" style="color:inherit;opacity:.85">${a.last_export ? esc(a.last_export.range) : esc(t("Export once a month, or whenever the accountant asks."))}</div></div>`)}
+		<div class="wrap lift">
+			<div class="grid">
+				${card(t("Export for Tally"), tallyCard(first, now), { cls: "span2" })}
+				${card(t("How it maps"), `<ul class="list">
+					<li><span>${esc(t("Each fee bill"))}</span><b>${esc(t("Sales voucher"))}</b></li>
+					<li><span>${esc(t("Each payment"))}</span><b>${esc(t("Receipt voucher"))}</b></li>
+					<li><span>${esc(t("Students"))}</span><b>${esc(a.cfg.party_mode === "single" ? a.cfg.party_ledger || "Student Fees Receivable" : t("One ledger each, under") + " " + (a.cfg.debtors_group || "Sundry Debtors"))}</b></li>
+					<li><span>${esc(t("Fee income"))}</span><b>${esc(a.cfg.income_ledger || t("One ledger per fee head"))}</b></li>
+					<li><span>${esc(t("Cash / bank"))}</span><b>${esc(a.cfg.cash_ledger || "Cash")} / ${esc(a.cfg.bank_ledger || "Bank")}</b></li></ul>
+					<p class="meta">${esc(t("Change these in Settings → Accounts to match the ledger names in Tally."))}</p>`)}
+			</div>
+		</div>`;
+	}
+
+	async function tallyAction(btn) {
+		const f = app.querySelector("#tally-form");
+		const from_date = f.from_date.value, to_date = f.to_date.value;
+		const what = btn.dataset.tally;
+		if (what === "preview") {
+			const box = f.querySelector(".tally-preview");
+			box.innerHTML = `<div class="meta">…</div>`;
+			try {
+				const p = await call("schoolos.api.accounts.tally_preview", { from_date, to_date });
+				box.innerHTML = `<div class="kv3"><div><span>${esc(t("Fee bills"))}</span><b>${num(p.invoices)}</b></div><div><span>${esc(t("Receipts"))}</span><b>${num(p.receipts)}</b></div><div><span>${esc(t("Ledgers"))}</span><b>${num(p.ledgers)}</b></div></div>
+					<div class="meta">${esc(t("Billed"))} ${esc(inr(p.billed))} · ${esc(t("Received"))} ${esc(inr(p.received))}</div>
+					${p.sample.length ? `<div class="scroll"><table><thead><tr><th>${esc(t("Date"))}</th><th>${esc(t("Type"))}</th><th>${esc(t("No."))}</th><th>${esc(t("Ledger"))}</th><th class="num">Dr</th><th class="num">Cr</th></tr></thead><tbody>
+					${p.sample.flatMap((v) => v.entries.map((e, i) => `<tr><td>${i ? "" : fmtDate(v.date)}</td><td>${i ? "" : esc(v.type)}</td><td>${i ? "" : esc(v.number)}</td><td>${esc(e.ledger)}</td><td class="num">${e.amount > 0 ? esc(inr(e.amount)) : ""}</td><td class="num">${e.amount < 0 ? esc(inr(-e.amount)) : ""}</td></tr>`)).join("")}</tbody></table></div>` : ""}`;
+			} catch (e) { box.innerHTML = `<div class="error" style="margin:0">${esc(e.message)}</div>`; }
+			return;
+		}
+		const qs = new URLSearchParams({ from_date, to_date, part: what === "masters" ? "masters" : "vouchers", fmt: what === "xlsx" ? "xlsx" : "xml" });
+		window.location.href = `/api/method/schoolos.api.accounts.tally_export?${qs}`;
+	}
+
+	// ---------- calendar & gallery
+	const EV = { Holiday: "var(--bad)", Exam: "var(--marigold)", PTM: "#8b6fd6", Event: "var(--brand)", Celebration: "#d65f8b", Sports: "var(--good)", Trip: "#3aa6b9", "Fee due": "var(--warn)", Other: "var(--faint)" };
+	let calState = null;
+	function monthGrid(year, month, items) {
+		const first = new Date(year, month - 1, 1);
+		const days = new Date(year, month, 0).getDate();
+		const pad = (first.getDay() + 6) % 7;
+		const byDay = {};
+		items.forEach((it) => {
+			let d = day(it.date), end = day(it.end_date || it.date);
+			while (d <= end) {
+				if (d.getMonth() === month - 1) (byDay[d.getDate()] = byDay[d.getDate()] || []).push(it);
+				d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);
+			}
+		});
+		const today = todayISO();
+		const names = [...Array(7)].map((_, i) => new Date(2024, 0, 1 + i).toLocaleDateString(loc(), { weekday: "short" }));
+		let cells = "";
+		for (let i = 0; i < pad; i++) cells += `<span class="cd blank"></span>`;
+		for (let d = 1; d <= days; d++) {
+			const iso = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+			const list = byDay[d] || [];
+			const hol = list.some((x) => x.type === "Holiday");
+			cells += `<button type="button" class="cd ${iso === today ? "today" : ""} ${hol ? "hol" : ""} ${list.length ? "has" : ""}" data-day="${iso}" aria-label="${esc(iso)} ${list.map((x) => esc(x.title)).join(", ")}">
+				<span class="n">${d}</span><span class="dots">${list.slice(0, 3).map((x) => `<i style="background:${EV[x.type] || EV.Other}"></i>`).join("")}</span>
+				<span class="lbl">${list[0] ? esc(list[0].title) : ""}</span></button>`;
+		}
+		return `<div class="calgrid">${names.map((n) => `<span class="cw">${esc(n)}</span>`).join("")}${cells}</div>`;
+	}
+	const evRow = (x) => `<li><span class="evbar" style="background:${EV[x.type] || EV.Other}"></span><div style="min-width:0;flex:1"><b>${esc(x.title)}</b>
+		<div class="meta">${esc(t(x.type))}${x.time ? " · " + esc(x.time) : ""}${x.place ? " · " + esc(x.place) : ""}${x.amount ? " · " + esc(inr(x.amount)) : ""}</div>${x.details ? `<div class="circular-body">${esc(x.details)}</div>` : ""}</div>
+		<span class="meta" style="flex:none;text-align:right">${fmtDate(x.date)}${x.end_date && x.end_date !== x.date ? ` – ${fmtDate(x.end_date)}` : ""}</span></li>`;
+
+	async function calendarView() {
+		const now = new Date();
+		calState = calState || { year: now.getFullYear(), month: now.getMonth() + 1, day: null };
+		const [c, albums] = await Promise.all([
+			call("schoolos.api.school_calendar.month", { year: calState.year, month: calState.month }),
+			call("schoolos.api.school_calendar.albums", { limit: 12 }).catch(() => []),
+		]);
+		const label = new Date(c.year, c.month - 1, 1).toLocaleDateString(loc(), { month: "long", year: "numeric" });
+		const dayItems = calState.day ? c.items.filter((x) => x.date <= calState.day && (x.end_date || x.date) >= calState.day) : null;
+		const holidays = c.items.filter((x) => x.type === "Holiday").length;
+		return `
+		${hero(`<div class="eyebrow">${esc(t("School calendar"))}</div><h1>${esc(label)}</h1>
+			<p>${num(c.items.length)} ${esc(t("dates this month"))}${holidays ? ` · ${num(holidays)} ${esc(t("holidays"))}` : ""}</p>
+			<div class="chips"><button class="chip" data-cal="-1">← ${esc(t("Previous"))}</button><button class="chip" data-cal="0">${esc(t("This month"))}</button><button class="chip" data-cal="1">${esc(t("Next"))} →</button></div>`)}
+		<div class="wrap lift">
+			<div class="grid">
+				${card(label, monthGrid(c.year, c.month, c.items) + `<div class="legend">${Object.entries(EV).filter(([k]) => c.items.some((x) => x.type === k)).map(([k, col]) => `<span><i style="background:${col}"></i>${esc(t(k))}</span>`).join("")}</div>`, { cls: "span2" })}
+				${card(dayItems ? new Date(calState.day + "T00:00:00").toLocaleDateString(loc(), { weekday: "long", day: "numeric", month: "long" }) : t("Coming up"),
+					(dayItems || c.upcoming).length ? `<ul class="list ev">${(dayItems || c.upcoming).map(evRow).join("")}</ul>` : empty(dayItems ? "Nothing on this day" : "Nothing in the next 30 days"),
+					{ sub: dayItems ? "" : t("next 30 days") })}
+				${albums.length ? card(t("Photo gallery"), `<div class="albums">${albums.map((al) => `<button type="button" class="album" data-album="${esc(al.name)}">
+					<span class="cover" style="background-image:url('${esc(al.cover)}')"></span><b>${esc(al.title)}</b><span class="meta">${fmtDate(al.date)} · ${num(al.count)} ${esc(t("photos"))}</span></button>`).join("")}</div>`, { cls: "span3" }) : ""}
+			</div>
+		</div>`;
+	}
+
+	async function openAlbum(name) {
+		const a = await call("schoolos.api.school_calendar.album", { name });
+		let i = 0;
+		const ov = document.createElement("div");
+		ov.className = "lightbox";
+		ov.setAttribute("role", "dialog");
+		ov.setAttribute("aria-label", a.title);
+		const draw = () => {
+			const p = a.photos[i] || {};
+			ov.innerHTML = `<div class="lb-top"><b>${esc(a.title)}</b><span>${i + 1} / ${a.photos.length}</span><button type="button" class="lb-x" aria-label="${esc(t("Close"))}">×</button></div>
+				<div class="lb-img"><button type="button" class="lb-nav" data-d="-1" aria-label="${esc(t("Previous"))}">‹</button><img src="${esc(p.image)}" alt="${esc(p.caption || a.title)}"><button type="button" class="lb-nav" data-d="1" aria-label="${esc(t("Next"))}">›</button></div>
+				<div class="lb-cap">${esc(p.caption || "")}</div>
+				<div class="lb-strip">${a.photos.map((x, k) => `<button type="button" data-k="${k}" class="${k === i ? "on" : ""}" style="background-image:url('${esc(x.image)}')" aria-label="${k + 1}"></button>`).join("")}</div>`;
+			ov.querySelector(".lb-x").onclick = () => ov.remove();
+			ov.querySelectorAll(".lb-nav").forEach((b) => (b.onclick = () => { i = (i + Number(b.dataset.d) + a.photos.length) % a.photos.length; draw(); }));
+			ov.querySelectorAll("[data-k]").forEach((b) => (b.onclick = () => { i = Number(b.dataset.k); draw(); }));
+		};
+		draw();
+		ov.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") ov.remove();
+			if (e.key === "ArrowRight" || e.key === "ArrowLeft") { i = (i + (e.key === "ArrowRight" ? 1 : -1) + a.photos.length) % a.photos.length; draw(); }
+		});
+		(document.getElementById("sos-root") || document.body).appendChild(ov);
+		ov.tabIndex = -1;
+		ov.focus();
+	}
+
+	// ---------- leave (parent / student side)
+	async function leavePanel(student) {
+		const rows = await call("schoolos.api.leave.for_student", { student });
+		const now = todayISO();
+		const tone2 = (s) => (s === "Approved" ? "good" : s === "Rejected" ? "bad" : "warn");
+		return `<div class="grid">
+			${card(t("Apply for leave"), `<form id="leave-form" class="form" data-student="${esc(student)}">
+				<div class="row2"><label>${t("From")}<input type="date" name="from_date" value="${now}" required></label><label>${t("To")}<input type="date" name="to_date" value="${now}" required></label></div>
+				<label>${t("Reason")}<textarea name="reason" rows="2" required placeholder="${esc(t("e.g. Fever, doctor advised two days' rest."))}"></textarea></label>
+				<div class="actions" style="margin-top:0;align-items:center"><button class="btn primary" type="submit">${t("Send to class teacher")}</button><span class="form-msg" aria-live="polite"></span></div>
+				<p class="meta">${esc(t("Once approved, these days show as leave, not absent, and you won't get an absence alert."))}</p></form>`, { cls: "span2" })}
+			${card(t("Leave requests"), rows.length ? `<ul class="list">${rows.map((r) => `<li><div style="min-width:0"><b>${fmtDate(r.from_date)}${r.to_date !== r.from_date ? ` – ${fmtDate(r.to_date)}` : ""}</b> <span class="meta">${num(r.total_leave_days || 1)} ${esc(t("days"))}</span>
+				<div class="circular-body">${esc(stripHtml(r.reason))}</div>${r.schoolos_decision_note ? `<div class="meta">${esc(r.decided_by || "")}: ${esc(stripHtml(r.schoolos_decision_note))}</div>` : ""}</div>
+				<div style="text-align:right;flex:none"><span class="pill ${tone2(r.status)}">${esc(t(r.status))}</span>${r.status === "Pending" ? `<div><button class="btn" style="padding:2px 8px;margin-top:6px" data-withdraw="${esc(r.name)}">${esc(t("Withdraw"))}</button></div>` : ""}</div></li>`).join("")}</ul>` : empty("No leave requests yet"))}
+		</div>`;
+	}
+
+	// ---------- leave (teacher side)
+	function leaveRequests(list) {
+		if (!list || !list.length) return `<div class="empty" style="color:var(--good)">✓ ${esc(t("No requests waiting"))}</div>`;
+		return `<ul class="list">${list.map((r) => `<li style="display:block" data-leave="${esc(r.name)}">
+			<div style="display:flex;justify-content:space-between;gap:10px"><div class="person">${initial(r.student_name, 32)}<div><b>${esc(r.student_name)}</b><div class="meta">${esc((r.student_group || "").replace(/\s*\(.*\)$/, ""))} · ${fmtDate(r.from_date)}${r.to_date !== r.from_date ? ` – ${fmtDate(r.to_date)}` : ""} · ${num(r.total_leave_days || 1)} ${esc(t("days"))}</div></div></div></div>
+			<div class="circular-body" style="margin:6px 0 0 44px">${esc(stripHtml(r.reason))}</div>
+			<div class="actions" style="margin:8px 0 0 44px"><button class="btn primary" data-leave-ok="1">${esc(t("Approve"))}</button><button class="btn" data-leave-ok="0">${esc(t("Reject"))}</button><span class="form-msg"></span></div></li>`).join("")}</ul>`;
+	}
+	async function decideLeave(btn) {
+		const li = btn.closest("[data-leave]");
+		const msg = li.querySelector(".form-msg");
+		let note = "";
+		if (btn.dataset.leaveOk === "0") {
+			let box = li.querySelector("input.reject-note");
+			if (!box) {
+				li.querySelector(".actions").insertAdjacentHTML("beforebegin", `<div class="form" style="margin:8px 0 0 44px"><input class="reject-note" placeholder="${esc(t("Reason (the parent will see this)"))}"></div>`);
+				li.querySelector("input.reject-note").focus();
+				return;
+			}
+			note = box.value.trim();
+			if (!note) { box.focus(); return; }
+		}
+		li.querySelectorAll("button").forEach((x) => (x.disabled = true));
+		msg.textContent = "…";
+		try {
+			const r = await post("schoolos.api.leave.decide", { name: li.dataset.leave, approve: btn.dataset.leaveOk, note });
+			li.innerHTML = `<div class="meta"><b>${esc(r.student_name)}</b>: ${esc(t(r.status))}</div>`;
+		} catch (e) {
+			msg.textContent = e.message;
+			li.querySelectorAll("button").forEach((x) => (x.disabled = false));
+		}
+	}
+
 	// ---------- shell
 	const VIEWS = {
 		principal: { label: "Principal", render: principalView },
 		teacher: { label: "My classes", render: teacherView },
 		fees: { label: "Fees", render: feesView },
+		accounts: { label: "Accounts", render: accountsView },
 		parent: { label: "My children", render: parentView },
 		student: { label: "My dashboard", render: () => studentView(null, null, (current && current.sub) || "overview") },
+		calendar: { label: "Calendar", render: calendarView },
 	};
 
 	async function show(view, arg, sub) {
@@ -734,6 +1037,26 @@
 	}
 
 	app.addEventListener("click", (e) => {
+		const tl = e.target.closest("[data-tally]");
+		if (tl) { e.preventDefault(); return tallyAction(tl); }
+		const cm = e.target.closest("[data-cal]");
+		if (cm) {
+			const n = Number(cm.dataset.cal), d = new Date();
+			if (n === 0) calState = { year: d.getFullYear(), month: d.getMonth() + 1, day: null };
+			else { const m = new Date(calState.year, calState.month - 1 + n, 1); calState = { year: m.getFullYear(), month: m.getMonth() + 1, day: null }; }
+			return show("calendar");
+		}
+		const cd = e.target.closest("[data-day]");
+		if (cd) { calState.day = calState.day === cd.dataset.day ? null : cd.dataset.day; return show("calendar"); }
+		const al = e.target.closest("[data-album]");
+		if (al) return openAlbum(al.dataset.album).catch((err) => alert(err.message));
+		const lo = e.target.closest("[data-leave-ok]");
+		if (lo) return decideLeave(lo);
+		const wd = e.target.closest("[data-withdraw]");
+		if (wd) {
+			wd.disabled = true;
+			return post("schoolos.api.leave.withdraw", { name: wd.dataset.withdraw }).then(() => show(current.view, current.arg, "leave")).catch((err) => { wd.disabled = false; alert(err.message); });
+		}
 		const pb = e.target.closest("[data-pay]");
 		if (pb) return openPay(pb);
 		const sv = e.target.closest("[data-sv]");
@@ -768,6 +1091,19 @@
 
 	app.addEventListener("submit", async (e) => {
 		if (e.target.classList.contains("paybox")) { e.preventDefault(); return pay(e.target); }
+		if (e.target.id === "tally-form") { e.preventDefault(); return; }
+		if (e.target.id === "leave-form") {
+			e.preventDefault();
+			const f = e.target, msg = f.querySelector(".form-msg"), btn = f.querySelector('button[type="submit"]');
+			btn.disabled = true;
+			msg.textContent = "…";
+			try {
+				await post("schoolos.api.leave.apply", { student: f.dataset.student, from_date: f.from_date.value, to_date: f.to_date.value, reason: f.reason.value });
+				msg.textContent = t("Sent");
+				setTimeout(() => show(current.view, current.arg, "leave"), 700);
+			} catch (err) { msg.textContent = err.message; btn.disabled = false; }
+			return;
+		}
 		if (e.target.id === "lesson-form" || e.target.id === "note-form") {
 			e.preventDefault();
 			const f = e.target, msg = f.querySelector(".form-msg"), btn = f.querySelector('button[type="submit"]');

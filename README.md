@@ -7,7 +7,7 @@ everything lives in this app, so Frappe upgrades stay safe.
 > Code name "SchoolOS" is a placeholder. Rebrand by changing the app title in `hooks.py`
 > and the school name/logo/colour in **SchoolOS Settings** (per school, no code needed).
 
-## What's in v0.4
+## What's in v0.5
 
 | Area | What it does |
 |---|---|
@@ -18,6 +18,10 @@ everything lives in this app, so Frappe upgrades stay safe.
 | **Fees (principal & accounts)** | Fees tab: collected vs billed, outstanding, overdue, today's and this month's collection, monthly chart, overdue ageing (0–30 / 31–60 / 61–90 / 90+ days), pending by class, by fee head, payment modes, recent payments, and a defaulters list with parent mobile, last reminder and one-tap or bulk reminders. Uses Frappe Education's own fee invoices and ERPNext payments. |
 | **Fees (parents)** | Dues per child on the home screen, invoices with fee heads, Pay Now through Education's built-in Razorpay checkout, payment history and receipt PDFs. Automatic WhatsApp/email reminders before the due date, on it, and every N days while overdue. |
 | **Learning progress** | Teachers log each lesson against the subject's chapters (Course → Topics) with class notes. Parents and students see syllabus covered vs where the class should be by now, average and trend per subject, class notes, teacher notes (when shared) and a full activity timeline. Principal sees a class × subject coverage matrix. |
+| **Module switches** | SchoolOS Settings → Modules: every feature is on by default; the school admin turns off what it doesn't use. Screens, alerts and scheduled jobs disappear; data is kept. |
+| **Accounts** | Full mode: income vs expenses by month, surplus, cash & bank balances, salary share of income, where the money goes, bills to pay, and supplier bills / staff expense claims approved or rejected from the dashboard. Tally mode: export fee bills (Sales) and receipts (Receipt vouchers) as Tally import files plus an Excel copy. See [docs/ACCOUNTS.md](docs/ACCOUNTS.md). |
+| **Leave requests** | Parents apply from the app; the class teacher approves or rejects with a note. Approved days are marked as leave (no absence alert); the parent gets an email either way. |
+| **Calendar & gallery** | Month calendar of events, holidays, exams and (for parents) fee due dates, filtered to each family's classes; photo albums with a full-screen viewer. |
 | **Homework & diary** | Teachers post homework, classwork, projects or notes for a section from their phone (on `/school`) or desk. Parents get an email (WhatsApp optional, off by default to save cost); students and parents see what's due. |
 | **Installable app** | `/school` installs on Android / iPhone home screens with the school's own name, logo and colour (PWA). Last data shown when offline. |
 | **Excel import** | One sheet, one row per student: class, section, roll no, admission/GR no, parents' mobiles. Validate first, then import in the background. Siblings share parent records; re-uploading updates students instead of duplicating. See [docs/IMPORT.md](docs/IMPORT.md). |
@@ -51,6 +55,11 @@ schoolos/
   api/fees.py          fee collection overview, parent dues, receipts, reminders
   api/learning.py      syllabus coverage, class & teacher notes, activity timeline, lesson logging
   api/compute_fees.py  pure-Python fee and coverage maths (unit tested)
+  api/accounts.py      accounts dashboard, approvals, Tally export
+  api/leave.py         leave requests (apply / approve / reject)
+  api/school_calendar.py  calendar and photo albums
+  api/compute_accounts.py pure-Python accounts, Tally XML, calendar and leave rules (unit tested)
+  modules.py           feature switches
   api/pwa.py           per-school app manifest + offline service worker
   importer/            Excel template, row checks (pure Python) and the import job
   api/compute.py       pure-Python number crunching (unit tested)
