@@ -48,6 +48,7 @@ def teacher_groups(instructor):
 
 @frappe.whitelist()
 def for_student(student: str, days: int = 14):
+    require("homework")
     require_login()
     require_student_access(student)
     return homework_for_groups(student_groups(student), days)
@@ -99,6 +100,7 @@ def post(student_group: str, title: str, entry_type: str = "Homework", course: s
 
 @frappe.whitelist()
 def my_posts(limit: int = 10):
+    require("homework")
     require_staff()
     instructor = instructor_for_user()
     filters = {"docstatus": 1}

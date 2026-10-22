@@ -615,14 +615,18 @@ class TestRules(SchoolOSTestCase):
             "fees": (PARENT, lambda: fees.for_student(child)),
             "accounts": (PRINCIPAL, accounts.summary),
             "homework": (PARENT, lambda: homework.for_student(child)),
+            "report_cards": (PRINCIPAL, lambda: frappe.get_attr("schoolos.api.report_card.generate")(
+                frappe.get_all("Report Card Template", pluck="name", limit=1)[0], GROUP)),
             "learning": (PARENT, lambda: learning.student_progress(child)),
             "leave": (PARENT, lambda: leave.for_student(child)),
+            "fees ": (PRINCIPAL, fees.summary),
+            "homework ": (TEACHER, homework.my_posts),
             "calendar": (PARENT, lambda: school_calendar.month(t.year, t.month, child)),
         }
         for key, (user, fn) in cases.items():
             with self.set_user(user):
                 fn()  # works while on
-            with settings(**{f"module_{key}": 0}), self.set_user(user):
+            with settings(**{f"module_{key.strip()}": 0}), self.set_user(user):
                 with self.assertRaises(frappe.PermissionError, msg=key):
                     fn()
 
