@@ -1,0 +1,72 @@
+14:37:54 system        | redis_queue.1 started (pid=6224)
+14:37:54 system        | redis_cache.1 started (pid=6221)
+14:37:54 redis_cache.1 | 6225:C 22 Oct 2026 14:37:54.977 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+14:37:54 redis_cache.1 | 6225:C 22 Oct 2026 14:37:54.977 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6225, just started
+14:37:54 redis_cache.1 | 6225:C 22 Oct 2026 14:37:54.977 # Configuration loaded
+14:37:54 redis_cache.1 | 6225:M 22 Oct 2026 14:37:54.977 * monotonic clock: POSIX clock_gettime
+14:37:54 redis_queue.1 | 6226:C 22 Oct 2026 14:37:54.977 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+14:37:54 redis_cache.1 | 6225:M 22 Oct 2026 14:37:54.977 * Running mode=standalone, port=13000.
+14:37:54 redis_queue.1 | 6226:C 22 Oct 2026 14:37:54.977 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6226, just started
+14:37:54 redis_queue.1 | 6226:C 22 Oct 2026 14:37:54.977 # Configuration loaded
+14:37:54 redis_queue.1 | 6226:M 22 Oct 2026 14:37:54.978 * monotonic clock: POSIX clock_gettime
+14:37:54 redis_cache.1 | 6225:M 22 Oct 2026 14:37:54.978 # Server initialized
+14:37:54 redis_cache.1 | 6225:M 22 Oct 2026 14:37:54.978 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+14:37:54 redis_cache.1 | 6225:M 22 Oct 2026 14:37:54.978 * Ready to accept connections
+14:37:54 redis_queue.1 | 6226:M 22 Oct 2026 14:37:54.978 * Running mode=standalone, port=11000.
+14:37:54 redis_queue.1 | 6226:M 22 Oct 2026 14:37:54.978 # Server initialized
+14:37:54 redis_queue.1 | 6226:M 22 Oct 2026 14:37:54.978 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+14:37:54 redis_queue.1 | 6226:M 22 Oct 2026 14:37:54.978 * Ready to accept connections
+14:37:54 system        | socketio.1 started (pid=6243)
+14:37:54 system        | web.1 started (pid=6239)
+14:37:54 system        | worker.1 started (pid=6244)
+14:37:54 system        | schedule.1 started (pid=6242)
+14:37:55 socketio.1    | Realtime service listening on: ws://0.0.0.0:9000
+14:39:48 redis_queue.1 | 6226:M 22 Oct 2026 14:39:48.498 * 10000 changes in 60 seconds. Saving...
+14:39:48 redis_queue.1 | 6226:M 22 Oct 2026 14:39:48.498 * Background saving started by pid 7700
+14:39:48 redis_queue.1 | 7700:C 22 Oct 2026 14:39:48.508 * DB saved on disk
+14:39:48 redis_queue.1 | 7700:C 22 Oct 2026 14:39:48.509 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+14:39:48 redis_queue.1 | 6226:M 22 Oct 2026 14:39:48.599 * Background saving terminated with success
+14:40:49 redis_queue.1 | 6226:M 22 Oct 2026 14:40:49.046 * 10000 changes in 60 seconds. Saving...
+14:40:49 redis_queue.1 | 6226:M 22 Oct 2026 14:40:49.047 * Background saving started by pid 8733
+14:40:49 redis_queue.1 | 8733:C 22 Oct 2026 14:40:49.063 * DB saved on disk
+14:40:49 redis_queue.1 | 8733:C 22 Oct 2026 14:40:49.064 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+14:40:49 redis_queue.1 | 6226:M 22 Oct 2026 14:40:49.147 * Background saving terminated with success
+14:40:58 web.1         | Chromium executable is already executable: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+14:40:59 web.1         | /home/runner/frappe-bench/env/lib/python3.14/site-packages/pypdf/_page.py:1612: DeprecationWarning: Calling `PageObject.replace_contents()` for pages not assigned to a writer is deprecated and will be removed in pypdf 7.0.0. Attach the page to the writer first or use `PdfWriter(clone_from=...)` directly. The existing approach has proved being unreliable.
+14:40:59 web.1         |   self.replace_contents(content)
+14:40:59 web.1         | /home/runner/frappe-bench/env/lib/python3.14/site-packages/pypdf/_page.py:1612: DeprecationWarning: Calling `PageObject.replace_contents()` for pages not assigned to a writer is deprecated and will be removed in pypdf 7.0.0. Attach the page to the writer first or use `PdfWriter(clone_from=...)` directly. The existing approach has proved being unreliable.
+14:40:59 web.1         |   self.replace_contents(content)
+14:40:59 web.1         | /home/runner/frappe-bench/env/lib/python3.14/site-packages/pypdf/_page.py:1307: DeprecationWarning: Calling `PageObject.replace_contents()` for pages not assigned to a writer is deprecated and will be removed in pypdf 7.0.0. Attach the page to the writer first or use `PdfWriter(clone_from=...)` directly. The existing approach has proved being unreliable.
+14:40:59 web.1         |   self.replace_contents(ContentStream(new_content_array, self.pdf))
+14:40:59 web.1         | Headless Chromium closed successfully.
+14:40:59 web.1         | Function get_chrome_pdf took 1.1539 seconds
+14:40:59 web.1         | Traceback (most recent call last):
+14:40:59 web.1         |   File "apps/frappe/frappe/app.py", line 139, in application
+14:40:59 web.1         |     init_request(request)
+14:40:59 web.1         |     ~~~~~~~~~~~~^^^^^^^^^
+14:40:59 web.1         |   File "apps/frappe/frappe/app.py", line 242, in init_request
+14:40:59 web.1         |     frappe.local.http_request = HTTPRequest()
+14:40:59 web.1         |                                 ~~~~~~~~~~~^^
+14:40:59 web.1         |   File "apps/frappe/frappe/auth.py", line 48, in __init__
+14:40:59 web.1         |     self.validate_csrf_token()
+14:40:59 web.1         |     ~~~~~~~~~~~~~~~~~~~~~~~~^^
+14:40:59 web.1         |   File "apps/frappe/frappe/auth.py", line 97, in validate_csrf_token
+14:40:59 web.1         |     frappe.throw(_("Invalid Request"), frappe.CSRFTokenError)
+14:40:59 web.1         |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+14:40:59 web.1         |   File "apps/frappe/frappe/utils/messages.py", line 159, in throw
+14:40:59 web.1         |     msgprint(
+14:40:59 web.1         |     ~~~~~~~~^
+14:40:59 web.1         |     	msg,
+14:40:59 web.1         |      ^^^^
+14:40:59 web.1         |     ...<7 lines>...
+14:40:59 web.1         |     	allow_dangerous_html=allow_dangerous_html,
+14:40:59 web.1         |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+14:40:59 web.1         |     )
+14:40:59 web.1         |     ^
+14:40:59 web.1         |   File "apps/frappe/frappe/utils/messages.py", line 118, in msgprint
+14:40:59 web.1         |     _raise_exception()
+14:40:59 web.1         |     ~~~~~~~~~~~~~~~~^^
+14:40:59 web.1         |   File "apps/frappe/frappe/utils/messages.py", line 59, in _raise_exception
+14:40:59 web.1         |     raise exc
+14:40:59 web.1         | frappe.exceptions.CSRFTokenError: Invalid Request
+14:40:59 web.1         | 
