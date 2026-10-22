@@ -1,0 +1,80 @@
+Starting test run with parameters: site=test_site, app=schoolos, verbose=False, tests=(), force=False, profile=False, failfast=False, skip_before_tests=False, debug=False, selected_categories=[]
+View detailed logs (using --verbose): /home/runner/frappe-bench/logs/frappe.testing.log
+
+Running 32 integration tests for schoolos
+
+schoolos.tests.test_integration.TestAccounts
+   [32m ✔ [0m test_approve_and_reject_bills
+   [32m ✔ [0m test_full_mode_summary
+   [32m ✔ [0m test_tally_exports
+
+schoolos.tests.test_integration.TestAlerts
+   [32m ✔ [0m test_absence_alert_on_attendance
+   [32m ✔ [0m test_deliver_dry_run
+   [32m ✔ [0m test_send_test_message
+
+schoolos.tests.test_integration.TestCalendar
+   [32m ✔ [0m test_month_and_albums
+
+schoolos.tests.test_integration.TestDashboards
+   [32m ✔ [0m test_context_per_role
+   [32m ✔ [0m test_parent
+   [32m ✔ [0m test_principal
+   [32m ✔ [0m test_role_walls
+   [32m ✔ [0m test_student_view_and_privacy
+   [32m ✔ [0m test_teacher
+
+schoolos.tests.test_integration.TestFees
+   [32m ✔ [0m test_parent_fees_and_receipt [31m (2.79s)[0m
+       ▹  Chromium is not available. downloading...
+       ▹  Downloading Chromium from https://storage.googleapis.com/chrome-for-testing-public/133.0.6943.35/linux64/chrome-headless-shell-linux64.zip...
+       ▹  Downloading Chromium
+       ▹  Extracting Chromium...
+       ▹  Renaming /home/runner/frappe-bench/chromium/chrome-headless-shell-linux64 to /home/runner/frappe-bench/chromium/chrome-linux
+       ▹  Making Chromium executable: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+       ▹  Chromium executable permissions set: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+       ▹  Chromium is ready to use at: /home/runner/frappe-bench/chromium
+       ▹  Function get_chrome_pdf took 2.4526 seconds
+       ▸  Headless Chromium closed successfully.
+   [32m ✔ [0m test_reminders_dry_run
+   [32m ✔ [0m test_summary
+
+schoolos.tests.test_integration.TestHomeworkLearning
+   [32m ✔ [0m test_log_lesson_and_note
+   [32m ✔ [0m test_post_and_see_homework
+   [32m ✔ [0m test_progress_activity
+   [32m ✔ [0m test_teacher_cannot_post_elsewhere
+
+schoolos.tests.test_integration.TestImport
+   [32m ✔ [0m test_excel_import_and_reimport
+
+schoolos.tests.test_integration.TestInstall
+   [32m ✔ [0m test_all_doctypes_load
+   [32m ✔ [0m test_demo_is_complete
+   [32m ✔ [0m test_migrate_is_idempotent
+   [32m ✔ [0m test_roles_fields_scales
+
+schoolos.tests.test_integration.TestLeave
+   [32m ✔ [0m test_apply_approve_marks_leave
+   [32m ✔ [0m test_approved_leave_suppresses_absence_alert
+   [32m ✔ [0m test_reject_needs_note_and_withdraw
+
+schoolos.tests.test_integration.TestModules
+   [32m ✔ [0m test_switch_off_hides_and_blocks
+
+schoolos.tests.test_integration.TestPWA
+   [32m ✔ [0m test_manifest_and_worker
+   [32m ✔ [0m test_school_page_renders
+       ▸  /home/runner/frappe-bench/apps/frappe/frappe/model/qb_query.py:163: V17FrappeDeprecationWarning: This codepath was marked (DATE: 2024-01-01) deprecated for removal (from v17 onwards); note:
+       ▸   The 'limit_page_length' parameter is deprecated. Use 'limit' instead.
+       ▸  
+       ▸    deprecation_warning(
+
+schoolos.tests.test_integration.TestReportCards
+   [32m ✔ [0m test_generate_and_download
+
+
+----------------------------------------------------------------------
+Ran 32 tests in 8.003s
+
+OK

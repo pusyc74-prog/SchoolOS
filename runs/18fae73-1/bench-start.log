@@ -1,0 +1,42 @@
+13:14:54 system        | redis_cache.1 started (pid=9285)
+13:14:54 redis_cache.1 | 9286:C 22 Oct 2026 13:14:54.959 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+13:14:54 system        | redis_queue.1 started (pid=9290)
+13:14:54 redis_cache.1 | 9286:C 22 Oct 2026 13:14:54.960 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=9286, just started
+13:14:54 redis_cache.1 | 9286:C 22 Oct 2026 13:14:54.960 # Configuration loaded
+13:14:54 redis_cache.1 | 9286:M 22 Oct 2026 13:14:54.960 * monotonic clock: POSIX clock_gettime
+13:14:54 redis_cache.1 | 9286:M 22 Oct 2026 13:14:54.961 * Running mode=standalone, port=13000.
+13:14:54 redis_cache.1 | 9286:M 22 Oct 2026 13:14:54.961 # Server initialized
+13:14:54 redis_cache.1 | 9286:M 22 Oct 2026 13:14:54.961 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+13:14:54 redis_cache.1 | 9286:M 22 Oct 2026 13:14:54.962 * Ready to accept connections
+13:14:54 system        | web.1 started (pid=9299)
+13:14:54 system        | schedule.1 started (pid=9300)
+13:14:54 system        | socketio.1 started (pid=9293)
+13:14:54 redis_queue.1 | 9292:C 22 Oct 2026 13:14:54.968 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+13:14:54 redis_queue.1 | 9292:C 22 Oct 2026 13:14:54.968 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=9292, just started
+13:14:54 redis_queue.1 | 9292:C 22 Oct 2026 13:14:54.968 # Configuration loaded
+13:14:54 system        | worker.1 started (pid=9306)
+13:14:54 redis_queue.1 | 9292:M 22 Oct 2026 13:14:54.969 * monotonic clock: POSIX clock_gettime
+13:14:54 redis_queue.1 | 9292:M 22 Oct 2026 13:14:54.969 * Running mode=standalone, port=11000.
+13:14:54 redis_queue.1 | 9292:M 22 Oct 2026 13:14:54.969 # Server initialized
+13:14:54 redis_queue.1 | 9292:M 22 Oct 2026 13:14:54.969 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+13:14:54 redis_queue.1 | 9292:M 22 Oct 2026 13:14:54.970 * Ready to accept connections
+13:14:55 socketio.1    | Realtime service listening on: ws://0.0.0.0:9000
+13:17:09 redis_queue.1 | 9292:M 22 Oct 2026 13:17:09.336 * 10000 changes in 60 seconds. Saving...
+13:17:09 redis_queue.1 | 9292:M 22 Oct 2026 13:17:09.337 * Background saving started by pid 10488
+13:17:09 redis_queue.1 | 10488:C 22 Oct 2026 13:17:09.349 * DB saved on disk
+13:17:09 redis_queue.1 | 10488:C 22 Oct 2026 13:17:09.350 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+13:17:09 redis_queue.1 | 9292:M 22 Oct 2026 13:17:09.437 * Background saving terminated with success
+13:18:14 web.1         | Chromium executable is already executable: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+13:18:15 web.1         | /home/runner/frappe-bench/env/lib/python3.14/site-packages/pypdf/_page.py:1612: DeprecationWarning: Calling `PageObject.replace_contents()` for pages not assigned to a writer is deprecated and will be removed in pypdf 7.0.0. Attach the page to the writer first or use `PdfWriter(clone_from=...)` directly. The existing approach has proved being unreliable.
+13:18:15 web.1         |   self.replace_contents(content)
+13:18:15 web.1         | /home/runner/frappe-bench/env/lib/python3.14/site-packages/pypdf/_page.py:1612: DeprecationWarning: Calling `PageObject.replace_contents()` for pages not assigned to a writer is deprecated and will be removed in pypdf 7.0.0. Attach the page to the writer first or use `PdfWriter(clone_from=...)` directly. The existing approach has proved being unreliable.
+13:18:15 web.1         |   self.replace_contents(content)
+13:18:15 web.1         | /home/runner/frappe-bench/env/lib/python3.14/site-packages/pypdf/_page.py:1307: DeprecationWarning: Calling `PageObject.replace_contents()` for pages not assigned to a writer is deprecated and will be removed in pypdf 7.0.0. Attach the page to the writer first or use `PdfWriter(clone_from=...)` directly. The existing approach has proved being unreliable.
+13:18:15 web.1         |   self.replace_contents(ContentStream(new_content_array, self.pdf))
+13:18:15 web.1         | Headless Chromium closed successfully.
+13:18:15 web.1         | Function get_chrome_pdf took 0.7576 seconds
+13:18:28 redis_queue.1 | 9292:M 22 Oct 2026 13:18:28.036 * 10000 changes in 60 seconds. Saving...
+13:18:28 redis_queue.1 | 9292:M 22 Oct 2026 13:18:28.037 * Background saving started by pid 11885
+13:18:28 redis_queue.1 | 11885:C 22 Oct 2026 13:18:28.054 * DB saved on disk
+13:18:28 redis_queue.1 | 11885:C 22 Oct 2026 13:18:28.055 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+13:18:28 redis_queue.1 | 9292:M 22 Oct 2026 13:18:28.137 * Background saving terminated with success

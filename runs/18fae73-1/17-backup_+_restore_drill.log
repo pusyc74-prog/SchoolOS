@@ -1,0 +1,61 @@
+Backup Summary for test_site at 2026-10-22 18:48:19.126991
+Config  : /home/runner/frappe-bench/sites/test_site/private/backups/20261022_184816-test_site-site_config_backup.json 276.0B
+Database: /home/runner/frappe-bench/sites/test_site/private/backups/20261022_184816-test_site-database.sql.gz 1.3MiB
+Public  : /home/runner/frappe-bench/sites/test_site/private/backups/20261022_184816-test_site-files.tar 210.0KiB
+Private : /home/runner/frappe-bench/sites/test_site/private/backups/20261022_184816-test_site-private-files.tar 10.0KiB
+Backup for Site test_site has been successfully completed with files
+
+Installing frappe...
+Updating DocTypes for frappe.......................................................................................................................................................................................................................................................................................................................................................................................
+Updating Dashboard for frappe
+*** Scheduler is disabled ***
+File sites/test_site/private/backups/20261022_184816-test_site-database.sql.gz not found. Trying to check in alternative directories.
+File /home/runner/frappe-bench/sites/test_site/private/backups/20261022_184816-test_site-database.sql.gz found.
+App frappe already installed
+*** Scheduler is disabled ***
+Site restore_check has been restored with files
+Migrating restore_check
+Updating DocTypes for frappe.......................................................................................................................................................................................................................................................................................................................................................................................
+Updating DocTypes for erpnext................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Updating DocTypes for hrms............................................................................................................................................................................................................................................................................................................
+Updating DocTypes for education.......................................................................................
+Updating DocTypes for schoolos.................
+Syncing jobs...
+Syncing fixtures...
+Syncing dashboards...
+Updating Dashboard for frappe
+Updating Dashboard for erpnext
+Updating Dashboard for hrms
+Updating Dashboard for education
+Updating Dashboard for schoolos
+Syncing customizations...
+Syncing languages...
+Flushing deferred inserts...
+Removing orphan doctypes...
+Removing orphan Workspaces
+Removing orphan Dashboards
+Removing orphan Pages
+Removing orphan Reports
+Removing orphan Notifications
+Removing orphan Sidebars
+Removing orphan Docks
+Removing orphan List Filters
+Removing orphan Kanban Boards
+Removing orphan Desktop Icons
+Syncing portal menu...
+Updating installed applications...
+Executing `after_migrate` hooks...
+
+Queued rebuilding of search index for restore_check
+
+students before: 32  after restore: 32
+Taking backup of restore_check
+set -o pipefail; /usr/bin/mariadb-dump --user=_80fd13aeee78c664 --host=127.0.0.1 --port=3306 --password=********** --single-transaction --quick --lock-tables=false _80fd13aeee78c664 | /usr/bin/gzip >> ./restore_check/private/backups/20261022_184853-restore_check-database.sql.gz
+
+Backup Summary for restore_check at 2026-10-22 18:48:56.498346
+Config  : /home/runner/frappe-bench/sites/restore_check/private/backups/20261022_184853-restore_check-site_config_backup.json 163.0B
+Database: /home/runner/frappe-bench/sites/restore_check/private/backups/20261022_184853-restore_check-database.sql.gz 1.3MiB
+Public  : /home/runner/frappe-bench/sites/restore_check/private/backups/20261022_184853-restore_check-files.tar 10.0KiB
+Private : /home/runner/frappe-bench/sites/restore_check/private/backups/20261022_184853-restore_check-private-files.tar 10.0KiB
+Dropping site database and user
+Moving site to archive under /home/runner/frappe-bench/archived/sites
