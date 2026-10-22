@@ -171,24 +171,29 @@ def decide(doctype: str, name: str, approve: int, note: str | None = None):
     note = (note or "").strip()
     if not approved and not note:
         frappe.throw(_("Please give a reason for rejecting"))
-    # The principal may not hold ERPNext's purchase roles; access was checked above (APPROVER_ROLES).
-    doc.flags.ignore_permissions = True
-    if doctype == "Purchase Invoice":
-        if approved:
-            doc.submit()
+    # The principal usually holds no ERPNext accounting roles, and posting a bill reads accounts,
+    # cost centres etc. Access was checked above (APPROVER_ROLES), so post with system rights and
+    # record who approved in a comment (audit trail).
+    approver, approver_name = frappe.session.user, frappe.utils.get_fullname()
+    frappe.set_user("Administrator")
+    try:
+        if doctype == "Purchase Invoice":
+            if approved:
+                doc.submit()
+            else:
+                doc.schoolos_rejected = 1
+                doc.schoolos_rejection_note = note
+                doc.save()
         else:
-            doc.schoolos_rejected = 1
-            doc.schoolos_rejection_note = note
+            doc.approval_status = "Approved" if approved else "Rejected"
+            if approved:
+                doc.total_sanctioned_amount = doc.total_sanctioned_amount or doc.total_claimed_amount
             doc.save()
-    else:
-        doc.approval_status = "Approved" if approved else "Rejected"
-        if approved:
-            doc.total_sanctioned_amount = doc.total_sanctioned_amount or doc.total_claimed_amount
-        doc.save()
-        doc.submit()
-    if note:
-        doc.add_comment("Comment", _("{0} by {1}: {2}").format(_("Approved") if approved else _("Rejected"),
-                                                                frappe.utils.get_fullname(), note))
+            doc.submit()
+        doc.add_comment("Comment", _("{0} by {1} ({2}){3}").format(
+            _("Approved") if approved else _("Rejected"), approver_name, approver, f": {note}" if note else ""))
+    finally:
+        frappe.set_user(approver)
     return {"name": name, "status": "Approved" if approved else "Rejected"}
 
 

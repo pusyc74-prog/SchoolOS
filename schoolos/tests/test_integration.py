@@ -285,7 +285,8 @@ class TestAlerts(SchoolOSTestCase):
             self.skipTest("today is a holiday; attendance can't be marked")
         s = self.students[-1]
         frappe.db.delete("Student Attendance", {"student": s, "date": today()})
-        frappe.db.delete("SchoolOS Alert Log", {"alert_type": "Absence", "student": s})
+        # (alert logs are not deleted: the background worker may be sending them right now;
+        #  one absence alert per child per day is deduplicated, so "exists" is the right check)
         doc = frappe.get_doc({"doctype": "Student Attendance", "student": s, "student_group": GROUP,
                               "date": today(), "status": "Absent"})
         doc.insert()
@@ -417,14 +418,16 @@ class TestLeave(SchoolOSTestCase):
         child = self.children[1]
         day = today()
         frappe.db.delete("Student Attendance", {"student": child, "date": day})
-        frappe.db.delete("SchoolOS Alert Log", {"alert_type": "Absence", "student": child})
+        before = frappe.db.count("SchoolOS Alert Log", {"alert_type": "Absence", "student": child,
+                                                        "creation": [">=", today()]})
         with self.set_user(PARENT):
             r = apply(child, day, day, "Fever")
         with self.set_user(TEACHER):
             decide(r["name"], 1, "")
         self.assertEqual(frappe.db.get_value("Student Attendance", {"student": child, "date": day, "docstatus": 1},
                                              "status"), "Leave")
-        self.assertFalse(frappe.db.exists("SchoolOS Alert Log", {"alert_type": "Absence", "student": child}))
+        self.assertEqual(frappe.db.count("SchoolOS Alert Log", {"alert_type": "Absence", "student": child,
+                                                                 "creation": [">=", today()]}), before)
 
 
 # ---------------------------------------------------------------- calendar & gallery
@@ -495,6 +498,9 @@ class TestAccounts(SchoolOSTestCase):
             ok = decide("Purchase Invoice", bills[0]["name"], 1)
             self.assertEqual(ok["status"], "Approved")
             self.assertEqual(frappe.db.get_value("Purchase Invoice", bills[0]["name"], "docstatus"), 1)
+            self.assertTrue(frappe.db.exists("Comment", {"reference_name": bills[0]["name"],
+                                                         "content": ["like", f"%{PRINCIPAL}%"]}))
+            self.assertEqual(frappe.session.user, PRINCIPAL)  # user restored after posting
             with self.assertRaises(frappe.ValidationError):
                 decide("Purchase Invoice", bills[1]["name"], 0, "")
             decide("Purchase Invoice", bills[1]["name"], 0, "Wrong amount")
