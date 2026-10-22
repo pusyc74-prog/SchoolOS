@@ -1,0 +1,419 @@
+Starting test run with parameters: site=test_site, app=schoolos, verbose=False, tests=(), force=False, profile=False, failfast=False, skip_before_tests=False, debug=False, selected_categories=[]
+View detailed logs (using --verbose): /home/runner/frappe-bench/logs/frappe.testing.log
+
+Running 32 integration tests for schoolos
+
+schoolos.tests.test_integration.TestAccounts
+   [31m ✖ [0m test_approve_and_reject_bills
+       ▸  /home/runner/frappe-bench/apps/frappe/frappe/model/qb_query.py:163: V17FrappeDeprecationWarning: This codepath was marked (DATE: 2024-01-01) deprecated for removal (from v17 onwards); note:
+       ▸   The 'limit_page_length' parameter is deprecated. Use 'limit' instead.
+       ▸  
+       ▸    deprecation_warning(
+   [32m ✔ [0m test_full_mode_summary
+   [32m ✔ [0m test_tally_exports
+
+schoolos.tests.test_integration.TestAlerts
+   [31m ✖ [0m test_absence_alert_on_attendance
+   [32m ✔ [0m test_deliver_dry_run
+   [32m ✔ [0m test_send_test_message
+
+schoolos.tests.test_integration.TestCalendar
+   [32m ✔ [0m test_month_and_albums
+
+schoolos.tests.test_integration.TestDashboards
+   [32m ✔ [0m test_context_per_role
+   [32m ✔ [0m test_parent
+   [32m ✔ [0m test_principal
+   [32m ✔ [0m test_role_walls
+   [32m ✔ [0m test_student_view_and_privacy
+   [32m ✔ [0m test_teacher
+
+schoolos.tests.test_integration.TestFees
+   [32m ✔ [0m test_parent_fees_and_receipt [31m (3.1s)[0m
+       ▹  Chromium is not available. downloading...
+       ▹  Downloading Chromium from https://storage.googleapis.com/chrome-for-testing-public/133.0.6943.35/linux64/chrome-headless-shell-linux64.zip...
+       ▹  Downloading Chromium
+       ▹  Extracting Chromium...
+       ▹  Renaming /home/runner/frappe-bench/chromium/chrome-headless-shell-linux64 to /home/runner/frappe-bench/chromium/chrome-linux
+       ▹  Making Chromium executable: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+       ▹  Chromium executable permissions set: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+       ▹  Chromium is ready to use at: /home/runner/frappe-bench/chromium
+       ▹  Function get_chrome_pdf took 2.7285 seconds
+       ▸  Headless Chromium closed successfully.
+   [32m ✔ [0m test_reminders_dry_run
+   [32m ✔ [0m test_summary
+
+schoolos.tests.test_integration.TestHomeworkLearning
+   [32m ✔ [0m test_log_lesson_and_note
+   [32m ✔ [0m test_post_and_see_homework
+   [32m ✔ [0m test_progress_activity
+   [32m ✔ [0m test_teacher_cannot_post_elsewhere
+
+schoolos.tests.test_integration.TestImport
+   [32m ✔ [0m test_excel_import_and_reimport
+
+schoolos.tests.test_integration.TestInstall
+   [32m ✔ [0m test_all_doctypes_load
+   [32m ✔ [0m test_demo_is_complete
+   [32m ✔ [0m test_migrate_is_idempotent
+   [32m ✔ [0m test_roles_fields_scales
+
+schoolos.tests.test_integration.TestLeave
+   [32m ✔ [0m test_apply_approve_marks_leave
+   [32m ✔ [0m test_approved_leave_suppresses_absence_alert
+   [32m ✔ [0m test_reject_needs_note_and_withdraw
+
+schoolos.tests.test_integration.TestModules
+   [32m ✔ [0m test_switch_off_hides_and_blocks
+
+schoolos.tests.test_integration.TestPWA
+   [32m ✔ [0m test_manifest_and_worker
+   [32m ✔ [0m test_school_page_renders
+
+schoolos.tests.test_integration.TestReportCards
+   [32m ✔ [0m test_generate_and_download
+
+
+======================================================================
+ ERROR  test_approve_and_reject_bills (schoolos.tests.test_integration.TestAccounts.test_approve_and_reject_bills)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/frappe-bench/apps/schoolos/schoolos/tests/test_integration.py", line 495, in test_approve_and_reject_bills
+    ok = decide("Purchase Invoice", bills[0]["name"], 1)
+    _approvals = <function _approvals at 0x7fa5b7a32fb0>
+    _company = <function _company at 0x7fa5b7a31bc0>
+    bills = [{'doctype': 'Purchase Invoice', 'name': 'ACC-PINV-2026-00001', 'who': 'Sai Stationers', 'amount': 38500.0, 'date': '2026-10-22', 'what': 'Notebooks and chart paper for October', 'by': 'Administrator'}, {'doctype': 'Purchase Invoice', 'name': 'ACC-PINV-2026-00002', 'who': 'MSEDCL', 'amount': 42150.0, 'date': '2026-10-22', 'what': 'Electricity bill, September', 'by': 'Administrator'}]
+    decide = <function decide at 0x7fa5b7a333d0>
+    self = <schoolos.tests.test_integration.TestAccounts testMethod=test_approve_and_reject_bills>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/utils/typing_validations.py", line 36, in wrapper
+    return func(*args, **kwargs)
+    apply_condition = <function _in_request_or_test at 0x7fa5c2fe5170>
+    args = ['Purchase Invoice', 'ACC-PINV-2026-00001', 1]
+    func = <function decide at 0x7fa5b7a33320>
+    kwargs = {}
+  File "/home/runner/frappe-bench/apps/schoolos/schoolos/api/accounts.py", line 178, in decide
+    doc.submit()
+    ~~~~~~~~~~^^
+    approve = 1
+    approved = True
+    doc = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+    doctype = 'Purchase Invoice'
+    name = 'ACC-PINV-2026-00001'
+    note = ''
+  File "/home/runner/frappe-bench/apps/frappe/frappe/utils/typing_validations.py", line 36, in wrapper
+    return func(*args, **kwargs)
+    apply_condition = <function _in_request_or_test at 0x7fa5c2fe5170>
+    args = (<PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>,)
+    func = <function Document.submit at 0x7fa5c19619b0>
+    kwargs = {}
+  File "/home/runner/frappe-bench/apps/frappe/frappe/model/document.py", line 1352, in submit
+    return self._submit()
+           ~~~~~~~~~~~~^^
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/model/document.py", line 1333, in _submit
+    return self.save()
+           ~~~~~~~~~^^
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/model/document.py", line 558, in save
+    return self._save(*args, **kwargs)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    args = ()
+    kwargs = {}
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/model/document.py", line 595, in _save
+    self.run_before_save_methods()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+    ignore_permissions = None
+    ignore_version = None
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/model/document.py", line 1417, in run_before_save_methods
+    self.run_method("validate")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/model/document.py", line 1262, in run_method
+    out = Document.hook(fn)(self, *args, **kwargs)
+    args = ()
+    fn = <function Document.run_method.<locals>.fn at 0x7fa5b75c10c0>
+    kwargs = {}
+    method = 'validate'
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/model/document.py", line 1664, in composer
+    return composed(self, method, *args, **kwargs)
+    args = ()
+    compose = <function Document.hook.<locals>.compose at 0x7fa5b7138bf0>
+    composed = <function Document.hook.<locals>.compose.<locals>.runner at 0x7fa5b7138eb0>
+    doc_events = {'*': {'on_update': ['frappe.desk.notifications.clear_doctype_notifications', 'frappe.workflow.doctype.workflow_action.workflow_action.process_workflow_actions', 'frappe.core.doctype.file.utils.attach_files_to_document', 'frappe.automation.doctype.assignment_rule.assignment_rule.apply', 'frappe.automation.doctype.assignment_rule.assignment_rule.update_due_date', 'frappe.core.doctype.user_type.user_type.apply_permissions_for_non_standard_user_type', 'frappe.core.doctype.permission_log.permission_log.make_perm_log', 'frappe.search.sqlite_search.update_doc_index'], 'after_rename': ['frappe.desk.notifications.clear_doctype_notifications'], 'on_cancel': ['frappe.desk.notifications.clear_doctype_notifications', 'frappe.workflow.doctype.workflow_action.workflow_action.process_workflow_actions', 'frappe.automation.doctype.assignment_rule.assignment_rule.apply'], 'on_trash': ['frappe.desk.notifications.clear_doctype_notifications', 'frappe.workflow.doctype.workflow_action.workflow_action.process_workflow_actions', 'frappe.search.sqlite_search.delete_doc_index'], 'on_update_after_submit': ['frappe.workflow.doctype.workflow_action.workflow_action.process_workflow_actions', 'frappe.automation.doctype.assignment_rule.assignment_rule.apply', 'frappe.automation.doctype.assignment_rule.assignment_rule.update_due_date', 'frappe.core.doctype.file.utils.attach_files_to_document'], 'on_change': ['frappe.automation.doctype.milestone_tracker.milestone_tracker.evaluate_milestone'], 'after_delete': ['frappe.core.doctype.permission_log.permission_log.make_perm_log'], 'validate': ['erpnext.support.doctype.service_level_agreement.service_level_agreement.apply', 'erpnext.setup.doctype.transaction_deletion_record.transaction_deletion_record.check_for_running_deletion_job']}, 'Event': {'after_insert': ['frappe.integrations.doctype.google_calendar.google_calendar.insert_event_in_google_calendar', 'erpnext.crm.utils.link_events_with_prospect'], 'on_update': ['frappe.integrations.doctype.google_calendar.google_calendar.update_event_in_google_calendar'], 'on_trash': ['frappe.integrations.doctype.google_calendar.google_calendar.delete_event_from_google_calendar']}, 'Contact': {'after_insert': ['frappe.integrations.doctype.google_contacts.google_contacts.insert_contacts_to_google_contacts', 'erpnext.telephony.doctype.call_log.call_log.link_existing_conversations'], 'on_update': ['frappe.integrations.doctype.google_contacts.google_contacts.update_contacts_to_google_contacts'], 'on_trash': ['erpnext.support.doctype.issue.issue.update_issue'], 'validate': ['erpnext.crm.utils.update_lead_phone_numbers']}, 'DocType': {'on_update': ['frappe.cache_manager.build_domain_restricted_doctype_cache']}, 'Page': {'on_update': ['frappe.cache_manager.build_domain_restricted_page_cache']}, 'Sales Invoice': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save'], 'on_submit': ['erpnext.regional.italy.utils.sales_invoice_on_submit'], 'on_cancel': ['erpnext.regional.italy.utils.sales_invoice_on_cancel'], 'on_trash': ['erpnext.regional.check_deletion_permission']}, 'Purchase Invoice': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save', 'erpnext.regional.united_arab_emirates.utils.update_grand_total_for_rcm', 'erpnext.regional.united_arab_emirates.utils.validate_returns']}, 'Journal Entry': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save', 'hrms.hr.doctype.expense_claim.expense_claim.validate_expense_claim_in_jv'], 'on_submit': ['hrms.hr.doctype.expense_claim.expense_claim.update_payment_for_expense_claim', 'hrms.hr.doctype.full_and_final_statement.full_and_final_statement.update_full_and_final_statement_status', 'hrms.payroll.doctype.salary_withholding.salary_withholding.update_salary_withholding_payment_status'], 'on_update_after_submit': ['hrms.hr.doctype.expense_claim.expense_claim.update_payment_for_expense_claim'], 'on_cancel': ['hrms.hr.doctype.expense_claim.expense_claim.update_payment_for_expense_claim', 'hrms.payroll.doctype.salary_slip.salary_slip.unlink_ref_doc_from_salary_slip', 'hrms.hr.doctype.full_and_final_statement.full_and_final_statement.update_full_and_final_statement_status', 'hrms.payroll.doctype.salary_withholding.salary_withholding.update_salary_withholding_payment_status']}, 'Bank Clearance': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Stock Entry': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save'], 'on_submit': ['erpnext.stock.doctype.material_request.material_request.update_completed_and_requested_qty'], 'on_cancel': ['erpnext.stock.doctype.material_request.material_request.update_completed_and_requested_qty']}, 'Dunning': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Invoice Discounting': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Payment Entry': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save'], 'on_trash': ['erpnext.regional.check_deletion_permission'], 'on_submit': ['hrms.hr.doctype.expense_claim.expense_claim.update_payment_for_expense_claim'], 'on_cancel': ['hrms.hr.doctype.expense_claim.expense_claim.update_payment_for_expense_claim'], 'on_update_after_submit': ['hrms.hr.doctype.expense_claim.expense_claim.update_payment_for_expense_claim']}, 'Period Closing Voucher': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Process Deferred Accounting': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Asset': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Asset Capitalization': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Asset Repair': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Delivery Note': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Landed Cost Voucher': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Purchase Receipt': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Stock Reconciliation': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Subcontracting Receipt': {'validate': ['erpnext.accounts.doctype.accounting_period.accounting_period.validate_accounting_period_on_doc_save']}, 'Item': {'on_update': ['erpnext.stock.doctype.item.item_search.reindex_item'], 'after_rename': ['erpnext.stock.doctype.item.item_search.reindex_renamed_item']}, 'User': {'after_insert': ['frappe.contacts.doctype.contact.contact.update_contact'], 'validate': ['erpnext.setup.doctype.employee.employee.validate_employee_role', 'erpnext.setup.doctype.employee.employee.validate_employee_role', 'hrms.overrides.employee_master.update_approver_user_roles'], 'on_update': ['erpnext.portal.utils.set_default_role']}, 'Communication': {'on_update': ['erpnext.support.doctype.service_level_agreement.service_level_agreement.on_communication_update', 'erpnext.support.doctype.issue.issue.set_first_response_time'], 'after_insert': ['erpnext.crm.utils.link_communications_with_prospect', 'erpnext.crm.utils.update_modified_timestamp']}, 'Contact Us Settings': {'on_update': ['erpnext.crm.utils.disable_opportunity_creation_on_contact_us_disabled']}, 'Address': {'validate': ['erpnext.regional.italy.utils.set_state_code']}, 'Email Unsubscribe': {'after_insert': ['erpnext.crm.doctype.email_campaign.email_campaign.unsubscribe_recipient']}, 'Integration Request': {'validate': ['erpnext.accounts.doctype.payment_request.payment_request.validate_payment']}, 'Company': {'validate': ['hrms.overrides.company.validate_default_accounts'], 'on_update': ['hrms.overrides.company.make_company_fixtures', 'hrms.overrides.company.set_default_hr_accounts', 'hrms.overrides.company.set_expense_claim_type_accounts'], 'on_trash': ['hrms.overrides.company.handle_linked_docs']}, 'Holiday List': {'on_update': ['hrms.utils.holiday_list.invalidate_cache'], 'on_trash': ['hrms.utils.holiday_list.invalidate_cache']}, 'Timesheet': {'validate': ['hrms.hr.utils.validate_active_employee']}, 'Unreconcile Payment': {'on_submit': ['hrms.hr.doctype.expense_claim.expense_claim.update_payment_for_expense_claim']}, 'Loan': {'validate': ['hrms.hr.utils.validate_loan_repay_from_salary']}, 'Employee': {'validate': ['hrms.overrides.employee_master.validate_onboarding_process'], 'on_update': ['hrms.overrides.employee_master.update_approver_role', 'hrms.overrides.employee_master.publish_update'], 'after_insert': ['hrms.overrides.employee_master.update_job_applicant_and_offer', 'hrms.telemetry.on_milestone_insert'], 'on_trash': ['hrms.overrides.employee_master.update_employee_transfer'], 'after_delete': ['hrms.overrides.employee_master.publish_update']}, 'Project': {'validate': ['hrms.controllers.employee_boarding_controller.update_employee_boarding_status']}, 'Task': {'on_update': ['hrms.controllers.employee_boarding_controller.update_task']}, 'Leave Application': {'on_submit': ['hrms.telemetry.on_leave_application_submit']}, 'Expense Claim': {'on_submit': ['hrms.telemetry.on_expense_claim_submit']}, 'Attendance Request': {'on_submit': ['hrms.telemetry.on_attendance_request_submit']}, 'Shift Request': {'on_submit': ['hrms.telemetry.on_shift_request_submit']}, 'Employee Checkin': {'after_insert': ['hrms.telemetry.on_employee_checkin']}, 'Payroll Entry': {'on_submit': ['hrms.telemetry.on_payroll_entry_submit']}, 'Job Offer': {'on_submit': ['hrms.telemetry.on_job_offer_submit']}, 'Appraisal': {'on_submit': ['hrms.telemetry.on_appraisal_submit']}, 'Interview': {'on_submit': ['hrms.telemetry.on_interview_submit']}, 'Shift Type': {'after_insert': ['hrms.telemetry.on_milestone_insert']}, 'Leave Type': {'after_insert': ['hrms.telemetry.on_milestone_insert']}, 'Salary Structure': {'after_insert': ['hrms.telemetry.on_milestone_insert']}, 'Job Opening': {'after_insert': ['hrms.telemetry.on_milestone_insert']}, 'Appraisal Cycle': {'after_insert': ['hrms.telemetry.on_milestone_insert']}, 'Employee Onboarding': {'after_insert': ['hrms.telemetry.on_milestone_insert']}, 'Salary Slip': {'on_submit': ['hrms.telemetry.on_milestone_submit']}, 'Student Attendance': {'on_submit': ['schoolos.alerts.events.on_student_attendance_submit']}}
+    f = <function Document.run_method.<locals>.fn at 0x7fa5b75c10c0>
+    handler = 'erpnext.setup.doctype.transaction_deletion_record.transaction_deletion_record.check_for_running_deletion_job'
+    hooks = [<function validate_accounting_period_on_doc_save at 0x7fa5b77db5e0>, <function update_grand_total_for_rcm at 0x7fa5b7168e00>, <function validate_returns at 0x7fa5b71690c0>, <function apply at 0x7fa5b7180460>, <function check_for_running_deletion_job at 0x7fa5b71824b0>]
+    kwargs = {}
+    method = 'validate'
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/model/document.py", line 1638, in runner
+    add_to_return_value(self, fn(self, *args, **kwargs))
+                              ~~^^^^^^^^^^^^^^^^^^^^^^^
+    add_to_return_value = <function Document.hook.<locals>.add_to_return_value at 0x7fa5b7312e50>
+    args = ()
+    fn = <function Document.run_method.<locals>.fn at 0x7fa5b75c10c0>
+    hooks = (<function validate_accounting_period_on_doc_save at 0x7fa5b77db5e0>, <function update_grand_total_for_rcm at 0x7fa5b7168e00>, <function validate_returns at 0x7fa5b71690c0>, <function apply at 0x7fa5b7180460>, <function check_for_running_deletion_job at 0x7fa5b71824b0>)
+    kwargs = {}
+    method = 'validate'
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/model/document.py", line 1259, in fn
+    return method_object(*args, **kwargs)
+    args = ()
+    kwargs = {}
+    method = 'validate'
+    method_object = <bound method PurchaseInvoice.validate of <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>>
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/accounts/doctype/purchase_invoice/purchase_invoice.py", line 275, in validate
+    super().validate()
+    ~~~~~~~~~~~~~~~~^^
+    __class__ = <class 'erpnext.accounts.doctype.purchase_invoice.purchase_invoice.PurchaseInvoice'>
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/controllers/buying_controller.py", line 43, in validate
+    super().validate()
+    ~~~~~~~~~~~~~~~~^^
+    __class__ = <class 'erpnext.controllers.buying_controller.BuyingController'>
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/controllers/subcontracting_controller.py", line 78, in validate
+    super().validate()
+    ~~~~~~~~~~~~~~~~^^
+    __class__ = <class 'erpnext.controllers.subcontracting_controller.SubcontractingController'>
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/controllers/stock_controller.py", line 109, in validate
+    super().validate()
+    ~~~~~~~~~~~~~~~~^^
+    __class__ = <class 'erpnext.controllers.stock_controller.StockController'>
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/controllers/accounts_controller.py", line 310, in validate
+    self.set_missing_values(for_validate=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/accounts/doctype/purchase_invoice/purchase_invoice.py", line 438, in set_missing_values
+    super().set_missing_values(for_validate)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+    __class__ = <class 'erpnext.accounts.doctype.purchase_invoice.purchase_invoice.PurchaseInvoice'>
+    for_validate = True
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+    tax_withholding_category = None
+    tax_withholding_group = None
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/controllers/buying_controller.py", line 253, in set_missing_values
+    _get_party_details(
+    ~~~~~~~~~~~~~~~~~~^
+    	self.supplier,
+     ^^^^^^^^^^^^^^
+    ...<8 lines>...
+    	ignore_permissions=self.flags.ignore_permissions,
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+    __class__ = <class 'erpnext.controllers.buying_controller.BuyingController'>
+    for_validate = True
+    self = <PurchaseInvoice: doctype=Purchase Invoice ACC-PINV-2026-00001 docstatus=1>
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/accounts/party.py", line 137, in _get_party_details
+    set_account_and_due_date(party, account, party_type, company, posting_date, bill_date, doctype)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    account = None
+    bill_date = None
+    company = 'Demo Public School'
+    company_address = None
+    currency = None
+    dispatch_address = None
+    doctype = 'Purchase Invoice'
+    fetch_payment_terms_template = True
+    ignore_permissions = True
+    party = 'Sai Stationers'
+    party_address = None
+    party_type = 'Supplier'
+    pos_profile = None
+    posting_date = None
+    price_list = None
+    shipping_address = None
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/accounts/party.py", line 447, in set_account_and_due_date
+    account = get_party_account(party_type, party, company)
+    account = None
+    bill_date = None
+    company = 'Demo Public School'
+    doctype = 'Purchase Invoice'
+    party = 'Sai Stationers'
+    party_type = 'Supplier'
+    posting_date = None
+  File "/home/runner/frappe-bench/apps/frappe/frappe/utils/typing_validations.py", line 36, in wrapper
+    return func(*args, **kwargs)
+    apply_condition = <function _in_request_or_test at 0x7fa5c2fe5170>
+    args = ('Supplier', 'Sai Stationers', 'Demo Public School')
+    func = <function get_party_account at 0x7fa5b760e1f0>
+    kwargs = {}
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/accounts/party.py", line 521, in get_party_account
+    account_perm_check(account)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^
+    account = 'Creditors - DPS'
+    account_perm_check = <function get_party_account.<locals>.account_perm_check at 0x7fa5b7192980>
+    company = 'Demo Public School'
+    default_account_name = 'default_payable_account'
+    existing_gle_currency = None
+    group = 'Distributor'
+    include_advance = False
+    party = 'Sai Stationers'
+    party_group_doctype = 'Supplier Group'
+    party_type = 'Supplier'
+  File "/home/runner/frappe-bench/apps/erpnext/erpnext/accounts/party.py", line 472, in account_perm_check
+    frappe.throw(
+    ~~~~~~~~~~~~^
+    	_("User don't have permissions to select/read this account."), exc=frappe.PermissionError
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+    account = 'Creditors - DPS'
+    ptype = 'read'
+  File "/home/runner/frappe-bench/apps/frappe/frappe/utils/messages.py", line 159, in throw
+    msgprint(
+    ~~~~~~~~^
+    	msg,
+     ^^^^
+    ...<7 lines>...
+    	allow_dangerous_html=allow_dangerous_html,
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+    allow_dangerous_html = False
+    as_list = False
+    exc = <class 'frappe.exceptions.PermissionError'>
+    is_minimizable = False
+    msg = "User don't have permissions to select/read this account."
+    primary_action = None
+    title = None
+    wide = False
+  File "/home/runner/frappe-bench/apps/frappe/frappe/utils/messages.py", line 118, in msgprint
+    _raise_exception()
+    ~~~~~~~~~~~~~~~~^^
+    _raise_exception = <function msgprint.<locals>._raise_exception at 0x7fa5b71926c0>
+    alert = False
+    allow_dangerous_html = False
+    as_list = False
+    as_table = False
+    clean_html = <function clean_html at 0x7fa5c2f466c0>
+    indicator = 'red'
+    inspect = <module 'inspect' from '/opt/hostedtoolcache/Python/3.14.9/x64/lib/python3.14/inspect.py'>
+    is_minimizable = False
+    msg = "User don't have permissions to select/read this account."
+    out = {'message': "User don't have permissions to select/read this account.", 'as_table': False, 'title': 'Message', 'indicator': 'red', 'raise_exception': 1, '__frappe_exc_id': 'd098fc77f6ba1bc031dfbe2f9e61315253d7a2502629c9e3d69237db'}
+    primary_action = None
+    raise_exception = <class 'frappe.exceptions.PermissionError'>
+    realtime = False
+    title = None
+    wide = False
+  File "/home/runner/frappe-bench/apps/frappe/frappe/utils/messages.py", line 59, in _raise_exception
+    raise exc
+    exc = PermissionError("User don't have permissions to select/read this account.")
+    inspect = <module 'inspect' from '/opt/hostedtoolcache/Python/3.14.9/x64/lib/python3.14/inspect.py'>
+    msg = "User don't have permissions to select/read this account."
+    out = {'message': "User don't have permissions to select/read this account.", 'as_table': False, 'title': 'Message', 'indicator': 'red', 'raise_exception': 1, '__frappe_exc_id': 'd098fc77f6ba1bc031dfbe2f9e61315253d7a2502629c9e3d69237db'}
+    raise_exception = <class 'frappe.exceptions.PermissionError'>
+frappe.exceptions.PermissionError: User don't have permissions to select/read this account.
+
+Stderr:
+/home/runner/frappe-bench/apps/frappe/frappe/model/qb_query.py:163: V17FrappeDeprecationWarning: This codepath was marked (DATE: 2024-01-01) deprecated for removal (from v17 onwards); note:
+ The 'limit_page_length' parameter is deprecated. Use 'limit' instead.
+
+  deprecation_warning(
+
+======================================================================
+ ERROR  test_absence_alert_on_attendance (schoolos.tests.test_integration.TestAlerts.test_absence_alert_on_attendance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/frappe-bench/apps/frappe/frappe/database/database.py", line 272, in sql
+    self.execute_query(query, values)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+    as_dict = 0
+    as_iterator = False
+    as_list = 0
+    auto_commit = 0
+    debug = False
+    explain = False
+    ignore_ddl = 0
+    pluck = False
+    query = 'DELETE FROM `tabSchoolOS Alert Log` WHERE `alert_type`=%(param1)s AND `student`=%(param2)s'
+    query_type = 'delete'
+    run = True
+    self = <frappe.database.mariadb.mysqlclient.MariaDBDatabase object at 0x7fa5bf749be0>
+    trace_id = None
+    update = None
+    values = {'param1': 'Absence', 'param2': 'EDU-STU-2026-00030'}
+  File "/home/runner/frappe-bench/apps/frappe/frappe/database/database.py", line 372, in execute_query
+    return self._cursor.execute(query, values)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+    query = 'DELETE FROM `tabSchoolOS Alert Log` WHERE `alert_type`=%(param1)s AND `student`=%(param2)s'
+    self = <frappe.database.mariadb.mysqlclient.MariaDBDatabase object at 0x7fa5bf749be0>
+    values = {'param1': 'Absence', 'param2': 'EDU-STU-2026-00030'}
+  File "/home/runner/frappe-bench/env/lib/python3.14/site-packages/MySQLdb/cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+    args = {'param1': 'Absence', 'param2': 'EDU-STU-2026-00030'}
+    mogrified_query = b"DELETE FROM `tabSchoolOS Alert Log` WHERE `alert_type`='Absence' AND `student`='EDU-STU-2026-00030'"
+    query = 'DELETE FROM `tabSchoolOS Alert Log` WHERE `alert_type`=%(param1)s AND `student`=%(param2)s'
+    self = <MySQLdb.cursors.Cursor object at 0x7fa5bc914830>
+  File "/home/runner/frappe-bench/env/lib/python3.14/site-packages/MySQLdb/cursors.py", line 330, in _query
+    db.query(q)
+    ~~~~~~~~^^^
+    db = <_mysql.connection open to '127.0.0.1' at 0x55c6d7f4c1e0>
+    q = b"DELETE FROM `tabSchoolOS Alert Log` WHERE `alert_type`='Absence' AND `student`='EDU-STU-2026-00030'"
+    self = <MySQLdb.cursors.Cursor object at 0x7fa5bc914830>
+  File "/home/runner/frappe-bench/env/lib/python3.14/site-packages/MySQLdb/connections.py", line 280, in query
+    _mysql.connection.query(self, query)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+    query = b"DELETE FROM `tabSchoolOS Alert Log` WHERE `alert_type`='Absence' AND `student`='EDU-STU-2026-00030'"
+    self = <_mysql.connection open to '127.0.0.1' at 0x55c6d7f4c1e0>
+MySQLdb.OperationalError: (1020, "Record has changed since last read in table 'tabSchoolOS Alert Log'; try restarting transaction")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/frappe-bench/apps/schoolos/schoolos/tests/test_integration.py", line 288, in test_absence_alert_on_attendance
+    frappe.db.delete("SchoolOS Alert Log", {"alert_type": "Absence", "student": s})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    s = 'EDU-STU-2026-00030'
+    self = <schoolos.tests.test_integration.TestAlerts testMethod=test_absence_alert_on_attendance>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/database/database.py", line 1449, in delete
+    return query.run(**kwargs)
+           ~~~~~~~~~^^^^^^^^^^
+    debug = False
+    doctype = 'SchoolOS Alert Log'
+    filters = {'alert_type': 'Absence', 'student': 'EDU-STU-2026-00030'}
+    kwargs = {'debug': False}
+    query = DELETE FROM `tabSchoolOS Alert Log` WHERE `alert_type`='Absence' AND `student`='EDU-STU-2026-00030'
+    self = <frappe.database.mariadb.mysqlclient.MariaDBDatabase object at 0x7fa5bf749be0>
+  File "/home/runner/frappe-bench/apps/frappe/frappe/query_builder/utils.py", line 144, in execute_query
+    result = frappe.local.db.sql(query, params, *args, **kwargs)  # nosemgrep
+    args = ()
+    child_queries = <pypika.terms.Field object at 0x7fa5b68e7620>
+    dt = None
+    fields = []
+    kwargs = {'debug': False}
+    name_field_injected = False
+    params = {'param1': 'Absence', 'param2': 'EDU-STU-2026-00030'}
+    parent_dt = None
+    query = 'DELETE FROM `tabSchoolOS Alert Log` WHERE `alert_type`=%(param1)s AND `student`=%(param2)s'
+  File "/home/runner/frappe-bench/apps/frappe/frappe/database/database.py", line 278, in sql
+    raise frappe.QueryDeadlockError(e) from e
+    as_dict = 0
+    as_iterator = False
+    as_list = 0
+    auto_commit = 0
+    debug = False
+    explain = False
+    ignore_ddl = 0
+    pluck = False
+    query = 'DELETE FROM `tabSchoolOS Alert Log` WHERE `alert_type`=%(param1)s AND `student`=%(param2)s'
+    query_type = 'delete'
+    run = True
+    self = <frappe.database.mariadb.mysqlclient.MariaDBDatabase object at 0x7fa5bf749be0>
+    trace_id = None
+    update = None
+    values = {'param1': 'Absence', 'param2': 'EDU-STU-2026-00030'}
+frappe.exceptions.QueryDeadlockError: (1020, "Record has changed since last read in table 'tabSchoolOS Alert Log'; try restarting transaction")
+
+----------------------------------------------------------------------
+Ran 32 tests in 8.055s
+
+FAILED (errors=2)
