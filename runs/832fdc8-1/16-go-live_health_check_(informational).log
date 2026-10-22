@@ -1,0 +1,18 @@
+2 item(s) need fixing before go-live
+OK  app installed: frappe
+OK  app installed: erpnext
+OK  app installed: hrms
+OK  app installed: education
+OK  app installed: schoolos
+OK  setup wizard complete
+OK  company exists
+OK  School Principal role
+OK  grading scales
+OK  report card print format
+OK  scheduler enabled
+FIX outgoing email account  ->  Desk -> Email Account -> set up the school's mailbox
+OK  school name in SchoolOS Settings
+FIX portal URL is https  ->  SchoolOS Settings -> Portal URL, e.g. https://app.sunriseschool.in/school
+INFO Test Mode (no real messages): ON
+INFO students: 32, student groups: 2, instructors: 6, guardians: 30
+WARN demo logins exist (principal@demo.school ...): disable them before go-live

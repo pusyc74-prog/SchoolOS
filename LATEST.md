@@ -1,21 +1,21 @@
-commit c19a96c · run 39786931176 · 2026-10-22T13:36:57Z
+commit 832fdc8 · run 39788594297 · 2026-10-22T13:53:00Z
 
 | | step | time |
 |---|---|---|
-| PASS | bench init | 47s |
-| PASS | get apps | 126s |
-| PASS | new site | 27s |
+| PASS | bench init | 50s |
+| PASS | get apps | 104s |
+| PASS | new site | 21s |
 | PASS | start redis + web | 1s |
-| PASS | install erpnext | 53s |
-| PASS | install hrms | 37s |
-| PASS | install education | 11s |
-| PASS | install schoolos | 5s |
-| PASS | setup wizard (headless) | 19s |
-| PASS | demo school | 62s |
-| PASS | migrate (twice, must be repeatable) | 14s |
-| PASS | build assets | 52s |
-| PASS | integration tests | 22s |
-| PASS | wait for web server | 0s |
-| FAIL | HTTP smoke test (every role) | 6s |
+| PASS | install erpnext | 36s |
+| PASS | install hrms | 24s |
+| PASS | install education | 9s |
+| PASS | install schoolos | 3s |
+| PASS | setup wizard (headless) | 14s |
+| PASS | demo school | 42s |
+| PASS | migrate (twice, must be repeatable) | 10s |
+| PASS | build assets | 40s |
+| PASS | integration tests | 16s |
+| PASS | wait for web server | 1s |
+| PASS | HTTP smoke test (every role) | 4s |
 | PASS | go-live health check (informational) | 1s |
-| PASS | backup + restore drill | 54s |
+| PASS | backup + restore drill | 39s |
