@@ -1,0 +1,148 @@
+Starting test run with parameters: site=test_site, app=schoolos, verbose=False, tests=(), force=False, profile=False, failfast=False, skip_before_tests=False, debug=False, selected_categories=[]
+View detailed logs (using --verbose): /home/runner/frappe-bench/logs/frappe.testing.log
+
+Running 64 integration tests for schoolos
+
+schoolos.tests.test_logic.TestAccountNumbers
+   [32m ✔ [0m test_fee_income_reaches_the_books
+   [32m ✔ [0m test_income_expense_and_cash_match_ledger
+   [32m ✔ [0m test_tally_totals_match_fees
+
+schoolos.tests.test_logic.TestAlertRules
+   [32m ✔ [0m test_circular_reaches_only_its_audience
+   [32m ✔ [0m test_email_delivery
+   [32m ✔ [0m test_marathi_messages
+   [32m ✔ [0m test_master_switches
+   [32m ✔ [0m test_one_absence_alert_per_child_per_day
+   [32m ✔ [0m test_opted_out_parent_gets_nothing
+   [32m ✔ [0m test_test_mode_never_sends
+   [32m ✔ [0m test_whatsapp_delivery_payload_and_failure
+
+schoolos.tests.test_logic.TestAttendanceNumbers
+   [32m ✔ [0m test_child_attendance_percentage
+   [32m ✔ [0m test_leave_counts_as_present_setting
+   [32m ✔ [0m test_low_attendance_list_is_right
+   [32m ✔ [0m test_principal_today_matches_register
+   [32m ✔ [0m test_teacher_absent_list
+   [32m ✔ [0m test_trend_matches_register
+
+schoolos.tests.test_logic.TestFeeNumbers
+   [32m ✔ [0m test_ageing_buckets_by_days_late
+   [32m ✔ [0m test_breakdowns_add_up
+   [32m ✔ [0m test_parent_dues_match_invoices
+   [32m ✔ [0m test_payment_reduces_dues_everywhere
+   [32m ✔ [0m test_reminders_once_per_day_and_respect_switches
+   [32m ✔ [0m test_summary_totals_match_books
+
+schoolos.tests.test_logic.TestReportCardNumbers
+   [32m ✔ [0m test_marks_grade_attendance
+
+schoolos.tests.test_logic.TestRules
+   [32m ✔ [0m test_calendar_audience
+   [31m ✖ [0m test_each_module_switch_blocks_its_endpoint
+   [32m ✔ [0m test_guest_and_no_children
+   [32m ✔ [0m test_homework_audience
+   [32m ✔ [0m test_leave_rules
+   [32m ✔ [0m test_teacher_of_other_section
+
+schoolos.tests.test_logic.TestSyllabusNumbers
+   [32m ✔ [0m test_coverage_matches_lesson_log
+   [32m ✔ [0m test_logging_same_topic_twice_counts_once
+
+schoolos.tests.test_integration.TestAccounts
+   [32m ✔ [0m test_approve_and_reject_bills
+   [32m ✔ [0m test_full_mode_summary
+   [32m ✔ [0m test_tally_exports
+
+schoolos.tests.test_integration.TestAlerts
+   [32m ✔ [0m test_absence_alert_on_attendance
+   [32m ✔ [0m test_deliver_dry_run
+   [32m ✔ [0m test_send_test_message
+
+schoolos.tests.test_integration.TestCalendar
+   [32m ✔ [0m test_month_and_albums
+
+schoolos.tests.test_integration.TestDashboards
+   [32m ✔ [0m test_context_per_role
+   [32m ✔ [0m test_parent
+   [32m ✔ [0m test_principal
+   [32m ✔ [0m test_role_walls
+   [32m ✔ [0m test_student_view_and_privacy
+   [32m ✔ [0m test_teacher
+
+schoolos.tests.test_integration.TestFees
+   [32m ✔ [0m test_parent_fees_and_receipt [31m (4.19s)[0m
+       ▹  Chromium is not available. downloading...
+       ▹  Downloading Chromium from https://storage.googleapis.com/chrome-for-testing-public/133.0.6943.35/linux64/chrome-headless-shell-linux64.zip...
+       ▹  Downloading Chromium
+       ▹  Extracting Chromium...
+       ▹  Renaming /home/runner/frappe-bench/chromium/chrome-headless-shell-linux64 to /home/runner/frappe-bench/chromium/chrome-linux
+       ▹  Making Chromium executable: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+       ▹  Chromium executable permissions set: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+       ▹  Chromium is ready to use at: /home/runner/frappe-bench/chromium
+       ▹  Function get_chrome_pdf took 3.9502 seconds
+       ▸  Headless Chromium closed successfully.
+   [32m ✔ [0m test_reminders_dry_run
+   [32m ✔ [0m test_summary
+
+schoolos.tests.test_integration.TestHomeworkLearning
+   [32m ✔ [0m test_log_lesson_and_note
+   [32m ✔ [0m test_post_and_see_homework
+   [32m ✔ [0m test_progress_activity
+   [32m ✔ [0m test_teacher_cannot_post_elsewhere
+
+schoolos.tests.test_integration.TestImport
+   [32m ✔ [0m test_excel_import_and_reimport
+
+schoolos.tests.test_integration.TestInstall
+   [32m ✔ [0m test_all_doctypes_load
+   [32m ✔ [0m test_demo_is_complete
+   [32m ✔ [0m test_migrate_is_idempotent
+   [32m ✔ [0m test_roles_fields_scales
+
+schoolos.tests.test_integration.TestLeave
+   [32m ✔ [0m test_apply_approve_marks_leave
+   [32m ✔ [0m test_approved_leave_suppresses_absence_alert
+   [32m ✔ [0m test_reject_needs_note_and_withdraw
+
+schoolos.tests.test_integration.TestModules
+   [32m ✔ [0m test_switch_off_hides_and_blocks
+
+schoolos.tests.test_integration.TestPWA
+   [32m ✔ [0m test_manifest_and_worker
+   [32m ✔ [0m test_school_page_renders
+       ▸  /home/runner/frappe-bench/apps/frappe/frappe/model/qb_query.py:163: V17FrappeDeprecationWarning: This codepath was marked (DATE: 2024-01-01) deprecated for removal (from v17 onwards); note:
+       ▸   The 'limit_page_length' parameter is deprecated. Use 'limit' instead.
+       ▸  
+       ▸    deprecation_warning(
+
+schoolos.tests.test_integration.TestReportCards
+   [32m ✔ [0m test_generate_and_download
+
+
+======================================================================
+ FAIL  test_each_module_switch_blocks_its_endpoint (schoolos.tests.test_logic.TestRules.test_each_module_switch_blocks_its_endpoint)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/frappe-bench/apps/schoolos/schoolos/tests/test_logic.py", line 626, in test_each_module_switch_blocks_its_endpoint
+    with self.assertRaises(frappe.PermissionError, msg=key):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    accounts = <module 'schoolos.api.accounts' from '/home/runner/frappe-bench/apps/schoolos/schoolos/api/accounts.py'>
+    cases = {'fees': ('parent@demo.school', <function TestRules.test_each_module_switch_blocks_its_endpoint.<locals>.<lambda> at 0x7f3ea4359bc0>), 'accounts': ('principal@demo.school', <function summary at 0x7f3ea56fd430>), 'homework': ('parent@demo.school', <function TestRules.test_each_module_switch_blocks_its_endpoint.<locals>.<lambda> at 0x7f3ea435af00>), 'learning': ('parent@demo.school', <function TestRules.test_each_module_switch_blocks_its_endpoint.<locals>.<lambda> at 0x7f3ea435b5e0>), 'leave': ('parent@demo.school', <function TestRules.test_each_module_switch_blocks_its_endpoint.<locals>.<lambda> at 0x7f3ea426c460>), 'calendar': ('parent@demo.school', <function TestRules.test_each_module_switch_blocks_its_endpoint.<locals>.<lambda> at 0x7f3ea426c510>)}
+    child = 'EDU-STU-2026-00001'
+    fees = <module 'schoolos.api.fees' from '/home/runner/frappe-bench/apps/schoolos/schoolos/api/fees.py'>
+    fn = <function TestRules.test_each_module_switch_blocks_its_endpoint.<locals>.<lambda> at 0x7f3ea435af00>
+    homework = <module 'schoolos.api.homework' from '/home/runner/frappe-bench/apps/schoolos/schoolos/api/homework.py'>
+    key = 'homework'
+    learning = <module 'schoolos.api.learning' from '/home/runner/frappe-bench/apps/schoolos/schoolos/api/learning.py'>
+    leave = <module 'schoolos.api.leave' from '/home/runner/frappe-bench/apps/schoolos/schoolos/api/leave.py'>
+    school_calendar = <module 'schoolos.api.school_calendar' from '/home/runner/frappe-bench/apps/schoolos/schoolos/api/school_calendar.py'>
+    self = <schoolos.tests.test_logic.TestRules testMethod=test_each_module_switch_blocks_its_endpoint>
+    t = datetime.date(2026, 10, 22)
+    user = 'parent@demo.school'
+AssertionError: PermissionError not raised : homework
+
+----------------------------------------------------------------------
+Ran 64 tests in 11.277s
+
+FAILED (failures=1)
