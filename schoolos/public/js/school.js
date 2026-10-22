@@ -871,7 +871,9 @@
 			return;
 		}
 		const qs = new URLSearchParams({ from_date, to_date, part: what === "masters" ? "masters" : "vouchers", fmt: what === "xlsx" ? "xlsx" : "xml" });
-		window.location.href = `/api/method/schoolos.api.accounts.tally_export?${qs}`;
+		const url = `/api/method/schoolos.api.accounts.tally_export?${qs}`;
+		if (window.__schoolosDownload) window.__schoolosDownload(url, Object.fromEntries(qs));
+		else window.location.href = url;
 	}
 
 	// ---------- calendar & gallery
