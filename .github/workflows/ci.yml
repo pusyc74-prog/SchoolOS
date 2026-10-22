@@ -41,6 +41,16 @@ jobs:
             TALLY=1 node ci/ui_harness.js $lang
             OFF=1 node ci/ui_harness.js $lang
           done
+      - name: Demo apps (build, then click through every app in Chromium)
+        run: |
+          pip install -q pillow
+          python demo/build.py > /dev/null
+          npm install -g playwright@1.56.0 > /dev/null
+          npx -y playwright@1.56.0 install --with-deps chromium > /dev/null
+          (cd demo/site && python -m http.server 8765 > /dev/null 2>&1 &)
+          sleep 1
+          mkdir -p /tmp/shots
+          PW=$(npm root -g)/playwright BASE=http://localhost:8765 SHOTS=/tmp/shots node demo/test_site.js
 
   full:
     name: Full stack (MariaDB + Frappe v16 + ERPNext + HR + Education)

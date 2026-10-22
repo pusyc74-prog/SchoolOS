@@ -102,7 +102,10 @@
 	const pill = (p, threshold) => `<span class="pill ${tone(p, threshold)}">${pct(p)}</span>`;
 	const day = (d) => new Date(String(d).slice(0, 10) + "T00:00:00");
 	const fmtDate = (d) => (d ? day(d).toLocaleDateString(loc(), { day: "numeric", month: "short" }) : "");
-	const fmtTime = (tm) => (tm ? String(tm).slice(0, 5).replace(/^(\d):/, "0$1:") : "");
+	const fmtTime = (tm) => {
+		const m = /^(\d{1,2}):(\d{2})/.exec(String(tm || ""));  // Frappe sends "9:15:00" or "09:15:00"
+		return m ? `${m[1].padStart(2, "0")}:${m[2]}` : "";
+	};
 	const mins = (tm) => { const [h, m] = String(tm || "0:0").split(":").map(Number); return h * 60 + (m || 0); };
 	const nowMins = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
 	const stripHtml = (h) => { const d = document.createElement("div"); d.innerHTML = h || ""; return (d.textContent || "").trim(); };
@@ -658,7 +661,7 @@
 		const li = btn.closest("li");
 		if (li.querySelector(".paybox")) return;
 		li.insertAdjacentHTML("afterend", `<li class="paybox-row"><form class="paybox form" data-invoice="${esc(btn.dataset.pay)}" data-student="${esc(btn.dataset.student)}">
-			<label>${t("Mobile number for the payment receipt")}<input type="tel" name="phone" required pattern="[0-9+ -]{10,15}" placeholder="98765 43210"></label>
+			<label>${t("Mobile number for the payment receipt")}<input type="tel" name="phone" required pattern="[0-9 +]{10,15}" placeholder="98765 43210"></label>
 			<div class="actions" style="margin-top:0;align-items:center"><button class="btn primary" type="submit">${t("Continue to pay")} ${esc(inr(Number(btn.dataset.amt)))}</button><span class="form-msg" aria-live="polite"></span></div></form></li>`);
 		const f = li.nextElementSibling.querySelector("input");
 		if (f) f.focus();
@@ -1065,8 +1068,9 @@
 		if (sv) return show(current.view, current.arg, sv.dataset.sv);
 		const vg = e.target.closest("[data-view-go]");
 		if (vg) return show(vg.dataset.viewGo);
+		// forms (leave, pay) also carry data-student; clicks inside them must not navigate away
 		const s = e.target.closest("[data-student]");
-		if (s) return show("parent", s.dataset.student, s.dataset.sub || "overview");
+		if (s && s.tagName !== "FORM" && !s.closest("form")) return show("parent", s.dataset.student, s.dataset.sub || "overview");
 		const b = e.target.closest("[data-back]");
 		if (b) return show(b.dataset.back);
 	});
