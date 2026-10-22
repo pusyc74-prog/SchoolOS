@@ -8,6 +8,12 @@ def get_context(context):
         frappe.local.flags.redirect_location = "/login?redirect-to=/school"
         raise frappe.Redirect
 
+    # Create the session's CSRF token. Frappe only checks POSTs when the session has one, and
+    # website users (parents) never get one otherwise, so this switches the protection on.
+    from frappe.sessions import get_csrf_token
+
+    get_csrf_token()
+
     s = frappe.get_cached_doc("SchoolOS Settings")
     context.school_name = (
         s.school_display_name

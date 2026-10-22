@@ -129,7 +129,7 @@ from datetime import timedelta
 def csrf(s):
     html = s.get(f"{BASE}/school", timeout=60).text
     m = re.search(r'csrf_token\s*=\s*"([^"]+)"', html)
-    check(bool(m), "csrf token present in /school")
+    check(bool(m) and m.group(1) not in ("None", ""), "real csrf token in /school")
     return m.group(1) if m else ""
 
 
@@ -157,7 +157,7 @@ check(bool(hw) and hw.get("students") == 30, "teacher: homework reaches 30 stude
 titles = [h["title"] for h in (call(pa, "homework.for_student", student=kids[0]) or [])]
 check("Smoke test homework" in titles, "parent: sees the new homework")
 
-pt = csrf(pa)
+pt = csrf(pa)  # like a real phone: the page is opened first, which creates the session's token
 r = pa.post(f"{BASE}/api/method/schoolos.api.leave.apply", timeout=60,
             data={"student": kids[1], "from_date": weekday(40), "to_date": weekday(40), "reason": "x"})
 check(r.status_code in (400, 403), "POST without CSRF token is refused", r)
