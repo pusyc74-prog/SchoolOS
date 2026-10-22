@@ -14,7 +14,7 @@ from schoolos.api.common import (
     instructor_for_user, is_section_admin, require_login, require_staff, require_student_access, require_teaches_group, roles,
     PRINCIPAL_ROLES,
 )
-from schoolos.api.compute_accounts import check_leave_dates
+from schoolos.api.compute_accounts import check_leave_dates, overlaps
 from schoolos.modules import require
 
 FIELDS = ["name", "student", "student_name", "from_date", "to_date", "reason", "total_leave_days", "student_group",
@@ -55,6 +55,15 @@ def apply(student: str, from_date: str, to_date: str, reason: str):
         frappe.throw(_(err))
     if not (reason or "").strip():
         frappe.throw(_("Please give a reason"))
+    # Education's own overlap check misses ranges that end on the same day, so check here too.
+    for other in frappe.get_all("Student Leave Application",
+                                filters={"student": student, "docstatus": ["<", 2]},
+                                fields=["name", "from_date", "to_date", "docstatus", "schoolos_status"]):
+        if other.docstatus == 0 and other.schoolos_status == "Rejected":
+            continue
+        if overlaps(from_date, to_date, other.from_date, other.to_date):
+            frappe.throw(_("Leave for these dates is already applied ({0} to {1})").format(
+                formatdate(other.from_date), formatdate(other.to_date)))
     group = _main_group(student)
     doc = frappe.get_doc({
         "doctype": "Student Leave Application", "student": student, "from_date": from_date, "to_date": to_date,

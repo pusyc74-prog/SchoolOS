@@ -111,3 +111,20 @@ def test_leave_rules():
     assert "30 days" in check_leave_dates("2026-10-22", "2026-12-22", TODAY)
     assert covered_by_leave("2026-10-22", [{"from_date": "2026-10-21", "to_date": "2026-10-23"}])
     assert not covered_by_leave("2026-10-24", [{"from_date": "2026-10-21", "to_date": "2026-10-23"}])
+
+
+def test_leave_dates_blank_or_invalid():
+    from schoolos.api.compute_accounts import check_leave_dates
+
+    assert check_leave_dates("", "2026-10-20", "2026-10-20") == "Choose both dates"
+    assert check_leave_dates("2026-10-20", None, "2026-10-20") == "Choose both dates"
+    assert check_leave_dates("2026-13-40", "2026-10-20", "2026-10-20") == "Choose valid dates"
+
+
+def test_overlaps_inclusive():
+    from schoolos.api.compute_accounts import overlaps
+
+    assert overlaps("2026-10-25", "2026-10-26", "2026-10-26", "2026-10-26")   # same last day
+    assert overlaps("2026-10-25", "2026-10-25", "2026-10-25", "2026-10-25")   # same single day
+    assert overlaps("2026-10-20", "2026-10-30", "2026-10-22", "2026-10-23")   # inside
+    assert not overlaps("2026-10-25", "2026-10-26", "2026-10-27", "2026-10-28")

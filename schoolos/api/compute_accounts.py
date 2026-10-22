@@ -217,9 +217,12 @@ def spread_events(events, year, month):
 # ------------------------------------------------------------------ leave
 def check_leave_dates(from_date, to_date, today, max_past_days=7, max_days=30):
     """Return an error message, or None if a parent may apply for this range."""
-    f, t, today = _d(from_date), _d(to_date), _d(today)
-    if not f or not t:
+    if not from_date or not to_date:
         return "Choose both dates"
+    try:
+        f, t, today = _d(from_date), _d(to_date), _d(today)
+    except (TypeError, ValueError):
+        return "Choose valid dates"
     if t < f:
         return "The end date is before the start date"
     if (today - f).days > max_past_days:
@@ -227,6 +230,11 @@ def check_leave_dates(from_date, to_date, today, max_past_days=7, max_days=30):
     if (t - f).days + 1 > max_days:
         return f"Leave longer than {max_days} days must be discussed with the school"
     return None
+
+
+def overlaps(a_from, a_to, b_from, b_to):
+    """True if two inclusive date ranges share at least one day."""
+    return _d(a_from) <= _d(b_to) and _d(b_from) <= _d(a_to)
 
 
 def covered_by_leave(day, leaves):
