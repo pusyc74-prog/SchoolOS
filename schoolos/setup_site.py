@@ -48,6 +48,22 @@ def complete(school: str = "Demo Public School", abbr: str = "DPS", email: str =
     print(f"Setup complete for {school} (financial year {fy_start} to {fy_end}).")
 
 
+def complete_from_env():
+    """Used by deploy/provision.sh: reads SCHOOL, ABBR, ADMIN_EMAIL, DOMAIN from the environment
+    (no shell quoting problems with names like St. Mary's)."""
+    import os
+
+    school = os.environ["SCHOOL"].strip()
+    complete(school=school, abbr=os.environ["ABBR"].strip(), email=os.environ["ADMIN_EMAIL"].strip())
+    s = frappe.get_single("SchoolOS Settings")
+    s.school_display_name = s.school_display_name or school
+    if os.environ.get("DOMAIN"):
+        s.portal_url = f"https://{os.environ['DOMAIN'].strip()}/school"
+    s.dry_run = 1  # Test Mode stays on until the go-live day
+    s.save(ignore_permissions=True)
+    frappe.db.commit()
+
+
 def check():
     """Print a go-live health check. Exit code is non-zero if something essential is missing.
 

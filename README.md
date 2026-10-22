@@ -7,7 +7,7 @@ everything lives in this app, so Frappe upgrades stay safe.
 > Code name "SchoolOS" is a placeholder. Rebrand by changing the app title in `hooks.py`
 > and the school name/logo/colour in **SchoolOS Settings** (per school, no code needed).
 
-## What's in v0.5
+## What's in v0.6
 
 | Area | What it does |
 |---|---|
@@ -77,11 +77,27 @@ here needs rewriting, and the backend could be replaced later without changing t
 
 ## Tests
 
-Logic that doesn't need a database runs anywhere with Python 3:
+Every push runs the **Tests** workflow on GitHub (free):
+
+| Job | What it proves |
+|---|---|
+| Logic + screens | ~50 unit tests (fees, accounts, Tally XML, report-card maths, importer, calendar, leave rules) and every screen rendered in English, Marathi, Tally mode and with modules off |
+| Full stack | Real MariaDB + Frappe/ERPNext/HR/Education v16: install, headless setup, demo school, migrate twice, integration tests for every role (`schoolos/tests/test_integration.py`), HTTP smoke test logging in as principal / teacher / parent (`ci/smoke.py`), backup + restore drill |
+
+Logs of each run are on the `ci-results` branch (`LATEST.md`). Locally:
 
 ```bash
-python3 -m pytest tests -q
+python3 -m pytest tests -q                       # logic, no database
+node ci/ui_harness.js en                         # screens
+bench --site <test site> run-tests --app schoolos  # integration (site with allow_tests)
 ```
+
+## Going live at a school
+
+[docs/GO_LIVE.md](docs/GO_LIVE.md) is the two-week runbook: server sizing and cost,
+`deploy/provision.sh` (one command: HTTPS, firewall, backups, scheduler), configuration, data
+import, the school's acceptance checklist [docs/UAT.md](docs/UAT.md), cut-over, rollback and
+monthly maintenance (`deploy/update.sh`, `deploy/backup.sh`).
 
 ## Who sees what
 
