@@ -6,6 +6,7 @@
 #
 # Before running: point DOMAIN's DNS (an A record) at this server's IP, so HTTPS can be issued.
 # Takes 30-45 minutes. Safe to re-run: finished steps are skipped.
+# Sales demo server: add DEMO=1 to load the demo school (never on a real school's server).
 # At the end it prints the Administrator password. Store it in the school's password manager.
 set -euo pipefail
 
@@ -52,7 +53,8 @@ fi
 
 if ! command -v wkhtmltopdf >/dev/null; then
   log "wkhtmltopdf (report card and receipt PDFs)"
-  wget -q -O /tmp/wkhtmltox.deb https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
+  ARCH=$(dpkg --print-architecture)   # amd64, or arm64 (e.g. Oracle Cloud free servers)
+  wget -q -O /tmp/wkhtmltox.deb "https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_${ARCH}.deb"
   apt-get install -y -q /tmp/wkhtmltox.deb
 fi
 
@@ -117,6 +119,10 @@ fi
 as_frappe "cd $BENCH && bench use $DOMAIN"
 log "Company, financial year (Apr-Mar), INR"
 as_frappe "cd $BENCH && bench --site $DOMAIN execute schoolos.setup_site.complete_from_env"
+if [ "${DEMO:-0}" = 1 ]; then
+  log "Demo school (30 students, demo logins, Test Mode on)"
+  as_frappe "cd $BENCH && bench --site $DOMAIN execute schoolos.demo.make_demo"
+fi
 as_frappe "cd $BENCH && bench --site $DOMAIN set-config host_name https://$DOMAIN"
 
 # ---------------------------------------------------------------- production

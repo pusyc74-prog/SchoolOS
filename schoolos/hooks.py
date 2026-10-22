@@ -38,6 +38,7 @@ scheduler_events = {
     ],
     "daily": [
         "schoolos.api.fees.send_scheduled_reminders",
+        "schoolos.demo.refresh",  # only acts on a sales-demo site
     ],
 }
 

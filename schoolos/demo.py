@@ -560,3 +560,54 @@ def make_report_cards(group, year):
         doc.teacher_remarks = "Attentive in class and completes work on time."
         doc.save()
         doc.submit()
+
+
+# ---------------------------------------------------------------- keep a hosted demo current
+def is_demo_site():
+    return bool(frappe.db.exists("User", "principal@demo.school") and frappe.db.exists("Student Group", GROUP))
+
+
+def refresh():
+    """Daily on a demo server: fill attendance up to today and put today's timetable in place,
+    so the dashboards always look like a live school day. Does nothing on a real school's site.
+
+        bench --site <site> execute schoolos.demo.refresh
+    """
+    if not is_demo_site():
+        return
+    company = frappe.db.get_single_value("Global Defaults", "default_company") or frappe.get_all("Company", pluck="name")[0]
+    holiday_list = frappe.get_cached_value("Company", company, "default_holiday_list")
+    holidays = set(frappe.get_all("Holiday", filters={"parent": holiday_list}, pluck="holiday_date")) if holiday_list else set()
+    students = frappe.get_all("Student Group Student", filters={"parent": GROUP, "active": 1},
+                              order_by="idx asc", pluck="student")
+    year = frappe.db.get_value("Student Group", GROUP, "academic_year")
+    ye = getdate(frappe.db.get_value("Academic Year", year, "year_end_date"))
+    last = frappe.db.sql("select max(date) from `tabStudent Attendance` where student_group=%s and docstatus=1", GROUP)[0][0]
+    d = add_days(last or add_days(today(), -1), 1)
+    rng = random.Random(str(today()))
+    rate = {s: (0.62 if i in (5, 12, 21) else 0.8 if i in (3, 17) else 0.96) for i, s in enumerate(students)}
+    while getdate(d) <= min(getdate(today()), ye):
+        if getdate(d) not in holidays and getdate(d).weekday() != 6:
+            on_leave = set(frappe.get_all("Student Attendance", filters={"date": d, "docstatus": 1}, pluck="student"))
+            for s in students:
+                if s in on_leave:
+                    continue
+                roll = rng.random()
+                status = "Present" if roll < rate[s] else "Absent"
+                if getdate(d) == getdate(today()) and s == students[0]:
+                    status = "Absent"
+                doc = frappe.get_doc({"doctype": "Student Attendance", "student": s, "student_group": GROUP,
+                                      "date": d, "status": status})
+                doc.insert(ignore_permissions=True)
+                doc.submit()
+        d = add_days(d, 1)
+
+    if getdate(today()).weekday() != 6 and not frappe.db.exists("Course Schedule", {"student_group": GROUP,
+                                                                                     "schedule_date": today()}):
+        template = frappe.get_all("Course Schedule", filters={"student_group": GROUP},
+                                  fields=["instructor", "course", "room", "from_time", "to_time"],
+                                  order_by="schedule_date desc, from_time asc", limit=6)
+        for t in template:
+            frappe.get_doc({"doctype": "Course Schedule", "naming_series": "EDU-CSH-.YYYY.-", "student_group": GROUP,
+                            "schedule_date": today(), **t}).insert(ignore_permissions=True)
+    frappe.db.commit()

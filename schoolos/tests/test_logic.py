@@ -706,3 +706,17 @@ class TestRules(SchoolOSTestCase):
 
         with self.set_user(make_plain_user()):
             self.assertEqual(parent()["children"], [])
+
+
+class TestDemoRefresh(SchoolOSTestCase):
+    def test_refresh_is_safe_and_idempotent(self):
+        from schoolos.demo import refresh
+
+        before = frappe.db.count("Student Attendance", {"student_group": GROUP})
+        refresh()
+        refresh()
+        after = frappe.db.count("Student Attendance", {"student_group": GROUP})
+        self.assertGreaterEqual(after, before)
+        if not is_holiday(today()):
+            marked = frappe.db.count("Student Attendance", {"student_group": GROUP, "date": today(), "docstatus": 1})
+            self.assertEqual(marked, 30, "every demo student has today's attendance, once")
