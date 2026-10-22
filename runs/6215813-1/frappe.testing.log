@@ -1,0 +1,28 @@
+2026-10-22 14:18:05,438 INFO frappe.testing started with: site=test_site, app=schoolos, verbose=False, tests=(), force=False, profile=False, failfast=False, skip_before_tests=False, debug=False, selected_categories=[]
+2026-10-22 14:18:05,733 INFO frappe.testing Adding type validator in 'frappe' (up to level 0)...
+2026-10-22 14:18:05,815 INFO frappe.testing Adding type validator in 'erpnext' (up to level 1)...
+2026-10-22 14:18:05,987 INFO frappe.testing Adding type validator in 'hrms' (up to level 0)...
+2026-10-22 14:18:06,032 INFO frappe.testing Adding type validator in 'education' (up to level 0)...
+2026-10-22 14:18:06,046 INFO frappe.testing Adding type validator in 'schoolos' (up to level 0)...
+2026-10-22 14:18:06,064 INFO frappe.testing Running "before_tests" hooks for integration tests on app: schoolos
+2026-10-22 14:18:06,065 INFO frappe.testing Starting tests for app: schoolos, category: integration
+2026-10-22 14:18:06,101 INFO frappe.testing schoolos.tests.test_logic.TestAccountNumbers
+2026-10-22 14:18:06,278 INFO frappe.testing schoolos.tests.test_logic.TestAlertRules
+2026-10-22 14:18:07,155 INFO frappe.testing schoolos.tests.test_logic.TestAttendanceNumbers
+2026-10-22 14:18:07,328 INFO frappe.testing schoolos.tests.test_logic.TestDemoRefresh
+2026-10-22 14:18:07,356 INFO frappe.testing schoolos.tests.test_logic.TestFeeNumbers
+2026-10-22 14:18:07,972 INFO frappe.testing schoolos.tests.test_logic.TestReportCardNumbers
+2026-10-22 14:18:08,718 INFO frappe.testing schoolos.tests.test_logic.TestRules
+2026-10-22 14:18:10,413 INFO frappe.testing schoolos.tests.test_logic.TestSyllabusNumbers
+2026-10-22 14:18:10,507 INFO frappe.testing schoolos.tests.test_integration.TestAccounts
+2026-10-22 14:18:11,213 INFO frappe.testing schoolos.tests.test_integration.TestAlerts
+2026-10-22 14:18:11,273 INFO frappe.testing schoolos.tests.test_integration.TestCalendar
+2026-10-22 14:18:11,326 INFO frappe.testing schoolos.tests.test_integration.TestDashboards
+2026-10-22 14:18:11,449 INFO frappe.testing schoolos.tests.test_integration.TestFees
+2026-10-22 14:18:14,732 INFO frappe.testing schoolos.tests.test_integration.TestHomeworkLearning
+2026-10-22 14:18:14,972 INFO frappe.testing schoolos.tests.test_integration.TestImport
+2026-10-22 14:18:15,227 INFO frappe.testing schoolos.tests.test_integration.TestInstall
+2026-10-22 14:18:15,292 INFO frappe.testing schoolos.tests.test_integration.TestLeave
+2026-10-22 14:18:16,018 INFO frappe.testing schoolos.tests.test_integration.TestModules
+2026-10-22 14:18:16,103 INFO frappe.testing schoolos.tests.test_integration.TestPWA
+2026-10-22 14:18:16,241 INFO frappe.testing schoolos.tests.test_integration.TestReportCards

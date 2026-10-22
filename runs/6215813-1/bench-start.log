@@ -1,0 +1,72 @@
+14:15:47 system        | redis_cache.1 started (pid=6092)
+14:15:47 system        | redis_queue.1 started (pid=6099)
+14:15:47 system        | web.1 started (pid=6097)
+14:15:47 redis_cache.1 | 6093:C 22 Oct 2026 14:15:47.921 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+14:15:47 redis_cache.1 | 6093:C 22 Oct 2026 14:15:47.921 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6093, just started
+14:15:47 redis_cache.1 | 6093:C 22 Oct 2026 14:15:47.921 # Configuration loaded
+14:15:47 redis_cache.1 | 6093:M 22 Oct 2026 14:15:47.921 * monotonic clock: POSIX clock_gettime
+14:15:47 redis_cache.1 | 6093:M 22 Oct 2026 14:15:47.924 * Running mode=standalone, port=13000.
+14:15:47 redis_cache.1 | 6093:M 22 Oct 2026 14:15:47.924 # Server initialized
+14:15:47 redis_cache.1 | 6093:M 22 Oct 2026 14:15:47.924 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+14:15:47 redis_cache.1 | 6093:M 22 Oct 2026 14:15:47.924 * Ready to accept connections
+14:15:47 system        | schedule.1 started (pid=6104)
+14:15:47 system        | socketio.1 started (pid=6103)
+14:15:47 system        | worker.1 started (pid=6107)
+14:15:47 redis_queue.1 | 6102:C 22 Oct 2026 14:15:47.928 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+14:15:47 redis_queue.1 | 6102:C 22 Oct 2026 14:15:47.928 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6102, just started
+14:15:47 redis_queue.1 | 6102:C 22 Oct 2026 14:15:47.928 # Configuration loaded
+14:15:47 redis_queue.1 | 6102:M 22 Oct 2026 14:15:47.928 * monotonic clock: POSIX clock_gettime
+14:15:47 redis_queue.1 | 6102:M 22 Oct 2026 14:15:47.929 * Running mode=standalone, port=11000.
+14:15:47 redis_queue.1 | 6102:M 22 Oct 2026 14:15:47.929 # Server initialized
+14:15:47 redis_queue.1 | 6102:M 22 Oct 2026 14:15:47.929 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+14:15:47 redis_queue.1 | 6102:M 22 Oct 2026 14:15:47.929 * Ready to accept connections
+14:15:48 socketio.1    | Realtime service listening on: ws://0.0.0.0:9000
+14:17:24 redis_queue.1 | 6102:M 22 Oct 2026 14:17:24.180 * 10000 changes in 60 seconds. Saving...
+14:17:24 redis_queue.1 | 6102:M 22 Oct 2026 14:17:24.181 * Background saving started by pid 7138
+14:17:24 redis_queue.1 | 7138:C 22 Oct 2026 14:17:24.191 * DB saved on disk
+14:17:24 redis_queue.1 | 7138:C 22 Oct 2026 14:17:24.192 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+14:17:24 redis_queue.1 | 6102:M 22 Oct 2026 14:17:24.281 * Background saving terminated with success
+14:18:20 web.1         | Chromium executable is already executable: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+14:18:20 web.1         | /home/runner/frappe-bench/env/lib/python3.14/site-packages/pypdf/_page.py:1612: DeprecationWarning: Calling `PageObject.replace_contents()` for pages not assigned to a writer is deprecated and will be removed in pypdf 7.0.0. Attach the page to the writer first or use `PdfWriter(clone_from=...)` directly. The existing approach has proved being unreliable.
+14:18:20 web.1         |   self.replace_contents(content)
+14:18:20 web.1         | /home/runner/frappe-bench/env/lib/python3.14/site-packages/pypdf/_page.py:1612: DeprecationWarning: Calling `PageObject.replace_contents()` for pages not assigned to a writer is deprecated and will be removed in pypdf 7.0.0. Attach the page to the writer first or use `PdfWriter(clone_from=...)` directly. The existing approach has proved being unreliable.
+14:18:20 web.1         |   self.replace_contents(content)
+14:18:20 web.1         | /home/runner/frappe-bench/env/lib/python3.14/site-packages/pypdf/_page.py:1307: DeprecationWarning: Calling `PageObject.replace_contents()` for pages not assigned to a writer is deprecated and will be removed in pypdf 7.0.0. Attach the page to the writer first or use `PdfWriter(clone_from=...)` directly. The existing approach has proved being unreliable.
+14:18:20 web.1         |   self.replace_contents(ContentStream(new_content_array, self.pdf))
+14:18:20 web.1         | Headless Chromium closed successfully.
+14:18:20 web.1         | Function get_chrome_pdf took 0.7505 seconds
+14:18:21 web.1         | Traceback (most recent call last):
+14:18:21 web.1         |   File "apps/frappe/frappe/app.py", line 139, in application
+14:18:21 web.1         |     init_request(request)
+14:18:21 web.1         |     ~~~~~~~~~~~~^^^^^^^^^
+14:18:21 web.1         |   File "apps/frappe/frappe/app.py", line 242, in init_request
+14:18:21 web.1         |     frappe.local.http_request = HTTPRequest()
+14:18:21 web.1         |                                 ~~~~~~~~~~~^^
+14:18:21 web.1         |   File "apps/frappe/frappe/auth.py", line 48, in __init__
+14:18:21 web.1         |     self.validate_csrf_token()
+14:18:21 web.1         |     ~~~~~~~~~~~~~~~~~~~~~~~~^^
+14:18:21 web.1         |   File "apps/frappe/frappe/auth.py", line 97, in validate_csrf_token
+14:18:21 web.1         |     frappe.throw(_("Invalid Request"), frappe.CSRFTokenError)
+14:18:21 web.1         |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+14:18:21 web.1         |   File "apps/frappe/frappe/utils/messages.py", line 159, in throw
+14:18:21 web.1         |     msgprint(
+14:18:21 web.1         |     ~~~~~~~~^
+14:18:21 web.1         |     	msg,
+14:18:21 web.1         |      ^^^^
+14:18:21 web.1         |     ...<7 lines>...
+14:18:21 web.1         |     	allow_dangerous_html=allow_dangerous_html,
+14:18:21 web.1         |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+14:18:21 web.1         |     )
+14:18:21 web.1         |     ^
+14:18:21 web.1         |   File "apps/frappe/frappe/utils/messages.py", line 118, in msgprint
+14:18:21 web.1         |     _raise_exception()
+14:18:21 web.1         |     ~~~~~~~~~~~~~~~~^^
+14:18:21 web.1         |   File "apps/frappe/frappe/utils/messages.py", line 59, in _raise_exception
+14:18:21 web.1         |     raise exc
+14:18:21 web.1         | frappe.exceptions.CSRFTokenError: Invalid Request
+14:18:21 web.1         | 
+14:18:25 redis_queue.1 | 6102:M 22 Oct 2026 14:18:25.019 * 10000 changes in 60 seconds. Saving...
+14:18:25 redis_queue.1 | 6102:M 22 Oct 2026 14:18:25.020 * Background saving started by pid 8507
+14:18:25 redis_queue.1 | 8507:C 22 Oct 2026 14:18:25.034 * DB saved on disk
+14:18:25 redis_queue.1 | 8507:C 22 Oct 2026 14:18:25.035 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+14:18:25 redis_queue.1 | 6102:M 22 Oct 2026 14:18:25.120 * Background saving terminated with success
