@@ -1,0 +1,23 @@
+12:39:39 system        | redis_cache.1 started (pid=6710)
+12:39:39 system        | redis_queue.1 started (pid=6715)
+12:39:39 redis_cache.1 | 6713:C 22 Oct 2026 12:39:39.952 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+12:39:39 redis_cache.1 | 6713:C 22 Oct 2026 12:39:39.952 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6713, just started
+12:39:39 redis_cache.1 | 6713:C 22 Oct 2026 12:39:39.952 # Configuration loaded
+12:39:39 redis_cache.1 | 6713:M 22 Oct 2026 12:39:39.953 * monotonic clock: POSIX clock_gettime
+12:39:39 redis_cache.1 | 6713:M 22 Oct 2026 12:39:39.954 * Running mode=standalone, port=13000.
+12:39:39 redis_cache.1 | 6713:M 22 Oct 2026 12:39:39.954 # Server initialized
+12:39:39 system        | socketio.1 started (pid=6718)
+12:39:39 redis_cache.1 | 6713:M 22 Oct 2026 12:39:39.954 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+12:39:39 redis_cache.1 | 6713:M 22 Oct 2026 12:39:39.954 * Ready to accept connections
+12:39:39 system        | web.1 started (pid=6725)
+12:39:39 redis_queue.1 | 6717:C 22 Oct 2026 12:39:39.957 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+12:39:39 redis_queue.1 | 6717:C 22 Oct 2026 12:39:39.957 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6717, just started
+12:39:39 redis_queue.1 | 6717:C 22 Oct 2026 12:39:39.957 # Configuration loaded
+12:39:39 redis_queue.1 | 6717:M 22 Oct 2026 12:39:39.958 * monotonic clock: POSIX clock_gettime
+12:39:39 redis_queue.1 | 6717:M 22 Oct 2026 12:39:39.958 * Running mode=standalone, port=11000.
+12:39:39 redis_queue.1 | 6717:M 22 Oct 2026 12:39:39.958 # Server initialized
+12:39:39 redis_queue.1 | 6717:M 22 Oct 2026 12:39:39.958 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+12:39:39 redis_queue.1 | 6717:M 22 Oct 2026 12:39:39.959 * Ready to accept connections
+12:39:39 system        | schedule.1 started (pid=6732)
+12:39:39 system        | worker.1 started (pid=6733)
+12:39:40 socketio.1    | Realtime service listening on: ws://0.0.0.0:9000

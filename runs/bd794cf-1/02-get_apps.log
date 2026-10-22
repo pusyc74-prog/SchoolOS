@@ -1,0 +1,718 @@
+Getting erpnext
+$ git clone https://github.com/frappe/erpnext.git --branch version-16 --depth 1 --origin upstream
+Cloning into 'erpnext'...
+Ignoring dependencies of erpnext. To install dependencies use --resolve-deps
+Installing erpnext
+$ uv pip install --quiet -e /home/runner/frappe-bench/apps/erpnext  --python /home/runner/frappe-bench/env/bin/python
+$ yarn install --check-files
+yarn install v1.22.22
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+$ cd banking && yarn install
+yarn install v1.22.22
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+[4/4] Building fresh packages...
+Done in 18.23s.
+Done in 18.59s.
+$ bench build --app erpnext
+Linking /home/runner/frappe-bench/apps/frappe/frappe/public to ./assets/frappe  Linking /home/runner/frappe-bench/apps/frappe/node_modules to ./assets/frappe/node_modules                                                                                Linking /home/runner/frappe-bench/apps/erpnext/erpnext/public to ./assets/erpnext                                                                                Linking /home/runner/frappe-bench/apps/erpnext/node_modules to ./assets/erpnext/node_modules                                                                                ✔ Application Assets Linked                                            
+
+
+yarn run v1.22.22
+$ node esbuild --production --apps erpnext --run-build-command
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+File                                                        Size
+
+erpnext/dist/js/
+├─ bank-reconciliation-tool.bundle.ZWXYTTTM.js              18.96 Kb
+├─ erpnext.bundle.3ZVCWK3R.js                               268.06 Kb
+├─ item-dashboard.bundle.4NT5THAJ.js                        10.19 Kb
+├─ point-of-sale.bundle.WNKTPMOV.js                         106.51 Kb
+└─ bom_configurator.bundle.YDAM6HVC.js                      10.14 Kb
+
+erpnext/dist/css/
+├─ erpnext-web.bundle.QJ6CRPM6.css                          2.86 Kb
+├─ erpnext.bundle.6TSKLCP5.css                              52.56 Kb
+└─ erpnext_email.bundle.2SBUJO7R.css                        0.56 Kb
+
+erpnext/dist/css-rtl/
+├─ erpnext-web.bundle.TE2V2U7F.css                          2.87 Kb
+├─ erpnext.bundle.GOC62JD7.css                              52.56 Kb
+└─ erpnext_email.bundle.BG3VOS3R.css                        0.56 Kb
+
+ DONE  Total Build Time: 807.23ms
+
+ WARN  Cannot connect to redis_cache to update assets_json
+ WARN  Cannot connect to redis_cache to update assets_json
+ WARN  Cannot connect to redis_cache to update assets_json
+
+Running build command for erpnext
+$ cd banking && yarn build
+$ vite build --base=/assets/erpnext/banking/ && yarn copy-html-entry
+[33m(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vite.config.ts:17:22). Use `import.meta.dirname` instead
+  - import "./proxyOptions" without a file extension (vite.config.ts:4:26). Add the file extension
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.[39m
+[36mvite v8.2.1 [32mbuilding client environment for production...[36m[39m
+[2Ktransforming...
+/assets/frappe/css/fonts/inter/InterVariable.woff2 referenced in /assets/frappe/css/fonts/inter/InterVariable.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/assets/frappe/css/fonts/inter/InterVariable-Italic.woff2 referenced in /assets/frappe/css/fonts/inter/InterVariable-Italic.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+✓ 3574 modules transformed.
+rendering chunks...
+computing gzip size...
+../erpnext/public/banking/index.html                                                3.36 kB │ gzip:   1.09 kB
+../erpnext/public/banking/assets/index-DdCjYgZc.css                               248.73 kB │ gzip:  24.72 kB
+../erpnext/public/banking/assets/MissingFiltersBanner-xuypI2EX.js                   0.30 kB │ gzip:   0.23 kB
+../erpnext/public/banking/assets/rolldown-runtime-8BhlS34s.js                       0.80 kB │ gzip:   0.47 kB
+../erpnext/public/banking/assets/FileUploadBanner-BvnJTR9a.js                       1.12 kB │ gzip:   0.61 kB
+../erpnext/public/banking/assets/checkbox-CcdSe05F.js                               1.58 kB │ gzip:   0.65 kB
+../erpnext/public/banking/assets/CSVImport-COxNOmCi.js                              1.89 kB │ gzip:   0.94 kB
+../erpnext/public/banking/assets/SelectedTransactionDetails-BQyRqbL8.js             2.35 kB │ gzip:   0.90 kB
+../erpnext/public/banking/assets/BankTransactionUnreconcileModalBody-DZwotwvY.js    2.97 kB │ gzip:   1.22 kB
+../erpnext/public/banking/assets/dialog-D_6ljQ2x.js                                 3.19 kB │ gzip:   1.19 kB
+../erpnext/public/banking/assets/ViewBankStatementImportLog-Cf6vCtbR.js             3.30 kB │ gzip:   1.39 kB
+../erpnext/public/banking/assets/IncorrectlyClearedEntries-BQOcABr-.js              4.55 kB │ gzip:   1.92 kB
+../erpnext/public/banking/assets/BankReconciliationStatement-CVqE6OII.js            6.55 kB │ gzip:   2.25 kB
+../erpnext/public/banking/assets/list-view-Il2FfJI9.js                              7.20 kB │ gzip:   2.96 kB
+../erpnext/public/banking/assets/button-DOcW7Qt9.js                                 7.40 kB │ gzip:   1.50 kB
+../erpnext/public/banking/assets/BankClearanceSummary-Ctp949Zw.js                   7.58 kB │ gzip:   2.74 kB
+../erpnext/public/banking/assets/amountFormula-CFGgnAXE.js                          8.06 kB │ gzip:   2.29 kB
+../erpnext/public/banking/assets/BankStatementImporter-Cyx4O3wQ.js                  8.19 kB │ gzip:   2.84 kB
+../erpnext/public/banking/assets/BankTransactionList-DGOfITbk.js                    8.92 kB │ gzip:   2.87 kB
+../erpnext/public/banking/assets/PDFImport-BDbZt-mS.js                              9.77 kB │ gzip:   3.48 kB
+../erpnext/public/banking/assets/vendor-jotai-BkrKvjbq.js                          10.37 kB │ gzip:   4.36 kB
+../erpnext/public/banking/assets/ActionLogDialogBody-C_4uHw4O.js                   12.39 kB │ gzip:   3.41 kB
+../erpnext/public/banking/assets/TransferModalContent-gE-jbuws.js                  12.56 kB │ gzip:   3.91 kB
+../erpnext/public/banking/assets/BankEntryModalContent-DnRJqp1s.js                 14.58 kB │ gzip:   4.61 kB
+../erpnext/public/banking/assets/StatementDetails-DD2wnJn_.js                      15.17 kB │ gzip:   4.25 kB
+../erpnext/public/banking/assets/vendor-lucide-BkXXslVd.js                         15.38 kB │ gzip:   5.35 kB
+../erpnext/public/banking/assets/RecordPaymentModalContent-BudCzFfT.js             25.73 kB │ gzip:   6.96 kB
+../erpnext/public/banking/assets/vendor-fuse--ddGMqbN.js                           26.73 kB │ gzip:   9.70 kB
+../erpnext/public/banking/assets/typography-CAu2sKVS.js                            62.32 kB │ gzip:  19.64 kB
+../erpnext/public/banking/assets/file-dropzone-CdHiXGt7.js                         71.98 kB │ gzip:  20.60 kB
+../erpnext/public/banking/assets/vendor-tanstack-D_Y0JpoQ.js                       73.99 kB │ gzip:  19.64 kB
+../erpnext/public/banking/assets/SettingsPanelsContent-Bnzl7qX1.js                 84.19 kB │ gzip:  24.39 kB
+../erpnext/public/banking/assets/vendor-frappe-Do1ZmVzw.js                        134.32 kB │ gzip:  43.93 kB
+../erpnext/public/banking/assets/vendor-radix-PBxB5fcH.js                         148.16 kB │ gzip:  45.14 kB
+../erpnext/public/banking/assets/vendor-react-Bu7gr542.js                         178.51 kB │ gzip:  56.33 kB
+../erpnext/public/banking/assets/error-banner-CvMol9Ww.js                         357.94 kB │ gzip: 107.83 kB
+../erpnext/public/banking/assets/index-CPnNkMtB.js                                360.51 kB │ gzip: 104.93 kB
+
+[32m✓ built in 795ms[39m
+$ cp ../erpnext/public/banking/index.html ../erpnext/www/banking.html
+Done in 3.06s.
+Compiling translations for erpnext
+MO file created at /home/runner/frappe-bench/sites/assets/locale/vi/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/hr/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/uk/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/bg/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/ru/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/tr/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/da/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/de/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/bs/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/uz/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/mn/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/ko/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/th/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/hi/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/es/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/zh_TW/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/pt_BR/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/nb/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/km/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/my/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/ar/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/hu/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/ta/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/sv/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/pl/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/fr/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/it/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/pt/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/zh/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/eo/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/fa/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/af/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/ro/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/sl/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/sr_CS/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/sr/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/nl/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/fi/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/cs/LC_MESSAGES/erpnext.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/id/LC_MESSAGES/erpnext.mo
+Getting hrms
+$ git clone https://github.com/frappe/hrms.git --branch version-16 --depth 1 --origin upstream
+Cloning into 'hrms'...
+Ignoring dependencies of hrms. To install dependencies use --resolve-deps
+Installing hrms
+$ uv pip install --quiet -e /home/runner/frappe-bench/apps/hrms  --python /home/runner/frappe-bench/env/bin/python
+$ yarn install --check-files
+yarn install v1.22.22
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+$ yarn install-pwa-deps && yarn install-roster-deps
+yarn run v1.22.22
+$ cd frontend && yarn install --check-files
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+warning " > @vitejs/plugin-vue@4.4.0" has incorrect peer dependency "vite@^4.0.0".
+warning "frappe-ui > @tiptap/extension-color@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-highlight@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-image@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-link@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-mention@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-placeholder@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table-cell@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table-header@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table-row@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-text-align@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-text-style@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-typography@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/suggestion@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/vue-3@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/vue-3 > @tiptap/extension-bubble-menu@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/vue-3 > @tiptap/extension-floating-menu@2.1.7" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning " > vite-plugin-pwa@0.20.5" has unmet peer dependency "workbox-build@^7.1.0".
+warning " > vite-plugin-pwa@0.20.5" has unmet peer dependency "workbox-window@^7.1.0".
+[4/4] Building fresh packages...
+Done in 29.97s.
+yarn run v1.22.22
+$ cd roster && yarn install --check-files
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+warning "frappe-ui > @tiptap/extension-color@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-highlight@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-image@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-link@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-mention@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-placeholder@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table-cell@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table-header@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table-row@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-text-align@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-text-style@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-typography@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/suggestion@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/vue-3@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/vue-3 > @tiptap/extension-bubble-menu@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/vue-3 > @tiptap/extension-floating-menu@2.4.0" has unmet peer dependency "@tiptap/core@^2.0.0".
+[4/4] Building fresh packages...
+Done in 8.26s.
+Done in 39.62s.
+$ bench build --app hrms
+Linking /home/runner/frappe-bench/apps/frappe/frappe/public to ./assets/frappe  Linking /home/runner/frappe-bench/apps/frappe/node_modules to ./assets/frappe/node_modules                                                                                Linking /home/runner/frappe-bench/apps/hrms/hrms/public to ./assets/hrms        Linking /home/runner/frappe-bench/apps/hrms/node_modules to ./assets/hrms/node_modules                                                                                Linking /home/runner/frappe-bench/apps/erpnext/erpnext/public to ./assets/erpnext                                                                                Linking /home/runner/frappe-bench/apps/erpnext/node_modules to ./assets/erpnext/node_modules                                                                                ✔ Application Assets Linked                                            
+
+
+yarn run v1.22.22
+$ node esbuild --production --apps hrms --run-build-command
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+File                                                        Size
+
+hrms/dist/js/
+├─ hierarchy-chart.bundle.R2P7IGFN.js                       227.02 Kb
+├─ hrms.bundle.MXG7GA2U.js                                  17.51 Kb
+├─ interview.bundle.5HZVG6UL.js                             1.66 Kb
+└─ performance.bundle.QIWCU4RD.js                           3.70 Kb
+
+hrms/dist/css/
+└─ hrms.bundle.QWZSDQKK.css                                 7.13 Kb
+
+hrms/dist/css-rtl/
+└─ hrms.bundle.KWKPGWAG.css                                 7.14 Kb
+
+ DONE  Total Build Time: 474.81ms
+
+ WARN  Cannot connect to redis_cache to update assets_json
+ WARN  Cannot connect to redis_cache to update assets_json
+ WARN  Cannot connect to redis_cache to update assets_json
+
+Running build command for hrms
+$ yarn build-pwa && yarn build-roster
+$ cd frontend && yarn build
+$ vite build --base=/assets/hrms/frontend/ && yarn copy-html-entry
+[36mvite v5.4.15 [32mbuilding for production...[36m[39m
+transforming...
+Browserslist: browsers data (caniuse-lite) is 20 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+Inter-DisplayRegular.woff2?v=3.19 referenced in Inter-DisplayRegular.woff2?v=3.19 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+node_modules/@ionic/core/node_modules/@stencil/core/internal/client/index.js (3731:17): A comment
+
+"/*@__PURE__*/"
+
+in "node_modules/@ionic/core/node_modules/@stencil/core/internal/client/index.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/@stencil/core/internal/client/index.js (3367:17): A comment
+
+"/*@__PURE__*/"
+
+in "node_modules/@stencil/core/internal/client/index.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[32m✓[39m 783 modules transformed.
+rendering chunks...
+computing gzip size...
+[2m../hrms/public/frontend/[22m[32mmanifest.webmanifest                                 [39m[1m[2m  0.74 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[32mindex.html                                           [39m[1m[2m  8.48 kB[22m[1m[22m[2m │ gzip:   1.17 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-Regular-trENmjXB.woff2                  [39m[1m[2m100.79 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-Thin-D3JiHKaG.woff2                     [39m[1m[2m101.16 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayBlack-WeYNDCAX.woff2             [39m[1m[2m101.92 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayThin-ChL4oFCg.woff2              [39m[1m[2m102.15 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-ExtraLight-CCj5KODw.woff2               [39m[1m[2m102.87 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-Light-dIA14uc3.woff2                    [39m[1m[2m103.27 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-Black-9EvaAvES.woff2                    [39m[1m[2m103.59 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-ExtraBold-Ce88byQn.woff2                [39m[1m[2m104.99 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-Bold-R0zHozHF.woff2                     [39m[1m[2m105.21 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-Medium-BN7iDkqy.woff2                   [39m[1m[2m105.22 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayLight-w8lPQKnS.woff2             [39m[1m[2m105.34 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayExtraBold-BXf2GJrG.woff2         [39m[1m[2m105.36 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayMedium-DcjtbkcA.woff2            [39m[1m[2m105.38 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-SemiBold-CBUekF9E.woff2                 [39m[1m[2m105.40 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplaySemiBold-BBWLY5vL.woff2          [39m[1m[2m105.56 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayBold-C-1EDGRh.woff2              [39m[1m[2m105.57 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayExtraLight-D2Ja0abb.woff2        [39m[1m[2m105.87 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayItalic-JNEE2o-3.woff2            [39m[1m[2m106.12 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-Italic-ClOttZep.woff2                   [39m[1m[2m106.55 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-ThinItalic-Dty9qLU6.woff2               [39m[1m[2m106.64 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayBlackItalic-DFEmIFsd.woff2       [39m[1m[2m107.28 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayThinItalic-Cxxw6hRb.woff2        [39m[1m[2m107.44 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-LightItalic-BcJQrN_r.woff2              [39m[1m[2m108.56 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-BlackItalic-I0v0TUo2.woff2              [39m[1m[2m108.59 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-ExtraLightItalic-BXS8QPqu.woff2         [39m[1m[2m109.00 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayBoldItalic-CISmTavk.woff2        [39m[1m[2m110.20 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplaySemiBoldItalic-CNvBGF7e.woff2    [39m[1m[2m110.39 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayMediumItalic-BBCoS5uP.woff2      [39m[1m[2m110.46 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-BoldItalic-D0-5Ex_3.woff2               [39m[1m[2m110.52 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-ExtraBoldItalic-Cgmm6Ie2.woff2          [39m[1m[2m110.52 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayLightItalic-DBve3eI1.woff2       [39m[1m[2m110.56 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-SemiBoldItalic-J43nRLRr.woff2           [39m[1m[2m110.64 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayExtraBoldItalic-Czv3KFD8.woff2   [39m[1m[2m110.82 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-MediumItalic-iRTrRc5x.woff2             [39m[1m[2m110.82 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-DisplayExtraLightItalic-DRwiM9T2.woff2  [39m[1m[2m111.11 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter.var-C9xDBOS3.woff2                      [39m[1m[2m264.24 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[32mInter-Italic.var-BGHziHgI.woff2               [39m[1m[2m297.27 kB[22m[1m[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[35mrequestSummaryFields-DuG6R4yL.css             [39m[1m[2m  0.04 kB[22m[1m[22m[2m │ gzip:   0.06 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[35mFileUploaderView-B6XMMpRf.css                 [39m[1m[2m  0.04 kB[22m[1m[22m[2m │ gzip:   0.06 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[35mworkflow-yjIbxtTX.css                         [39m[1m[2m  0.13 kB[22m[1m[22m[2m │ gzip:   0.13 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[35mfrappe-ui-IZoKCQSt.css                        [39m[1m[2m  4.66 kB[22m[1m[22m[2m │ gzip:   1.64 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[35mindex-Cu43nRYV.css                            [39m[1m[2m102.66 kB[22m[1m[22m[2m │ gzip:  16.91 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36msettings-DLvssnat.js                          [39m[1m[2m  0.16 kB[22m[1m[22m[2m │ gzip:   0.16 kB[22m[2m │ map:     0.37 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mrealtime-DZSBMkek.js                          [39m[1m[2m  0.26 kB[22m[1m[22m[2m │ gzip:   0.23 kB[22m[2m │ map:     0.96 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36museCurrencyConversion-BoK4p72L.js             [39m[1m[2m  0.57 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m[2m │ map:     2.07 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mnotifications-R5Ntrrll.js                     [39m[1m[2m  0.65 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m[2m │ map:     1.56 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mShiftIcon-B4bYu0bC.js                         [39m[1m[2m  0.68 kB[22m[1m[22m[2m │ gzip:   0.45 kB[22m[2m │ map:     0.91 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mswipe-back-CHu-gOLu.js                        [39m[1m[2m  0.76 kB[22m[1m[22m[2m │ gzip:   0.53 kB[22m[2m │ map:     3.77 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mclaims-pftT8wr2.js                            [39m[1m[2m  0.77 kB[22m[1m[22m[2m │ gzip:   0.39 kB[22m[2m │ map:     2.35 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mformatters-BeRxDfT9.js                        [39m[1m[2m  0.77 kB[22m[1m[22m[2m │ gzip:   0.50 kB[22m[2m │ map:     2.41 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mstatus-tap-DvJ1-kZn.js                        [39m[1m[2m  0.79 kB[22m[1m[22m[2m │ gzip:   0.52 kB[22m[2m │ map:     2.16 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mTabButtons-B3waOC2D.js                        [39m[1m[2m  0.82 kB[22m[1m[22m[2m │ gzip:   0.53 kB[22m[2m │ map:     0.10 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mEmployeeCheckinItem-C46DoAi4.js               [39m[1m[2m  0.84 kB[22m[1m[22m[2m │ gzip:   0.51 kB[22m[2m │ map:     1.07 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mCustomIonModal-CrU49DQv.js                    [39m[1m[2m  0.91 kB[22m[1m[22m[2m │ gzip:   0.58 kB[22m[2m │ map:     1.49 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mListItem-am1_L0p5.js                          [39m[1m[2m  0.95 kB[22m[1m[22m[2m │ gzip:   0.52 kB[22m[2m │ map:     1.16 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mSemicircleChart-e1yROMqA.js                   [39m[1m[2m  0.98 kB[22m[1m[22m[2m │ gzip:   0.56 kB[22m[2m │ map:     1.80 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mInvalidEmployee-CDWssiht.js                   [39m[1m[2m  0.99 kB[22m[1m[22m[2m │ gzip:   0.63 kB[22m[2m │ map:     1.39 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mfocus-visible-supuXXMI.js                     [39m[1m[2m  1.05 kB[22m[1m[22m[2m │ gzip:   0.55 kB[22m[2m │ map:     3.57 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mQuickLinks-C6wcAjxB.js                        [39m[1m[2m  1.07 kB[22m[1m[22m[2m │ gzip:   0.63 kB[22m[2m │ map:     1.34 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mProfileInfoModal-DqymCmhO.js                  [39m[1m[2m  1.10 kB[22m[1m[22m[2m │ gzip:   0.62 kB[22m[2m │ map:     0.11 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mmd.transition-D8l4ICT0.js                     [39m[1m[2m  1.12 kB[22m[1m[22m[2m │ gzip:   0.62 kB[22m[2m │ map:     3.66 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mEmployeeAdvanceBalance-eiO5wjUi.js            [39m[1m[2m  1.37 kB[22m[1m[22m[2m │ gzip:   0.79 kB[22m[2m │ map:     1.40 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mSalarySlipItem-BvxQtAw5.js                    [39m[1m[2m  1.37 kB[22m[1m[22m[2m │ gzip:   0.74 kB[22m[2m │ map:     2.24 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mEmployeeAvatar-BP9f2IJ5.js                    [39m[1m[2m  1.37 kB[22m[1m[22m[2m │ gzip:   0.73 kB[22m[2m │ map:     3.13 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mShiftAssignmentForm-CDKWLOwY.js               [39m[1m[2m  1.44 kB[22m[1m[22m[2m │ gzip:   0.84 kB[22m[2m │ map:     3.37 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mExpenseItems-CaqYIcnd.js                      [39m[1m[2m  1.45 kB[22m[1m[22m[2m │ gzip:   0.76 kB[22m[2m │ map:     2.02 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mAttendanceRequestItem-ucf7RewB.js             [39m[1m[2m  1.46 kB[22m[1m[22m[2m │ gzip:   0.81 kB[22m[2m │ map:     2.14 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mShiftAssignmentItem-DOxkFPdt.js               [39m[1m[2m  1.47 kB[22m[1m[22m[2m │ gzip:   0.80 kB[22m[2m │ map:     2.10 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mSalaryDetailTable-BcUdh2Pk.js                 [39m[1m[2m  1.48 kB[22m[1m[22m[2m │ gzip:   0.79 kB[22m[2m │ map:     2.18 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mDashboard-Bu1Zss8X.js                         [39m[1m[2m  1.50 kB[22m[1m[22m[2m │ gzip:   0.85 kB[22m[2m │ map:     0.10 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mLeaveRequestItem-rluumMCp.js                  [39m[1m[2m  1.52 kB[22m[1m[22m[2m │ gzip:   0.82 kB[22m[2m │ map:     2.27 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mInsertLink-Co_Tv8y5.js                        [39m[1m[2m  1.52 kB[22m[1m[22m[2m │ gzip:   0.79 kB[22m[2m │ map:     3.34 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mEmployeeCheckinList-0tposhCM.js               [39m[1m[2m  1.54 kB[22m[1m[22m[2m │ gzip:   0.81 kB[22m[2m │ map:     1.27 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mShiftRequestItem-Ci3vIXJB.js                  [39m[1m[2m  1.56 kB[22m[1m[22m[2m │ gzip:   0.85 kB[22m[2m │ map:     2.24 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mAttendanceRequestList-uvNlolgS.js             [39m[1m[2m  1.59 kB[22m[1m[22m[2m │ gzip:   0.81 kB[22m[2m │ map:     1.35 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mShiftAssignmentList-CVkTeNDz.js               [39m[1m[2m  1.60 kB[22m[1m[22m[2m │ gzip:   0.81 kB[22m[2m │ map:     1.36 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mattendance-BK_I16i-.js                        [39m[1m[2m  1.61 kB[22m[1m[22m[2m │ gzip:   0.59 kB[22m[2m │ map:     5.36 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mAttendanceRequestForm-Bsm0eWR8.js             [39m[1m[2m  1.62 kB[22m[1m[22m[2m │ gzip:   0.89 kB[22m[2m │ map:     4.08 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mBaseLayout-rDEDAGEa.js                        [39m[1m[2m  1.64 kB[22m[1m[22m[2m │ gzip:   0.86 kB[22m[2m │ map:     2.45 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mLeaveBalance-BkqSKsd7.js                      [39m[1m[2m  1.68 kB[22m[1m[22m[2m │ gzip:   0.93 kB[22m[2m │ map:     2.41 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mForm-m71gENRN.js                              [39m[1m[2m  1.69 kB[22m[1m[22m[2m │ gzip:   0.93 kB[22m[2m │ map:     3.90 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mLink-vdcFz-b7.js                              [39m[1m[2m  1.74 kB[22m[1m[22m[2m │ gzip:   0.91 kB[22m[2m │ map:     4.89 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mHome-Bp-ImXJl.js                              [39m[1m[2m  1.75 kB[22m[1m[22m[2m │ gzip:   0.87 kB[22m[2m │ map:     2.53 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mShiftRequestForm-BmTt-RBS.js                  [39m[1m[2m  1.79 kB[22m[1m[22m[2m │ gzip:   0.98 kB[22m[2m │ map:     4.29 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mEmployeeAdvanceItem-xL3nzJ7X.js               [39m[1m[2m  1.89 kB[22m[1m[22m[2m │ gzip:   0.96 kB[22m[2m │ map:     2.94 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mFormattedField-BXCDMpZZ.js                    [39m[1m[2m  1.90 kB[22m[1m[22m[2m │ gzip:   1.02 kB[22m[2m │ map:     2.81 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mInsertImage-hOOfhJkb.js                       [39m[1m[2m  1.91 kB[22m[1m[22m[2m │ gzip:   1.02 kB[22m[2m │ map:     4.00 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mRequestPanel-CeduyVvh.js                      [39m[1m[2m  1.91 kB[22m[1m[22m[2m │ gzip:   0.99 kB[22m[2m │ map:     4.33 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mList-BudoH1HC.js                              [39m[1m[2m  1.92 kB[22m[1m[22m[2m │ gzip:   0.92 kB[22m[2m │ map:     2.32 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mShiftRequestList-CI10KFfy.js                  [39m[1m[2m  1.94 kB[22m[1m[22m[2m │ gzip:   0.92 kB[22m[2m │ map:     2.28 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mindex9-B5rwC2YJ.js                            [39m[1m[2m  1.95 kB[22m[1m[22m[2m │ gzip:   0.97 kB[22m[2m │ map:     9.21 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mEmployeeAdvanceIcon-BKxNyglq.js               [39m[1m[2m  1.95 kB[22m[1m[22m[2m │ gzip:   0.80 kB[22m[2m │ map:     2.54 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mList-CnB-CbAZ.js                              [39m[1m[2m  2.04 kB[22m[1m[22m[2m │ gzip:   0.95 kB[22m[2m │ map:     2.68 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mInsertVideo-DxuHl0l3.js                       [39m[1m[2m  2.05 kB[22m[1m[22m[2m │ gzip:   1.04 kB[22m[2m │ map:     4.68 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mDashboard-BoQSsPB7.js                         [39m[1m[2m  2.12 kB[22m[1m[22m[2m │ gzip:   1.06 kB[22m[2m │ map:     0.81 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mExpenseClaimItem-DFcMFYyh.js                  [39m[1m[2m  2.18 kB[22m[1m[22m[2m │ gzip:   1.06 kB[22m[2m │ map:     4.30 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mList-gTBdFkTa.js                              [39m[1m[2m  2.26 kB[22m[1m[22m[2m │ gzip:   0.98 kB[22m[2m │ map:     2.55 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mExpenseAdvancesTable-CDJEto_R.js              [39m[1m[2m  2.39 kB[22m[1m[22m[2m │ gzip:   1.13 kB[22m[2m │ map:     3.26 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mFontColor-91g370bL.js                         [39m[1m[2m  2.44 kB[22m[1m[22m[2m │ gzip:   1.04 kB[22m[2m │ map:     6.13 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mExpenseClaimSummary-BJRfHTDx.js               [39m[1m[2m  2.48 kB[22m[1m[22m[2m │ gzip:   0.88 kB[22m[2m │ map:     3.63 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mRequestList-Dh5srChm.js                       [39m[1m[2m  2.49 kB[22m[1m[22m[2m │ gzip:   1.34 kB[22m[2m │ map:     3.40 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mForgotPassword-BPAS77dm.js                    [39m[1m[2m  2.63 kB[22m[1m[22m[2m │ gzip:   1.39 kB[22m[2m │ map:     5.02 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mAttendanceCalendar-Ce2vY1nF.js                [39m[1m[2m  2.70 kB[22m[1m[22m[2m │ gzip:   1.26 kB[22m[2m │ map:     5.51 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mFileUploaderView-CKlBkqxg.js                  [39m[1m[2m  2.71 kB[22m[1m[22m[2m │ gzip:   1.34 kB[22m[2m │ map:     4.38 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mChangePassword-CicrSUss.js                    [39m[1m[2m  2.73 kB[22m[1m[22m[2m │ gzip:   1.27 kB[22m[2m │ map:     5.14 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mHolidays-3gFqKP4X.js                          [39m[1m[2m  2.78 kB[22m[1m[22m[2m │ gzip:   1.20 kB[22m[2m │ map:     4.28 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mDashboard-DblEHcPy.js                         [39m[1m[2m  2.89 kB[22m[1m[22m[2m │ gzip:   1.25 kB[22m[2m │ map:     4.33 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mDashboard-DRGvi_Bq.js                         [39m[1m[2m  2.99 kB[22m[1m[22m[2m │ gzip:   1.48 kB[22m[2m │ map:     5.82 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mListFiltersActionSheet-bG-Kse0R.js            [39m[1m[2m  3.01 kB[22m[1m[22m[2m │ gzip:   1.28 kB[22m[2m │ map:     4.90 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mDetail-CyObU2NK.js                            [39m[1m[2m  3.29 kB[22m[1m[22m[2m │ gzip:   1.67 kB[22m[2m │ map:     6.81 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mAppSettings-DEzsF7Rb.js                       [39m[1m[2m  3.39 kB[22m[1m[22m[2m │ gzip:   1.39 kB[22m[2m │ map:     7.12 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mNotifications-znTngINZ.js                     [39m[1m[2m  3.52 kB[22m[1m[22m[2m │ gzip:   1.66 kB[22m[2m │ map:     6.65 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mForm-BeSBkNPv.js                              [39m[1m[2m  4.27 kB[22m[1m[22m[2m │ gzip:   1.70 kB[22m[2m │ map:    13.34 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mCheckInPanel-39so4IZt.js                      [39m[1m[2m  4.99 kB[22m[1m[22m[2m │ gzip:   2.29 kB[22m[2m │ map:    10.02 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mFormField-BE3W-YmI.js                         [39m[1m[2m  5.01 kB[22m[1m[22m[2m │ gzip:   1.70 kB[22m[2m │ map:     8.40 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36minput-shims-CBb2ZRbG.js                       [39m[1m[2m  5.19 kB[22m[1m[22m[2m │ gzip:   2.25 kB[22m[2m │ map:    31.96 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mProfile-b8mvlo_D.js                           [39m[1m[2m  5.75 kB[22m[1m[22m[2m │ gzip:   2.46 kB[22m[2m │ map:    12.06 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mExpensesTable-C1f69pXt.js                     [39m[1m[2m  6.02 kB[22m[1m[22m[2m │ gzip:   2.50 kB[22m[2m │ map:    10.18 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mExpenseTaxesTable-BpU5HcUM.js                 [39m[1m[2m  6.20 kB[22m[1m[22m[2m │ gzip:   2.59 kB[22m[2m │ map:    10.96 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mLogin-DTd7y51G.js                             [39m[1m[2m  6.61 kB[22m[1m[22m[2m │ gzip:   2.88 kB[22m[2m │ map:     9.80 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mworkflow-BYB2FR2d.js                          [39m[1m[2m  6.71 kB[22m[1m[22m[2m │ gzip:   2.94 kB[22m[2m │ map:    15.99 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mListView-B63Fpeqs.js                          [39m[1m[2m  8.04 kB[22m[1m[22m[2m │ gzip:   3.55 kB[22m[2m │ map:    17.00 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mForm-qNpMIqRc.js                              [39m[1m[2m  8.61 kB[22m[1m[22m[2m │ gzip:   2.98 kB[22m[2m │ map:    22.35 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mios.transition-XcN7t4AP.js                    [39m[1m[2m  9.55 kB[22m[1m[22m[2m │ gzip:   2.75 kB[22m[2m │ map:    37.43 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mFormView-47ajnnZY.js                          [39m[1m[2m 17.07 kB[22m[1m[22m[2m │ gzip:   5.93 kB[22m[2m │ map:    38.86 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mrequestSummaryFields-BxE0oohE.js              [39m[1m[2m 17.25 kB[22m[1m[22m[2m │ gzip:   5.16 kB[22m[2m │ map:    22.31 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mindex-BjIkMoi6.js                             [39m[1m[2m465.26 kB[22m[1m[22m[2m │ gzip: 109.56 kB[22m[2m │ map: 1,668.55 kB[22m
+[2m../hrms/public/frontend/[22m[2massets/[22m[36mfrappe-ui-DCs81Cw-.js                         [39m[1m[33m931.27 kB[39m[22m[2m │ gzip: 298.58 kB[22m[2m │ map: 4,740.83 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 9.04s[39m
+
+[36mPWA v0.20.5[39m
+Building [35mpublic/sw.js[39m service worker ("[35mes[39m" format)...
+[36mvite v5.4.15 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 75 modules transformed.
+rendering chunks...
+computing gzip size...
+[2m../hrms/public/frontend/[22m[36msw.mjs  [39m[1m[2m99.48 kB[22m[1m[22m[2m │ gzip: 21.17 kB[22m[2m │ map: 464.54 kB[22m
+[32m✓ built in 291ms[39m
+
+[36mPWA v0.20.5[39m
+mode      [35minjectManifest[39m
+format:   [35mes[39m
+precache  [32m94 entries[39m [2m(1713.41 KiB)[22m
+files generated
+  [2m../hrms/public/frontend/sw.js[22m
+  [2m../hrms/public/frontend/sw.js.map[22m
+$ cp ../hrms/public/frontend/index.html ../hrms/www/hrms.html
+$ cd roster && yarn build
+$ vite build --base=/assets/hrms/roster/ && yarn copy-html-entry
+[36mvite v5.4.15 [32mbuilding for production...[36m[39m
+transforming...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+Inter-DisplayRegular.woff2?v=3.19 referenced in Inter-DisplayRegular.woff2?v=3.19 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+[32m✓[39m 518 modules transformed.
+rendering chunks...
+computing gzip size...
+[2m../hrms/public/roster/[22m[32mindex.html                                           [39m[1m[2m  0.62 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-Regular-trENmjXB.woff2                  [39m[1m[2m100.79 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-Thin-D3JiHKaG.woff2                     [39m[1m[2m101.16 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayBlack-WeYNDCAX.woff2             [39m[1m[2m101.92 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayThin-ChL4oFCg.woff2              [39m[1m[2m102.15 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-ExtraLight-CCj5KODw.woff2               [39m[1m[2m102.87 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-Light-dIA14uc3.woff2                    [39m[1m[2m103.27 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-Black-9EvaAvES.woff2                    [39m[1m[2m103.59 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-ExtraBold-Ce88byQn.woff2                [39m[1m[2m104.99 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-Bold-R0zHozHF.woff2                     [39m[1m[2m105.21 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-Medium-BN7iDkqy.woff2                   [39m[1m[2m105.22 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayLight-w8lPQKnS.woff2             [39m[1m[2m105.34 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayExtraBold-BXf2GJrG.woff2         [39m[1m[2m105.36 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayMedium-DcjtbkcA.woff2            [39m[1m[2m105.38 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-SemiBold-CBUekF9E.woff2                 [39m[1m[2m105.40 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplaySemiBold-BBWLY5vL.woff2          [39m[1m[2m105.56 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayBold-C-1EDGRh.woff2              [39m[1m[2m105.57 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayExtraLight-D2Ja0abb.woff2        [39m[1m[2m105.87 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayItalic-JNEE2o-3.woff2            [39m[1m[2m106.12 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-Italic-ClOttZep.woff2                   [39m[1m[2m106.55 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-ThinItalic-Dty9qLU6.woff2               [39m[1m[2m106.64 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayBlackItalic-DFEmIFsd.woff2       [39m[1m[2m107.28 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayThinItalic-Cxxw6hRb.woff2        [39m[1m[2m107.44 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-LightItalic-BcJQrN_r.woff2              [39m[1m[2m108.56 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-BlackItalic-I0v0TUo2.woff2              [39m[1m[2m108.59 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-ExtraLightItalic-BXS8QPqu.woff2         [39m[1m[2m109.00 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayBoldItalic-CISmTavk.woff2        [39m[1m[2m110.20 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplaySemiBoldItalic-CNvBGF7e.woff2    [39m[1m[2m110.39 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayMediumItalic-BBCoS5uP.woff2      [39m[1m[2m110.46 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-BoldItalic-D0-5Ex_3.woff2               [39m[1m[2m110.52 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-ExtraBoldItalic-Cgmm6Ie2.woff2          [39m[1m[2m110.52 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayLightItalic-DBve3eI1.woff2       [39m[1m[2m110.56 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-SemiBoldItalic-J43nRLRr.woff2           [39m[1m[2m110.64 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayExtraBoldItalic-Czv3KFD8.woff2   [39m[1m[2m110.82 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-MediumItalic-iRTrRc5x.woff2             [39m[1m[2m110.82 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-DisplayExtraLightItalic-DRwiM9T2.woff2  [39m[1m[2m111.11 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter.var-C9xDBOS3.woff2                      [39m[1m[2m264.24 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[32mInter-Italic.var-BGHziHgI.woff2               [39m[1m[2m297.27 kB[22m[1m[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[35mHome-9JR8wKkI.css                             [39m[1m[2m  0.42 kB[22m[1m[22m[2m │ gzip:   0.26 kB[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[35mindex-D6rG5lUy.css                            [39m[1m[2m 98.06 kB[22m[1m[22m[2m │ gzip:  15.72 kB[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[36mHome-DI3GEUbm.js                              [39m[1m[2m167.52 kB[22m[1m[22m[2m │ gzip:  54.48 kB[22m
+[2m../hrms/public/roster/[22m[2massets/[22m[36mindex-7tkF3x8T.js                             [39m[1m[33m610.75 kB[39m[22m[2m │ gzip: 199.59 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 5.02s[39m
+$ cp ../hrms/public/roster/index.html ../hrms/www/roster.html
+Done in 18.05s.
+Compiling translations for hrms
+MO file created at /home/runner/frappe-bench/sites/assets/locale/zh/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/eo/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/sl/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/th/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/sr_CS/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/sr/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/pt_BR/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/nb/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/fa/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/my/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/es/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/ru/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/nl/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/pl/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/bs/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/zh_TW/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/ar/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/vi/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/tr/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/hu/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/fr/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/it/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/fi/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/cs/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/hr/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/af/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/ta/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/sv/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/da/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/de/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/id/LC_MESSAGES/hrms.mo
+MO file created at /home/runner/frappe-bench/sites/assets/locale/pt/LC_MESSAGES/hrms.mo
+Getting education
+$ git clone https://github.com/frappe/education.git --branch version-16 --depth 1 --origin upstream
+Cloning into 'education'...
+Ignoring dependencies of education. To install dependencies use --resolve-deps
+Installing education
+$ uv pip install --quiet -e /home/runner/frappe-bench/apps/education  --python /home/runner/frappe-bench/env/bin/python
+$ yarn install --check-files
+yarn install v1.22.22
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+success Saved lockfile.
+$ cd frontend && yarn install --check-files
+yarn install v1.22.22
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+warning Pattern ["strip-ansi@^6.0.1"] is trying to unpack in the same destination "/home/runner/.cache/yarn/v6/npm-strip-ansi-cjs-6.0.1-9e26c63d30f53443e9489495b2105d37b67a85d9-integrity/node_modules/strip-ansi-cjs" as pattern ["strip-ansi-cjs@npm:strip-ansi@^6.0.1"]. This could result in non-deterministic behavior, skipping.
+warning Pattern ["string-width@^4.1.0"] is trying to unpack in the same destination "/home/runner/.cache/yarn/v6/npm-string-width-cjs-4.2.3-269c7117d27b05ad2e536830a8ec895ef9c6d010-integrity/node_modules/string-width-cjs" as pattern ["string-width-cjs@npm:string-width@^4.2.0"]. This could result in non-deterministic behavior, skipping.
+warning Pattern ["strip-ansi@^6.0.0"] is trying to unpack in the same destination "/home/runner/.cache/yarn/v6/npm-strip-ansi-cjs-6.0.1-9e26c63d30f53443e9489495b2105d37b67a85d9-integrity/node_modules/strip-ansi-cjs" as pattern ["strip-ansi-cjs@npm:strip-ansi@^6.0.1"]. This could result in non-deterministic behavior, skipping.
+[3/4] Linking dependencies...
+warning "frappe-ui > @tiptap/extension-color@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-highlight@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-image@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-link@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-mention@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-placeholder@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table-cell@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table-header@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-table-row@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-text-align@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-text-style@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/extension-typography@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/suggestion@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/vue-3@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/vue-3 > @tiptap/extension-bubble-menu@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+warning "frappe-ui > @tiptap/vue-3 > @tiptap/extension-floating-menu@2.2.3" has unmet peer dependency "@tiptap/core@^2.0.0".
+[4/4] Building fresh packages...
+Done in 10.54s.
+Done in 10.76s.
+$ bench build --app education
+Linking /home/runner/frappe-bench/apps/frappe/frappe/public to ./assets/frappe  Linking /home/runner/frappe-bench/apps/frappe/node_modules to ./assets/frappe/node_modules                                                                                Linking /home/runner/frappe-bench/apps/education/education/public to ./assets/education                                                                                Linking /home/runner/frappe-bench/apps/education/node_modules to ./assets/education/node_modules                                                                                Linking /home/runner/frappe-bench/apps/hrms/hrms/public to ./assets/hrms        Linking /home/runner/frappe-bench/apps/hrms/node_modules to ./assets/hrms/node_modules                                                                                Linking /home/runner/frappe-bench/apps/erpnext/erpnext/public to ./assets/erpnext                                                                                Linking /home/runner/frappe-bench/apps/erpnext/node_modules to ./assets/erpnext/node_modules                                                                                ✔ Application Assets Linked                                            
+
+
+yarn run v1.22.22
+$ node esbuild --production --apps education --run-build-command
+File                                                        Size
+
+education/dist/js/
+└─ education.bundle.LK4D3TVF.js                             2.91 Kb
+
+ DONE  Total Build Time: 122.372ms
+
+ WARN  Cannot connect to redis_cache to update assets_json
+ WARN  Cannot connect to redis_cache to update assets_json
+ WARN  Cannot connect to redis_cache to update assets_json
+
+Running build command for education
+$ cd frontend && yarn build
+$ vite build --base=/assets/education/frontend/ && yarn copy-html-entry
+[36mvite v2.9.17 [32mbuilding for production...[36m[39m
+transforming...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[32m✓[39m 1588 modules transformed.
+rendering chunks...
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Thin.918c5cbe.woff2                     [39m [2m99.03 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraLight.4c337585.woff2               [39m [2m103.48 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraLightItalic.7b39e865.woff2         [39m [2m109.43 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ThinItalic.a3279f0a.woff2               [39m [2m104.98 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Regular.c342b1b7.woff2                  [39m [2m97.78 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Light.87ed65f8.woff2                    [39m [2m103.16 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-LightItalic.5b94e337.woff2              [39m [2m109.34 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Italic.950174d1.woff2                   [39m [2m104.99 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Medium.a4e1e7e6.woff2                   [39m [2m104.22 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-MediumItalic.d4a7f5d9.woff2             [39m [2m109.87 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Bold.2efd8e3c.woff2                     [39m [2m104.88 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-SemiBold.af44b8a2.woff2                 [39m [2m104.72 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-SemiBoldItalic.a4f92da5.woff2           [39m [2m109.91 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-BoldItalic.f528d863.woff2               [39m [2m109.94 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraBold.74e72c6b.woff2                [39m [2m105.03 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Black.bc2198e0.woff2                    [39m [2m102.07 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraBoldItalic.2abc7ab1.woff2          [39m [2m110.23 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-BlackItalic.1cb529a7.woff2              [39m [2m107.32 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter.var.d30c3bd0.woff2                      [39m [2m258.04 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Italic.var.d9f448e3.woff2               [39m [2m290.30 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ThinItalic.382fab25.woff2               [39m [2m104.14 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraLight.25a4db7c.woff2               [39m [2m100.46 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Thin.914c3fab.woff2                     [39m [2m98.79 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraLightItalic.f0df46d0.woff2         [39m [2m106.45 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Light.211445a8.woff2                    [39m [2m100.85 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Regular.edd1deaf.woff2                  [39m [2m98.43 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Italic.dd31ea31.woff2                   [39m [2m104.05 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-LightItalic.9ea2db78.woff2              [39m [2m106.02 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-MediumItalic.a2db9bea.woff2             [39m [2m108.22 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-SemiBold.51419407.woff2                 [39m [2m102.93 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-SemiBoldItalic.daa7095c.woff2           [39m [2m108.05 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraBold.8a72efb6.woff2                [39m [2m102.53 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Medium.24fb6e39.woff2                   [39m [2m102.76 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Bold.1dc41a58.woff2                     [39m [2m102.74 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraBoldItalic.38e71f7c.woff2          [39m [2m107.93 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-BoldItalic.dc0d4194.woff2               [39m [2m107.93 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-BlackItalic.4ff7db4a.woff2              [39m [2m106.05 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayThin.b64c173b.woff2              [39m [2m99.76 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayThinItalic.b70f1c61.woff2        [39m [2m104.92 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayLight.e40a858d.woff2             [39m [2m102.88 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Black.05e55dd7.woff2                    [39m [2m101.16 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayLightItalic.151e9a11.woff2       [39m [2m107.96 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayExtraLight.32095132.woff2        [39m [2m103.39 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayExtraLightItalic.8eeb78f4.woff2  [39m [2m108.51 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayItalic.938db435.woff2            [39m [2m103.63 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplaySemiBold.856fcb49.woff2          [39m [2m103.09 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayMediumItalic.8968b5ab.woff2      [39m [2m107.88 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayMedium.12a4a358.woff2            [39m [2m102.91 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplaySemiBoldItalic.5e57e1d2.woff2    [39m [2m107.80 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayExtraBold.b7cc680a.woff2         [39m [2m102.89 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayBoldItalic.fef00c57.woff2        [39m [2m107.62 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayExtraBoldItalic.e5a5984a.woff2   [39m [2m108.22 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayBlack.b1d4e33d.woff2             [39m [2m99.53 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayBlackItalic.d561e8dd.woff2       [39m [2m104.77 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-DisplayBold.d9bf35ac.woff2              [39m [2m103.09 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Thin.2198e9fb.woff                      [39m [2m133.74 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraLightItalic.0e5667b1.woff          [39m [2m145.20 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraLight.1c06ef44.woff                [39m [2m138.54 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ThinItalic.f53f21de.woff                [39m [2m141.03 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Light.319f53ba.woff                     [39m [2m138.21 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Regular.b825f1bc.woff                   [39m [2m131.50 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-LightItalic.289a60bc.woff               [39m [2m144.96 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Italic.b0b21adf.woff                    [39m [2m139.40 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-MediumItalic.d06751dd.woff              [39m [2m145.69 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Medium.f500bbb9.woff                    [39m [2m139.49 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Bold.2b828bef.woff                      [39m [2m140.34 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-BoldItalic.8bc8e0ff.woff                [39m [2m145.92 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-SemiBold.3041a990.woff                  [39m [2m139.89 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-SemiBoldItalic.5ce565c8.woff            [39m [2m145.78 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraBold.585b4ce1.woff                 [39m [2m140.19 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-BlackItalic.7ecbf9fa.woff               [39m [2m142.50 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-Black.9c79713b.woff                     [39m [2m136.75 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32massets/Inter-ExtraBoldItalic.b87f7d97.woff           [39m [2m145.70 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[32mindex.html                                           [39m [2m1.13 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/Students.ead32af1.js                          [39m [2m1.95 KiB / gzip: 1.02 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/index.fac26fd2.js                             [39m [2m21.41 KiB / gzip: 8.40 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/Schedule.530861de.js                          [39m [2m1.04 KiB / gzip: 0.60 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/MissingData.c17b8390.js                       [39m [2m0.31 KiB / gzip: 0.25 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/Calendar.b707fff8.js                          [39m [2m5.71 KiB / gzip: 2.04 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/index.05af4965.js                             [39m [2m1.19 KiB / gzip: 0.68 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/Grades.f4998d80.js                            [39m [2m1.64 KiB / gzip: 0.86 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/Attendance.416667ef.js                        [39m [2m12.18 KiB / gzip: 5.09 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/Fees.513b095a.js                              [39m [2m6.93 KiB / gzip: 2.70 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/InsertLink.c11b2b47.js                        [39m [2m1.40 KiB / gzip: 0.72 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/InsertImage.d1aadceb.js                       [39m [2m1.73 KiB / gzip: 0.93 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/InsertVideo.897982c2.js                       [39m [2m1.89 KiB / gzip: 0.96 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[35massets/frappe-ui.005832b0.css                        [39m [2m1.69 KiB / gzip: 0.84 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[35massets/index.1c5e72f7.css                            [39m [2m80.36 KiB / gzip: 11.33 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/FontColor.b971ff8e.js                         [39m [2m2.30 KiB / gzip: 0.97 KiB[22m
+[90m[37m[2m../education/public/frontend/[22m[90m[39m[36massets/frappe-ui.f6936d40.js                         [39m [33m785.70 KiB / gzip: 245.24 KiB[39m
+[33m
+(!) Some chunks are larger than 500 KiB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/guide/en/#outputmanualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+$ cp ../education/public/frontend/index.html ../education/www/edu-portal.html
+Done in 7.30s.
+Compiling translations for education
+Getting SchoolOS
+$ git clone /home/runner/work/SchoolOS/SchoolOS --branch main --depth 1 --origin upstream
+Cloning into 'SchoolOS'...
+warning: --depth is ignored in local clones; use file:// instead.
+Ignoring dependencies of /home/runner/work/SchoolOS/SchoolOS. To install dependencies use --resolve-deps
+Installing schoolos
+$ uv pip install --quiet -e /home/runner/frappe-bench/apps/schoolos  --python /home/runner/frappe-bench/env/bin/python
+$ bench build --app schoolos
+Linking /home/runner/frappe-bench/apps/frappe/frappe/public to ./assets/frappe  Linking /home/runner/frappe-bench/apps/frappe/node_modules to ./assets/frappe/node_modules                                                                                Linking /home/runner/frappe-bench/apps/schoolos/schoolos/public to ./assets/schoolos                                                                                Linking /home/runner/frappe-bench/apps/education/education/public to ./assets/education                                                                                Linking /home/runner/frappe-bench/apps/education/node_modules to ./assets/education/node_modules                                                                                Linking /home/runner/frappe-bench/apps/hrms/hrms/public to ./assets/hrms        Linking /home/runner/frappe-bench/apps/hrms/node_modules to ./assets/hrms/node_modules                                                                                Linking /home/runner/frappe-bench/apps/erpnext/erpnext/public to ./assets/erpnext                                                                                Linking /home/runner/frappe-bench/apps/erpnext/node_modules to ./assets/erpnext/node_modules                                                                                ✔ Application Assets Linked                                            
+
+
+yarn run v1.22.22
+$ node esbuild --production --apps schoolos --run-build-command
+File                                                        Size
+
+ DONE  Total Build Time: 112.323ms
+
+ WARN  Cannot connect to redis_cache to update assets_json
+ WARN  Cannot connect to redis_cache to update assets_json
+ WARN  Cannot connect to redis_cache to update assets_json
+Done in 0.68s.
+Compiling translations for schoolos
+$ uv pip install --quiet coverage~=7.10.0 Faker~=18.10.1 pyngrok~=7.5.0 unittest-xml-reporting~=3.2.0 watchdog~=6.0.0 hypothesis~=6.77.0 responses==0.23.1 freezegun~=1.5.5  --python /home/runner/frappe-bench/env/bin/python
