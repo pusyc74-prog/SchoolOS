@@ -27,7 +27,9 @@ LAST = ["Patil", "Kulkarni", "Deshmukh", "Joshi", "Pawar", "Shinde", "Jadhav", "
 TEACHERS = ["Sunita Kulkarni", "Rajesh Patil", "Meera Deshpande", "Anil Jadhav", "Kavita Joshi", "Prakash More"]
 
 
-def make_demo():
+def make_demo(strict=0):
+    """strict=1 (used by CI) stops on the first error instead of skipping optional parts."""
+    frappe.flags.schoolos_demo_strict = bool(int(strict))
     if frappe.db.exists("Student Group", GROUP):
         print("Demo already exists. Delete the site or the demo records to recreate it.")
         return
@@ -86,6 +88,12 @@ Demo ready.
 
 
 # ---------------------------------------------------------------- helpers
+def _skip_or_raise(msg, e):
+    if frappe.flags.schoolos_demo_strict:
+        raise e
+    print(msg, e)
+
+
 def ensure(doctype, values, name_field=None):
     key = name_field or next(iter(values))
     existing = frappe.db.get_value(doctype, {key: values[key]})
@@ -407,7 +415,7 @@ def make_fees(students, company, year):
             except Exception as e:
                 errors += 1
                 if errors == 1:
-                    print("Demo fees skipped (check Accounts setup):", e)
+                    _skip_or_raise("Demo fees skipped (check Accounts setup):", e)
                 break
             if due > getdate(today()) or i in defaulters or (q == 1 and i % 4 == 1):
                 continue
@@ -424,7 +432,7 @@ def make_fees(students, company, year):
                 pe.insert()
                 pe.submit()
             except Exception as e:
-                print("Demo payment skipped:", e)
+                _skip_or_raise("Demo payment skipped:", e)
                 return
 
 
@@ -456,7 +464,7 @@ def make_calendar_and_gallery(group, holiday_list):
                         "audience": "All Students", "published": 1, "description": "Flag hoisting, march past and races.",
                         "photos": [{"image": url, "caption": cap} for url, cap in photos]}).insert()
     except Exception as e:
-        print("Demo album skipped:", e)
+        _skip_or_raise("Demo album skipped:", e)
 
 
 def _demo_photo(caption, rgb):
@@ -483,7 +491,7 @@ def make_leave_request(student, group):
                         "attendance_based_on": "Student Group", "from_date": add_days(today(), 2), "to_date": add_days(today(), 3),
                         "reason": "Family function in Kolhapur.", "schoolos_status": "Pending"}).insert(ignore_permissions=True)
     except Exception as e:
-        print("Demo leave request skipped:", e)
+        _skip_or_raise("Demo leave request skipped:", e)
 
 
 def make_bills_for_approval(company):
@@ -502,7 +510,7 @@ def make_bills_for_approval(company):
                             "due_date": add_days(today(), 10), "remarks": remark,
                             "items": [{"item_code": "School Supplies", "qty": 1, "rate": amount}]}).insert()
     except Exception as e:
-        print("Demo bills skipped (finish the Accounts setup first):", e)
+        _skip_or_raise("Demo bills skipped (finish the Accounts setup first):", e)
 
 
 def configure_settings():

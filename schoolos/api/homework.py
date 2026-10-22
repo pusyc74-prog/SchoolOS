@@ -3,7 +3,9 @@
 import frappe
 from frappe.utils import add_days, cint, getdate, today
 
-from schoolos.api.common import instructor_for_user, is_principal, require_login, require_staff, require_student_access
+from schoolos.api.common import (
+    instructor_for_user, is_principal, require_login, require_staff, require_student_access, require_teaches_group,
+)
 from schoolos.modules import enabled, require
 
 FIELDS = ["name", "entry_type", "title", "student_group", "course", "date", "due_date",
@@ -78,6 +80,7 @@ def post(student_group: str, title: str, entry_type: str = "Homework", course: s
     """Create and publish a homework / diary entry. Parents are notified on publish."""
     require("homework")
     require_staff()
+    require_teaches_group(student_group)
     doc = frappe.get_doc({
         "doctype": "SchoolOS Homework",
         "student_group": student_group,

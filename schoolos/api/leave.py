@@ -11,7 +11,7 @@ from frappe.utils import cint, escape_html, formatdate, getdate, today
 
 from schoolos.alerts.engine import queue_for_students
 from schoolos.api.common import (
-    instructor_for_user, require_login, require_staff, require_student_access, require_teaches_group, roles,
+    instructor_for_user, is_section_admin, require_login, require_staff, require_student_access, require_teaches_group, roles,
     PRINCIPAL_ROLES,
 )
 from schoolos.api.compute_accounts import check_leave_dates
@@ -83,7 +83,7 @@ def pending():
     require("leave")
     require_staff()
     filters = {"docstatus": 0, "schoolos_status": ["in", ["Pending", "", None]]}
-    if not (roles() & PRINCIPAL_ROLES or "Academics User" in roles()):
+    if not is_section_admin():
         from schoolos.api.homework import teacher_groups
 
         ins = instructor_for_user()

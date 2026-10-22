@@ -1,0 +1,103 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write   # to publish logs to the ci-results branch
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quick:
+    name: Logic + screens (no database)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Python compiles, no merge markers
+        run: |
+          python -m compileall -q schoolos tests ci
+          ! grep -rln --exclude-dir=.git "^<<<<<<< " .
+      - name: Unit tests (fees, accounts, Tally XML, report cards, importer, calendar)
+        run: |
+          pip install -q pytest openpyxl
+          python -m pytest tests -q
+      - name: Render every screen (EN / Marathi / Tally mode / modules off)
+        run: |
+          for lang in en mr; do
+            node ci/ui_harness.js $lang
+            TALLY=1 node ci/ui_harness.js $lang
+            OFF=1 node ci/ui_harness.js $lang
+          done
+
+  full:
+    name: Full stack (MariaDB + Frappe v16 + ERPNext + HR + Education)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    services:
+      mariadb:
+        image: mariadb:11.8
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: System packages
+        run: |
+          echo "127.0.0.1 test_site" | sudo tee -a /etc/hosts
+          sudo apt-get update -q
+          sudo apt-get install -y -q redis-server mariadb-client libmariadb-dev libcups2-dev xfonts-75dpi xfonts-base
+          wget -q -O /tmp/wkhtmltox.deb https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
+          sudo apt-get install -y -q /tmp/wkhtmltox.deb
+          npm install -g yarn
+          mariadb --host 127.0.0.1 -uroot -proot -e "SET GLOBAL character_set_server='utf8mb4'; SET GLOBAL collation_server='utf8mb4_unicode_ci';"
+      - name: Install, demo school, tests, smoke test, backup drill
+        run: bash ci/full_stack.sh
+        env:
+          LOGS: ${{ runner.temp }}/ci-logs
+      - name: Publish logs to the ci-results branch
+        if: always()
+        env:
+          LOGS: ${{ runner.temp }}/ci-logs
+          TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          [ -d "$LOGS" ] || exit 0
+          cp ~/frappe-bench/logs/*.log "$LOGS/" 2>/dev/null || true
+          out="$RUNNER_TEMP/results"
+          url="https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git clone -q --depth 1 --branch ci-results "$url" "$out" 2>/dev/null || {
+            mkdir -p "$out" && cd "$out" && git init -q -b ci-results && git remote add origin "$url"; }
+          cd "$out"
+          dir="runs/${GITHUB_SHA::7}-${GITHUB_RUN_ATTEMPT}"
+          rm -rf "$dir" && mkdir -p "$dir"
+          for f in "$LOGS"/*; do tail -c 400000 "$f" > "$dir/$(basename "$f")"; done
+          { echo "commit ${GITHUB_SHA::7} · run ${GITHUB_RUN_ID} · $(date -u +%FT%TZ)"; echo; echo "| | step | time |"; echo "|---|---|---|"; cat "$LOGS/RESULT.md"; } > "$dir/README.md"
+          cp "$dir/README.md" LATEST.md
+          echo "$dir" > LATEST_DIR
+          ls -1d runs/* | sort | head -n -15 | xargs -r rm -rf
+          git add -A
+          git -c user.name="SchoolOS CI" -c user.email="ci@users.noreply.github.com" commit -q -m "CI logs for ${GITHUB_SHA::7}" || exit 0
+          git push -q origin ci-results

@@ -83,10 +83,19 @@ def require_student_access(student):
         raise frappe.PermissionError(_("You can't view this student"))
 
 
+def is_section_admin(user=None):
+    """Principal roles, or office staff with Academics User who aren't a teacher (no Instructor).
+    Teachers also need Academics User in Frappe Education (to mark attendance), so that role alone
+    doesn't give access to every section."""
+    r = roles(user)
+    if r & PRINCIPAL_ROLES:
+        return True
+    return "Academics User" in r and not instructor_for_user(user)
+
+
 def require_teaches_group(student_group):
-    """Teachers (without admin/academics roles) may only post for sections they teach."""
-    r = roles()
-    if r & PRINCIPAL_ROLES or "Academics User" in r:
+    """Teachers may only act on sections they teach; principals and office staff on any."""
+    if is_section_admin():
         return
     mine = instructor_for_user()
     if not mine:

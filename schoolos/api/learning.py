@@ -8,7 +8,7 @@ from frappe.utils import add_days, cint, flt, getdate, strip_html, today
 
 from schoolos.api.common import (
     instructor_for_user, is_principal, require_login, require_principal, require_staff,
-    require_student_access, require_teaches_group, roles, STAFF_ROLES,
+    require_student_access, require_teaches_group, roles, STAFF_ROLES, is_section_admin,
 )
 from schoolos.api.compute_fees import coverage, merge_activity
 from schoolos.modules import enabled, require
@@ -77,6 +77,19 @@ def _main_group(student):
 def _student_groups(student):
     return frappe.get_all("Student Group Student", filters={"student": student, "active": 1, "parenttype": "Student Group"},
                           pluck="parent")
+
+
+def _require_teaches_student(student):
+    """Teachers may write notes only about students in a section they teach (admins: anyone)."""
+    if is_section_admin():
+        return
+    for g in _student_groups(student):
+        try:
+            require_teaches_group(g)
+            return
+        except frappe.PermissionError:
+            continue
+    raise frappe.PermissionError(_("You don't teach this student"))
 
 
 def _teacher_notes(student, limit=20, staff=False):
@@ -242,6 +255,7 @@ def post_note(student: str, log: str, type: str = "General", share: int = 1):
     require_staff()
     if type not in ("General", "Academic", "Medical", "Achievement"):
         frappe.throw(_("Unknown note type"))
+    _require_teaches_student(student)
     doc = frappe.get_doc({
         "doctype": "Student Log", "student": student, "type": type, "date": today(),
         "academic_year": frappe.db.get_single_value("Education Settings", "current_academic_year"),
@@ -255,6 +269,7 @@ def post_note(student: str, log: str, type: str = "General", share: int = 1):
 def group_students(student_group: str):
     """Students in a section (for the teacher's 'note about a student' picker)."""
     require_staff()
+    require_teaches_group(student_group)
     return frappe.get_all("Student Group Student", filters={"parent": student_group, "parenttype": "Student Group", "active": 1},
                           fields=["student", "student_name", "group_roll_number"], order_by="group_roll_number asc")
 
