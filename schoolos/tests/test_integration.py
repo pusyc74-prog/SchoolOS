@@ -330,6 +330,7 @@ class TestHomeworkLearning(SchoolOSTestCase):
             with self.assertRaises(frappe.PermissionError):
                 group_students(other.name)
         imported = frappe.get_doc({"doctype": "Student", "first_name": "Outsider", "gender": "Male",
+                                   "student_email_id": "outsider@students.noemail",
                                    "date_of_birth": "2015-01-01"}).insert(ignore_permissions=True)
         with self.set_user(TEACHER):
             from schoolos.api.learning import post_note

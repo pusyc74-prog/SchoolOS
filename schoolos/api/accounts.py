@@ -171,6 +171,8 @@ def decide(doctype: str, name: str, approve: int, note: str | None = None):
     note = (note or "").strip()
     if not approved and not note:
         frappe.throw(_("Please give a reason for rejecting"))
+    # The principal may not hold ERPNext's purchase roles; access was checked above (APPROVER_ROLES).
+    doc.flags.ignore_permissions = True
     if doctype == "Purchase Invoice":
         if approved:
             doc.submit()
