@@ -1,0 +1,58 @@
+Document Insert Error
+Traceback (most recent call last):
+  File "apps/frappe/frappe/desk/page/setup_wizard/setup_wizard.py", line 572, in make_records
+    doc.insert(ignore_permissions=True, ignore_if_duplicate=True)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "apps/frappe/frappe/model/document.py", line 750, in insert
+    self.run_post_save_methods()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "apps/frappe/frappe/model/document.py", line 1699, in run_post_save_methods
+    self.run_method("on_update")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "apps/frappe/frappe/model/document.py", line 1504, in run_method
+    out = Document.hook(fn)(self, *args, **kwargs)
+  File "apps/frappe/frappe/model/document.py", line 1908, in composer
+    return composed(self, method, *args, **kwargs)
+  File "apps/frappe/frappe/model/document.py", line 1882, in runner
+    add_to_return_value(self, fn(self, *args, **kwargs))
+                              ~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "apps/frappe/frappe/model/document.py", line 1501, in fn
+    return method_object(*args, **kwargs)
+  File "apps/erpnext/erpnext/setup/doctype/customer_group/customer_group.py", line 75, in on_update
+    super().on_update()
+    ~~~~~~~~~~~~~~~~~^^
+  File "apps/frappe/frappe/utils/nestedset.py", line 297, in on_update
+    update_nsm(self)
+    ~~~~~~~~~~^^^^^^
+  File "apps/frappe/frappe/utils/nestedset.py", line 56, in update_nsm
+    update_add_node(doc, parent or "", parent_field)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "apps/frappe/frappe/utils/nestedset.py", line 91, in update_add_node
+    validate_loop(doc.doctype, doc.name, left, right)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "apps/frappe/frappe/utils/nestedset.py", line 248, in validate_loop
+    frappe.throw(_("Item cannot be added to its own descendants"), NestedSetRecursionError)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "apps/frappe/frappe/utils/messages.py", line 159, in throw
+    msgprint(
+    ~~~~~~~~^
+    	msg,
+     ^^^^
+    ...<7 lines>...
+    	allow_dangerous_html=allow_dangerous_html,
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "apps/frappe/frappe/utils/messages.py", line 118, in msgprint
+    _raise_exception()
+    ~~~~~~~~~~~~~~~~^^
+  File "apps/frappe/frappe/utils/messages.py", line 59, in _raise_exception
+    raise exc
+frappe.utils.nestedset.NestedSetRecursionError: Item cannot be added to its own descendants
+
+Updating Dashboard for frappe
+Updating Dashboard for erpnext
+Updating Dashboard for hrms
+Updating Dashboard for education
+Updating Dashboard for schoolos
+Setup complete for Demo Public School (financial year 2026-04-01 to 2027-03-31).

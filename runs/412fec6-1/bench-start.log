@@ -1,0 +1,129 @@
+07:55:49 system        | redis_queue.1 started (pid=6650)
+07:55:49 system        | redis_cache.1 started (pid=6648)
+07:55:49 system        | socketio.1 started (pid=6657)
+07:55:49 system        | web.1 started (pid=6652)
+07:55:49 redis_cache.1 | 6654:C 24 Oct 2026 07:55:49.756 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+07:55:49 system        | schedule.1 started (pid=6661)
+07:55:49 redis_cache.1 | 6654:C 24 Oct 2026 07:55:49.759 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6654, just started
+07:55:49 redis_cache.1 | 6654:C 24 Oct 2026 07:55:49.759 # Configuration loaded
+07:55:49 redis_cache.1 | 6654:M 24 Oct 2026 07:55:49.759 * monotonic clock: POSIX clock_gettime
+07:55:49 redis_cache.1 | 6654:M 24 Oct 2026 07:55:49.760 * Running mode=standalone, port=13000.
+07:55:49 redis_cache.1 | 6654:M 24 Oct 2026 07:55:49.760 # Server initialized
+07:55:49 redis_cache.1 | 6654:M 24 Oct 2026 07:55:49.760 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+07:55:49 redis_cache.1 | 6654:M 24 Oct 2026 07:55:49.760 * Ready to accept connections
+07:55:49 redis_queue.1 | 6655:C 24 Oct 2026 07:55:49.760 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+07:55:49 redis_queue.1 | 6655:C 24 Oct 2026 07:55:49.760 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6655, just started
+07:55:49 redis_queue.1 | 6655:C 24 Oct 2026 07:55:49.760 # Configuration loaded
+07:55:49 redis_queue.1 | 6655:M 24 Oct 2026 07:55:49.760 * monotonic clock: POSIX clock_gettime
+07:55:49 redis_queue.1 | 6655:M 24 Oct 2026 07:55:49.760 * Running mode=standalone, port=11000.
+07:55:49 redis_queue.1 | 6655:M 24 Oct 2026 07:55:49.760 # Server initialized
+07:55:49 redis_queue.1 | 6655:M 24 Oct 2026 07:55:49.760 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+07:55:49 redis_queue.1 | 6655:M 24 Oct 2026 07:55:49.761 * Ready to accept connections
+07:55:49 system        | worker.1 started (pid=6672)
+07:55:50 socketio.1    | Realtime service listening on: ws://0.0.0.0:9000
+07:58:41 redis_queue.1 | 6655:M 24 Oct 2026 07:58:41.970 * 10000 changes in 60 seconds. Saving...
+07:58:41 redis_queue.1 | 6655:M 24 Oct 2026 07:58:41.970 * Background saving started by pid 7924
+07:58:42 redis_queue.1 | 7924:C 24 Oct 2026 07:58:42.093 * DB saved on disk
+07:58:42 redis_queue.1 | 7924:C 24 Oct 2026 07:58:42.094 * Fork CoW for RDB: current 1 MB, peak 1 MB, average 0 MB
+07:58:42 redis_queue.1 | 6655:M 24 Oct 2026 07:58:42.171 * Background saving terminated with success
+07:59:43 redis_queue.1 | 6655:M 24 Oct 2026 07:59:43.030 * 10000 changes in 60 seconds. Saving...
+07:59:43 redis_queue.1 | 6655:M 24 Oct 2026 07:59:43.032 * Background saving started by pid 8913
+07:59:43 redis_queue.1 | 8913:C 24 Oct 2026 07:59:43.050 * DB saved on disk
+07:59:43 redis_queue.1 | 8913:C 24 Oct 2026 07:59:43.051 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+07:59:43 redis_queue.1 | 6655:M 24 Oct 2026 07:59:43.132 * Background saving terminated with success
+07:59:51 web.1         | Chromium executable is already executable: /home/runner/frappe-bench/chromium/chrome-linux/headless_shell
+07:59:54 web.1         | Headless Chromium closed successfully.
+07:59:54 web.1         | Exception in thread Thread-47 (process_request_thread):
+07:59:54 web.1         | Traceback (most recent call last):
+07:59:54 web.1         |   File "/opt/hostedtoolcache/Python/3.14.8/x64/lib/python3.14/threading.py", line 1082, in _bootstrap_inner
+07:59:54 web.1         |     self._context.run(self.run)
+07:59:54 web.1         |     ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+07:59:54 web.1         |   File "/opt/hostedtoolcache/Python/3.14.8/x64/lib/python3.14/threading.py", line 1024, in run
+07:59:54 web.1         |     self._target(*self._args, **self._kwargs)
+07:59:54 web.1         |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/opt/hostedtoolcache/Python/3.14.8/x64/lib/python3.14/socketserver.py", line 697, in process_request_thread
+07:59:54 web.1         |     self.finish_request(request, client_address)
+07:59:54 web.1         |     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/opt/hostedtoolcache/Python/3.14.8/x64/lib/python3.14/socketserver.py", line 362, in finish_request
+07:59:54 web.1         |     self.RequestHandlerClass(request, client_address, self)
+07:59:54 web.1         |     ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/opt/hostedtoolcache/Python/3.14.8/x64/lib/python3.14/socketserver.py", line 766, in __init__
+07:59:54 web.1         |     self.handle()
+07:59:54 web.1         |     ~~~~~~~~~~~^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/env/lib/python3.14/site-packages/werkzeug/serving.py", line 402, in handle
+07:59:54 web.1         |     super().handle()
+07:59:54 web.1         |     ~~~~~~~~~~~~~~^^
+07:59:54 web.1         |   File "/opt/hostedtoolcache/Python/3.14.8/x64/lib/python3.14/http/server.py", line 500, in handle
+07:59:54 web.1         |     self.handle_one_request()
+07:59:54 web.1         |     ~~~~~~~~~~~~~~~~~~~~~~~^^
+07:59:54 web.1         |   File "/opt/hostedtoolcache/Python/3.14.8/x64/lib/python3.14/http/server.py", line 488, in handle_one_request
+07:59:54 web.1         |     method()
+07:59:54 web.1         |     ~~~~~~^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/env/lib/python3.14/site-packages/werkzeug/serving.py", line 374, in run_wsgi
+07:59:54 web.1         |     execute(self.server.app)
+07:59:54 web.1         |     ~~~~~~~^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/env/lib/python3.14/site-packages/werkzeug/serving.py", line 335, in execute
+07:59:54 web.1         |     application_iter = app(environ, start_response)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/middlewares.py", line 31, in __call__
+07:59:54 web.1         |     return super().__call__(environ, patch_start_response)
+07:59:54 web.1         |            ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/env/lib/python3.14/site-packages/werkzeug/middleware/shared_data.py", line 251, in __call__
+07:59:54 web.1         |     return self.app(environ, start_response)
+07:59:54 web.1         |            ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/env/lib/python3.14/site-packages/werkzeug/middleware/shared_data.py", line 251, in __call__
+07:59:54 web.1         |     return self.app(environ, start_response)
+07:59:54 web.1         |            ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/app.py", line 98, in application
+07:59:54 web.1         |     app(environ, start_response),
+07:59:54 web.1         |     ~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/env/lib/python3.14/site-packages/werkzeug/wrappers/request.py", line 205, in application
+07:59:54 web.1         |     resp = f(*args[:-2] + (request,))
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/app.py", line 133, in application
+07:59:54 web.1         |     response = frappe.api.handle(request)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/api/__init__.py", line 63, in handle
+07:59:54 web.1         |     data = endpoint(**arguments)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/api/v1.py", line 41, in handle_rpc_call
+07:59:54 web.1         |     return frappe.handler.handle()
+07:59:54 web.1         |            ~~~~~~~~~~~~~~~~~~~~~^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/handler.py", line 53, in handle
+07:59:54 web.1         |     data = execute_cmd(cmd)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/handler.py", line 86, in execute_cmd
+07:59:54 web.1         |     return frappe.call(method, **frappe.form_dict)
+07:59:54 web.1         |            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/__init__.py", line 1150, in call
+07:59:54 web.1         |     return fn(*args, **newargs)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/typing_validations.py", line 42, in wrapper
+07:59:54 web.1         |     return func(*args, **kwargs)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/schoolos/schoolos/api/fees.py", line 267, in receipt
+07:59:54 web.1         |     pdf = frappe.get_print("Sales Invoice", doc.name, get_fees_print_format() or None, doc=doc, as_pdf=True)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/print_utils.py", line 129, in get_print
+07:59:54 web.1         |     pdf = _render_builder_pdf(pf_doc, doc_obj, letterhead, no_letterhead, password, style, settings)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/print_utils.py", line 215, in _render_builder_pdf
+07:59:54 web.1         |     return generator.render_pdf(password=password)
+07:59:54 web.1         |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/print_format_generator.py", line 618, in render_pdf
+07:59:54 web.1         |     pdf = get_chrome_pdf(
+07:59:54 web.1         |     	print_format=pf.name,
+07:59:54 web.1         |     ...<3 lines>...
+07:59:54 web.1         |     	pdf_generator="chrome",
+07:59:54 web.1         |     )
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/pdf.py", line 167, in wrapper
+07:59:54 web.1         |     result = func(*args, **kwargs)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/pdf.py", line 189, in get_chrome_pdf
+07:59:54 web.1         |     browser = Browser(generator, print_format, html, options)
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/pdf_generator/browser.py", line 26, in __init__
+07:59:54 web.1         |     self.prepare_header_footer()
+07:59:54 web.1         |     ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/pdf_generator/browser.py", line 148, in prepare_header_footer
+07:59:54 web.1         |     self._open_header_footer_pages()
+07:59:54 web.1         |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/pdf_generator/browser.py", line 450, in _open_header_footer_pages
+07:59:54 web.1         |     self.header_page.set_tab_url(get_host_url())
+07:59:54 web.1         |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/pdf_generator/page.py", line 217, in set_tab_url
+07:59:54 web.1         |     wait_and_fulfill()
+07:59:54 web.1         |     ~~~~~~~~~~~~~~~~^^
+07:59:54 web.1         |   File "/home/runner/frappe-bench/apps/frappe/frappe/utils/pdf_generator/page.py", line 111, in intercept_and_fulfill
+07:59:54 web.1         |     {"requestId": event[1].result(), "responseCode": 200},
+07:59:54 web.1         |                   ~~~~~~~~~~~~~~~^^
+07:59:54 web.1         | asyncio.exceptions.CancelledError

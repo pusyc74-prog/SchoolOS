@@ -1,0 +1,71 @@
+2026-10-24 07:52:36,989 DEBUG cd frappe-bench && uv venv env --seed --python /opt/hostedtoolcache/Python/3.14.8/x64/bin/python
+2026-10-24 07:52:37,968 LOG Getting frappe
+2026-10-24 07:52:37,968 DEBUG cd frappe-bench/apps && git clone https://github.com/frappe/frappe.git --branch version-16 --depth 1 --origin upstream
+2026-10-24 07:52:40,435 LOG Installing frappe
+2026-10-24 07:52:40,436 DEBUG cd /home/runner/frappe-bench && uv pip install --quiet -e /home/runner/frappe-bench/apps/frappe  --python /home/runner/frappe-bench/env/bin/python
+2026-10-24 07:52:53,846 DEBUG cd /home/runner/frappe-bench/apps/frappe && yarn install --check-files
+2026-10-24 07:53:21,168 LOG setting up backups
+2026-10-24 07:53:21,321 LOG backups were set up
+2026-10-24 07:53:21,321 INFO Bench frappe-bench initialized
+2026-10-24 07:53:21,747 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench set-config -g db_host 127.0.0.1
+2026-10-24 07:53:25,611 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench set-config -g root_password root
+2026-10-24 07:53:25,996 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench get-app --branch version-16 erpnext
+2026-10-24 07:53:26,332 LOG Getting erpnext
+2026-10-24 07:53:26,333 DEBUG cd ./apps && git clone https://github.com/frappe/erpnext.git --branch version-16 --depth 1 --origin upstream
+2026-10-24 07:53:33,710 LOG Installing erpnext
+2026-10-24 07:53:33,710 DEBUG cd /home/runner/frappe-bench && uv pip install --quiet -e /home/runner/frappe-bench/apps/erpnext  --python /home/runner/frappe-bench/env/bin/python
+2026-10-24 07:53:35,252 DEBUG cd /home/runner/frappe-bench/apps/erpnext && yarn install --check-files
+2026-10-24 07:53:51,951 DEBUG bench build --app erpnext
+2026-10-24 07:53:52,056 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench build --app erpnext
+2026-10-24 07:54:00,067 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench get-app --branch version-16 hrms
+2026-10-24 07:54:00,429 LOG Getting hrms
+2026-10-24 07:54:00,429 DEBUG cd ./apps && git clone https://github.com/frappe/hrms.git --branch version-16 --depth 1 --origin upstream
+2026-10-24 07:54:02,099 LOG Installing hrms
+2026-10-24 07:54:02,099 DEBUG cd /home/runner/frappe-bench && uv pip install --quiet -e /home/runner/frappe-bench/apps/hrms  --python /home/runner/frappe-bench/env/bin/python
+2026-10-24 07:54:02,401 DEBUG cd /home/runner/frappe-bench/apps/hrms && yarn install --check-files
+2026-10-24 07:54:38,766 DEBUG bench build --app hrms
+2026-10-24 07:54:38,869 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench build --app hrms
+2026-10-24 07:54:54,940 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench get-app --branch version-16 education
+2026-10-24 07:54:55,278 LOG Getting education
+2026-10-24 07:54:55,278 DEBUG cd ./apps && git clone https://github.com/frappe/education.git --branch version-16 --depth 1 --origin upstream
+2026-10-24 07:54:56,581 LOG Installing education
+2026-10-24 07:54:56,581 DEBUG cd /home/runner/frappe-bench && uv pip install --quiet -e /home/runner/frappe-bench/apps/education  --python /home/runner/frappe-bench/env/bin/python
+2026-10-24 07:54:56,881 DEBUG cd /home/runner/frappe-bench/apps/education && yarn install --check-files
+2026-10-24 07:55:05,933 DEBUG bench build --app education
+2026-10-24 07:55:06,045 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench build --app education
+2026-10-24 07:55:12,706 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench get-app /home/runner/work/SchoolOS/SchoolOS
+2026-10-24 07:55:12,716 LOG Getting SchoolOS
+2026-10-24 07:55:12,717 DEBUG cd ./apps && git clone /home/runner/work/SchoolOS/SchoolOS --branch main --depth 1 --origin upstream
+2026-10-24 07:55:12,845 LOG Installing schoolos
+2026-10-24 07:55:12,846 DEBUG cd /home/runner/frappe-bench && uv pip install --quiet -e /home/runner/frappe-bench/apps/schoolos  --python /home/runner/frappe-bench/env/bin/python
+2026-10-24 07:55:13,153 DEBUG bench build --app schoolos
+2026-10-24 07:55:13,261 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench build --app schoolos
+2026-10-24 07:55:14,773 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench setup requirements --dev --python
+2026-10-24 07:55:14,789 DEBUG cd /home/runner/frappe-bench && uv pip install --quiet coverage~=7.10.0 Faker~=18.10.1 pyngrok~=7.5.0 unittest-xml-reporting~=3.2.0 watchdog~=6.0.0 hypothesis~=6.77.0 responses==0.23.1 freezegun~=1.5.5  --python /home/runner/frappe-bench/env/bin/python
+2026-10-24 07:55:15,215 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench new-site test_site --db-root-password root --admin-password admin --mariadb-user-host-login-scope=%
+2026-10-24 07:55:48,237 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site set-config allow_tests true
+2026-10-24 07:55:48,671 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site set-config host_name http://test_site:8000
+2026-10-24 07:55:49,106 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench use test_site
+2026-10-24 07:55:49,562 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench start
+2026-10-24 07:55:49,907 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench serve --port 8000
+2026-10-24 07:55:49,907 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench socketio
+2026-10-24 07:55:49,907 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench schedule
+2026-10-24 07:55:49,913 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench worker
+2026-10-24 07:55:50,551 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site install-app erpnext
+2026-10-24 07:56:52,813 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site install-app hrms
+2026-10-24 07:57:29,436 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site install-app education
+2026-10-24 07:57:40,627 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site install-app schoolos
+2026-10-24 07:57:45,094 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site execute schoolos.setup_site.complete --kwargs {'school': 'Demo Public School', 'abbr': 'DPS', 'email': 'admin@example.com', 'password': 'admin'}
+2026-10-24 07:58:00,458 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site execute schoolos.demo.make_demo --kwargs {'strict': 1}
+2026-10-24 07:58:42,504 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site migrate
+2026-10-24 07:58:47,747 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site migrate
+2026-10-24 07:58:52,764 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench build
+2026-10-24 07:59:31,684 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site run-tests --app schoolos
+2026-10-24 07:59:54,890 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site execute schoolos.setup_site.check
+2026-10-24 07:59:55,494 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site backup --with-files
+2026-10-24 07:59:58,331 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site test_site execute frappe.db.count --args ['Student']
+2026-10-24 07:59:58,883 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench new-site restore_check --db-root-password root --admin-password admin --mariadb-user-host-login-scope=%
+2026-10-24 08:00:21,303 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site restore_check restore sites/test_site/private/backups/20261024_132955-test_site-database.sql.gz --with-public-files  --with-private-files sites/test_site/private/backups/20261024_132955-test_site-private-files.tar --db-root-password root
+2026-10-24 08:00:32,687 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site restore_check migrate
+2026-10-24 08:00:38,193 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench --site restore_check execute frappe.db.count --args ['Student']
+2026-10-24 08:00:38,783 INFO /opt/hostedtoolcache/Python/3.14.8/x64/bin/bench drop-site restore_check --db-root-password root --force
