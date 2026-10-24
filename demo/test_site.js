@@ -77,7 +77,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	// ---- flow 2: parent applies for leave -> teacher approves -> parent sees Approved
 	p = await open("/parents/");
 	await p.locator("[data-student]:not([data-sub])").first().click(); await sleep(700);
-	const leaveTab = p.locator('[data-sv="leave"]');
+	const leaveTab = p.locator('.sections [data-sv="leave"]');
 	ok(await leaveTab.count() > 0, "parent: leave tab");
 	await leaveTab.click(); await sleep(700);
 	const d = new Date(); d.setDate(d.getDate() + 12);
@@ -89,6 +89,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	ok((await p.locator("#screen").innerText()).includes("Cousin's wedding"), "parent: leave request listed");
 	await p.close();
 	p = await open("/teachers/");
+	ok(/Leave\s*1|Leave\s*\d/.test(await p.locator(".sections").innerText()), "teacher: leave tab shows a count");
+	await p.click('.sections [data-sv="leave"]'); await sleep(700);
 	const tTxt = await p.locator("#screen").innerText();
 	ok(tTxt.includes("Cousin's wedding"), "teacher: sees the new leave request");
 	const li = p.locator("li[data-leave]", { hasText: "Cousin's wedding" });
@@ -97,7 +99,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	await p.close();
 	p = await open("/parents/");
 	await p.locator("[data-student]:not([data-sub])").first().click(); await sleep(600);
-	await p.locator('[data-sv="leave"]').click(); await sleep(700);
+	await p.locator('.sections [data-sv="leave"]').click(); await sleep(700);
 	const lv = await p.locator("#screen").innerText();
 	ok(/Approved/.test(lv.split("Cousin's wedding")[0].slice(-400) + lv.split("Cousin's wedding")[1]?.slice(0, 400)), "parent: sees leave approved");
 	await p.screenshot({ path: `${SHOTS}/parents-leave.png` });
@@ -105,14 +107,13 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 	// ---- flow 3: teacher posts homework -> parent & student see it
 	p = await open("/teachers/");
-	const hwBtn = p.locator("#screen button", { hasText: /homework/i }).first();
-	if (await hwBtn.count()) { await hwBtn.click(); await sleep(600); }
+	await p.click('.sections [data-sv="homework"]'); await sleep(700);
 	await p.fill('#hw-form input[name="title"]', "Learn the 12 times table (demo)");
 	await p.click('#hw-form button[type="submit"]'); await sleep(1200);
 	await p.close();
 	for (const app of ["parents", "students"]) {
 		p = await open(`/${app}/`);
-		if (app === "parents") { await p.locator("[data-student]:not([data-sub])").first().click(); await sleep(700); }
+		await p.click('.sections [data-sv="homework"]'); await sleep(700);
 		ok((await p.locator("#screen").innerText()).includes("12 times table"), `${app}: sees the new homework`);
 		await p.close();
 	}
@@ -120,7 +121,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	// ---- flow 4: parent pays fee -> office collected today goes up
 	p = await open("/parents/");
 	await p.locator("[data-student]:not([data-sub])").first().click(); await sleep(600);
-	await p.locator('[data-sv="fees"]').click(); await sleep(700);
+	await p.locator('.sections [data-sv="fees"]').click(); await sleep(700);
 	const pay = p.locator("#screen button", { hasText: /^Pay/ }).first();
 	ok(await pay.count() > 0, "parent: pay button");
 	if (await pay.count()) {

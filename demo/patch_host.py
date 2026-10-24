@@ -106,7 +106,7 @@ BOOT = r'''
 		const inTabs = tabs.some((t) => t.id === S.current.id) || S.current.id === APP.home;
 		let html = tabs.length > 1 ? tabs.map((t) => `<button type="button" data-go="${t.id}" aria-current="${t.id === S.current.id}">${t.label}</button>`).join("") : "";
 		if (!inTabs) html = `<button type="button" class="back" data-go="${APP.home}">‹ Back</button>` + html;
-		if (APP.dev === "desktop") html += `<a class="apps" href="../">All apps</a>`;
+		if (APP.dev === "desktop" && html) html += `<a class="apps" href="../">All apps</a>`;
 		n.className = `appnav ${APP.dev}`;
 		n.innerHTML = html;
 		n.hidden = !html;

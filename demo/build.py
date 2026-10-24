@@ -17,6 +17,7 @@ PROTO = os.path.join(HERE, "prototype")
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 from patch_host import COLOR, MONOGRAM, SCHOOL, patch  # noqa: E402
+from scope_css import scope  # noqa: E402
 
 OUT = os.environ.get("OUT") or os.path.join(HERE, "site")
 VERSION = "1"
@@ -27,17 +28,16 @@ APPS = [
      "tabs": []},
     {"key": "teachers", "label": "Teachers", "short": f"{MONOGRAM} Teachers", "dev": "phone", "home": "teacher",
      "blurb": "Today's periods, attendance, marks, homework, lesson log, student notes and leave approvals.",
-     "tabs": [("teacher", "Today"), ("attendance", "Attendance"), ("marks", "Marks")]},
+     "tabs": []},
     {"key": "students", "label": "Students", "short": f"{MONOGRAM} Students", "dev": "phone", "home": "student",
      "blurb": "Homework and diary, timetable, results, syllabus progress and school notices.", "tabs": []},
     {"key": "principal", "label": "Principal", "short": f"{MONOGRAM} Principal", "dev": "desktop", "home": "principal", "admin": True,
      "blurb": "The whole school at a glance: attendance, fees, accounts, syllabus, staff, approvals and circulars.",
-     "tabs": [("principal", "Dashboard"), ("circular", "Send circular"), ("reportcard", "Report card"), ("alertlog", "Alerts sent")]},
+     "tabs": []},
     {"key": "office", "label": "Office & Accounts", "short": f"{MONOGRAM} Office", "dev": "desktop", "home": "fees", "admin": True,
      "blurb": "Fees and reminders, accounts and approvals, Tally export, student import, report cards and settings.",
-     "tabs": [("fees", "Fees"), ("accounts", "Accounts"), ("tally", "Tally export"), ("import", "Import students"),
-              ("rctemplate", "Report cards"), ("circular", "Circulars"), ("alertlog", "Alert log"),
-              ("modules", "Modules"), ("branding", "Settings")]},
+     "tabs": [("fees", "Dashboard"), ("import", "Import students"), ("rctemplate", "Report cards"), ("circular", "Circulars"),
+              ("alertlog", "Messages sent"), ("modules", "Modules"), ("branding", "Settings")]},
 ]
 
 APP_CSS = """
@@ -117,7 +117,7 @@ def build_page(shell, app_js, host_js, app=None):
             "key": app["key"], "label": app["label"], "title": f"{SCHOOL} · {app['label']}", "dev": app["dev"],
             "home": app["home"], "admin": bool(app.get("admin")),
             "tabs": [{"id": i, "label": lbl} for i, lbl in app["tabs"]]}) + ";\n"
-    html = html.replace("/*APP_CSS*/", open(os.path.join(PROTO, "app.css")).read() + APP_CSS)
+    html = html.replace("/*APP_CSS*/", scope(open(os.path.join(REPO, "schoolos", "public", "css", "school.css")).read()) + APP_CSS)
     html = html.replace("/*APP_JS*/", app_js).replace("/*HOST_JS*/", cfg + host_js)
     i = html.index('<div class="shell">')
     return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n' + html[:i]
