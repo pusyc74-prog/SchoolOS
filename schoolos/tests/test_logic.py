@@ -279,6 +279,20 @@ class TestFeeNumbers(SchoolOSTestCase):
             for inv in f["invoices"]:
                 self.assertAlmostEqual(sum(flt(h.get("amount") or 0) for h in inv["heads"]), inv["total"], places=0)
 
+    def test_receipt_figures(self):
+        from schoolos.api.fees import receipt_context
+
+        name = frappe.db.sql("""select si.name from `tabSales Invoice` si where si.docstatus=1 and ifnull(si.student,'')!=''
+                                and si.outstanding_amount < si.grand_total limit 1""")[0][0]
+        doc = frappe.get_doc("Sales Invoice", name)
+        c = receipt_context(doc)
+        self.assertEqual(len(c["items"]), len(doc.items))
+        self.assertTrue(c["payments"], "a part-paid bill lists its payments")
+        self.assertEqual(c["settled"], flt(doc.outstanding_amount) <= 0.005)
+        html = frappe.render_template("schoolos/templates/includes/fee_receipt.html", c)
+        self.assertIn(c["student"], html)
+        self.assertIn("Fee receipt", html)
+
     def test_payment_reduces_dues_everywhere(self):
         from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 

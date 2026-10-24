@@ -1,0 +1,49 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body { font-family: "Noto Sans", "DejaVu Sans", Arial, sans-serif; color: #1a2130; font-size: 12px; margin: 0; }
+  .head { display: table; width: 100%; border-bottom: 2px solid #1a2130; padding-bottom: 8px; margin-bottom: 12px; }
+  .head > div { display: table-cell; vertical-align: middle; }
+  .head img { height: 48px; margin-right: 12px; }
+  .school { font-size: 17px; font-weight: bold; }
+  .addr { color: #5d6676; }
+  h1 { font-size: 15px; margin: 0 0 10px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+  td, th { padding: 5px 4px; text-align: left; border-bottom: 1px solid #e2e5ea; }
+  th { color: #5d6676; font-weight: normal; }
+  .num { text-align: right; }
+  .info td { border: 0; padding: 2px 4px; }
+  .info td:first-child { color: #5d6676; width: 30%; }
+  .total td { font-weight: bold; border-bottom: 0; }
+  .balance { font-size: 14px; font-weight: bold; }
+  .paid { color: #1d7a4b; }
+  .due { color: #b42318; }
+  .foot { color: #5d6676; font-size: 10px; margin-top: 18px; }
+</style></head>
+<body>
+  <div class="head">
+    {% if logo %}<div style="width:60px"><img src="{{ logo }}"></div>{% endif %}
+    <div><div class="school">{{ school }}</div>{% if address %}<div class="addr">{{ address }}</div>{% endif %}</div>
+  </div>
+  <h1>Fee receipt</h1>
+  <table class="info">
+    <tr><td>Student</td><td><b>{{ student }}</b></td></tr>
+    {% if section %}<tr><td>Class</td><td>{{ section }}</td></tr>{% endif %}
+    {% if admission_no %}<tr><td>Admission / GR No</td><td>{{ admission_no }}</td></tr>{% endif %}
+    <tr><td>Bill</td><td>{{ invoice }}, dated {{ date }}{% if due %}, due {{ due }}{% endif %}</td></tr>
+  </table>
+  <table>
+    <tr><th>Fee</th><th class="num">Amount</th></tr>
+    {% for i in items %}<tr><td>{{ i.head }}</td><td class="num">{{ i.amount }}</td></tr>{% endfor %}
+    <tr class="total"><td>Total</td><td class="num">{{ total }}</td></tr>
+  </table>
+  {% if payments %}
+  <table>
+    <tr><th>Paid on</th><th>Mode</th><th>Reference</th><th class="num">Amount</th></tr>
+    {% for p in payments %}<tr><td>{{ p.date }}</td><td>{{ p.mode }}</td><td>{{ p.ref }}</td><td class="num">{{ p.amount }}</td></tr>{% endfor %}
+  </table>
+  {% endif %}
+  <p class="balance">Paid {{ paid }}.
+    {% if settled %}<span class="paid">Fully paid.</span>{% else %}<span class="due">Balance due {{ balance }}.</span>{% endif %}</p>
+  <p class="foot">Computer-generated receipt, printed {{ printed }}. No signature needed.</p>
+</body></html>

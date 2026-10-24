@@ -252,21 +252,50 @@ def for_student(student: str):
     return student_fees(student)
 
 
+def receipt_context(doc):
+    """Everything the fee receipt shows, for one submitted fee invoice."""
+    s = get_settings()
+    from schoolos.api.learning import _main_group
+
+    pays = frappe.db.sql(
+        """select pe.posting_date as date, pe.mode_of_payment as mode, pe.reference_no, per.allocated_amount as amount
+           from `tabPayment Entry Reference` per join `tabPayment Entry` pe on pe.name = per.parent
+           where pe.docstatus = 1 and per.reference_doctype = 'Sales Invoice' and per.reference_name = %s
+           order by pe.posting_date""", doc.name, as_dict=True)
+    money = lambda v: fmt_money(v, currency=doc.currency)
+    group = _main_group(doc.student)
+    return {
+        "school": s.school_display_name or frappe.db.get_default("company") or "School",
+        "address": s.school_address or "",
+        "logo": frappe.utils.get_url(s.school_logo) if s.school_logo else None,
+        "student": frappe.db.get_value("Student", doc.student, "student_name") or doc.customer_name,
+        "admission_no": frappe.db.get_value("Student", doc.student, "schoolos_admission_no") or "",
+        "section": (group or "").split(" (")[0],
+        "invoice": doc.name, "date": formatdate(doc.posting_date), "due": formatdate(doc.due_date) if doc.due_date else "",
+        "items": [{"head": i.item_name, "amount": money(i.amount)} for i in doc.items],
+        "total": money(doc.grand_total), "paid": money(flt(doc.grand_total) - flt(doc.outstanding_amount)),
+        "balance": money(doc.outstanding_amount), "settled": flt(doc.outstanding_amount) <= 0.005,
+        "payments": [{"date": formatdate(p.date), "mode": p.mode or "", "ref": p.reference_no or "", "amount": money(p.amount)} for p in pays],
+        "printed": formatdate(today()),
+    }
+
+
 @frappe.whitelist()
 def receipt(invoice: str):
-    """PDF of a fee invoice / receipt for the student, their guardians or staff."""
+    """PDF fee receipt for the student, their guardians or staff.
+
+    Rendered from SchoolOS's own simple template with wkhtmltopdf (like report cards), not the
+    print-builder format, which needs a headless Chrome that loads pages back from this server
+    and can time out under load."""
     require("fees")
     doc = frappe.get_doc("Sales Invoice", invoice)
     if not doc.get("student") or doc.docstatus != 1:
         raise frappe.PermissionError
     require_student_access(doc.student)
-    from education.education.api import get_fees_print_format
+    from frappe.utils.pdf import get_pdf
 
-    frappe.flags.ignore_print_permissions = True
-    try:
-        pdf = frappe.get_print("Sales Invoice", doc.name, get_fees_print_format() or None, doc=doc, as_pdf=True)
-    finally:
-        frappe.flags.ignore_print_permissions = False
+    html = frappe.render_template("schoolos/templates/includes/fee_receipt.html", receipt_context(doc))
+    pdf = get_pdf(html, {"page-size": "A5"})
     frappe.local.response.filename = f"Fee receipt {doc.name}.pdf"
     frappe.local.response.filecontent = pdf
     frappe.local.response.type = "pdf"
