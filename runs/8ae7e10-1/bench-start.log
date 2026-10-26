@@ -1,0 +1,63 @@
+09:13:50 system        | redis_cache.1 started (pid=6513)
+09:13:50 system        | redis_queue.1 started (pid=6517)
+09:13:50 redis_cache.1 | 6516:C 26 Oct 2026 09:13:50.130 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+09:13:50 redis_cache.1 | 6516:C 26 Oct 2026 09:13:50.130 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6516, just started
+09:13:50 redis_cache.1 | 6516:C 26 Oct 2026 09:13:50.130 # Configuration loaded
+09:13:50 redis_cache.1 | 6516:M 26 Oct 2026 09:13:50.132 * monotonic clock: POSIX clock_gettime
+09:13:50 redis_cache.1 | 6516:M 26 Oct 2026 09:13:50.132 * Running mode=standalone, port=13000.
+09:13:50 redis_cache.1 | 6516:M 26 Oct 2026 09:13:50.132 # Server initialized
+09:13:50 redis_cache.1 | 6516:M 26 Oct 2026 09:13:50.132 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+09:13:50 redis_cache.1 | 6516:M 26 Oct 2026 09:13:50.133 * Ready to accept connections
+09:13:50 redis_queue.1 | 6518:C 26 Oct 2026 09:13:50.134 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+09:13:50 system        | socketio.1 started (pid=6520)
+09:13:50 redis_queue.1 | 6518:C 26 Oct 2026 09:13:50.135 # Redis version=7.0.15, bits=64, commit=00000000, modified=0, pid=6518, just started
+09:13:50 redis_queue.1 | 6518:C 26 Oct 2026 09:13:50.135 # Configuration loaded
+09:13:50 redis_queue.1 | 6518:M 26 Oct 2026 09:13:50.135 * monotonic clock: POSIX clock_gettime
+09:13:50 redis_queue.1 | 6518:M 26 Oct 2026 09:13:50.136 * Running mode=standalone, port=11000.
+09:13:50 redis_queue.1 | 6518:M 26 Oct 2026 09:13:50.136 # Server initialized
+09:13:50 system        | web.1 started (pid=6527)
+09:13:50 redis_queue.1 | 6518:M 26 Oct 2026 09:13:50.136 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+09:13:50 redis_queue.1 | 6518:M 26 Oct 2026 09:13:50.137 * Ready to accept connections
+09:13:50 system        | worker.1 started (pid=6536)
+09:13:50 system        | schedule.1 started (pid=6534)
+09:13:50 socketio.1    | Realtime service listening on: ws://0.0.0.0:9000
+09:16:47 redis_queue.1 | 6518:M 26 Oct 2026 09:16:47.191 * 10000 changes in 60 seconds. Saving...
+09:16:47 redis_queue.1 | 6518:M 26 Oct 2026 09:16:47.192 * Background saving started by pid 7878
+09:16:47 redis_queue.1 | 7878:C 26 Oct 2026 09:16:47.202 * DB saved on disk
+09:16:47 redis_queue.1 | 7878:C 26 Oct 2026 09:16:47.204 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+09:16:47 redis_queue.1 | 6518:M 26 Oct 2026 09:16:47.292 * Background saving terminated with success
+09:17:48 redis_queue.1 | 6518:M 26 Oct 2026 09:17:48.058 * 10000 changes in 60 seconds. Saving...
+09:17:48 redis_queue.1 | 6518:M 26 Oct 2026 09:17:48.059 * Background saving started by pid 8770
+09:17:48 redis_queue.1 | 8770:C 26 Oct 2026 09:17:48.084 * DB saved on disk
+09:17:48 redis_queue.1 | 8770:C 26 Oct 2026 09:17:48.086 * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+09:17:48 redis_queue.1 | 6518:M 26 Oct 2026 09:17:48.159 * Background saving terminated with success
+09:18:16 web.1         | Traceback (most recent call last):
+09:18:16 web.1         |   File "apps/frappe/frappe/app.py", line 114, in application
+09:18:16 web.1         |     init_request(request)
+09:18:16 web.1         |     ~~~~~~~~~~~~^^^^^^^^^
+09:18:16 web.1         |   File "apps/frappe/frappe/app.py", line 217, in init_request
+09:18:16 web.1         |     frappe.local.http_request = HTTPRequest()
+09:18:16 web.1         |                                 ~~~~~~~~~~~^^
+09:18:16 web.1         |   File "apps/frappe/frappe/auth.py", line 48, in __init__
+09:18:16 web.1         |     self.validate_csrf_token()
+09:18:16 web.1         |     ~~~~~~~~~~~~~~~~~~~~~~~~^^
+09:18:16 web.1         |   File "apps/frappe/frappe/auth.py", line 97, in validate_csrf_token
+09:18:16 web.1         |     frappe.throw(_("Invalid Request"), frappe.CSRFTokenError)
+09:18:16 web.1         |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+09:18:16 web.1         |   File "apps/frappe/frappe/utils/messages.py", line 159, in throw
+09:18:16 web.1         |     msgprint(
+09:18:16 web.1         |     ~~~~~~~~^
+09:18:16 web.1         |     	msg,
+09:18:16 web.1         |      ^^^^
+09:18:16 web.1         |     ...<7 lines>...
+09:18:16 web.1         |     	allow_dangerous_html=allow_dangerous_html,
+09:18:16 web.1         |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+09:18:16 web.1         |     )
+09:18:16 web.1         |     ^
+09:18:16 web.1         |   File "apps/frappe/frappe/utils/messages.py", line 118, in msgprint
+09:18:16 web.1         |     _raise_exception()
+09:18:16 web.1         |     ~~~~~~~~~~~~~~~~^^
+09:18:16 web.1         |   File "apps/frappe/frappe/utils/messages.py", line 59, in _raise_exception
+09:18:16 web.1         |     raise exc
+09:18:16 web.1         | frappe.exceptions.CSRFTokenError: Invalid Request
+09:18:16 web.1         | 
