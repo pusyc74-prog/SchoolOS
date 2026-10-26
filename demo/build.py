@@ -36,8 +36,8 @@ APPS = [
      "tabs": []},
     {"key": "office", "label": "Office & Accounts", "short": f"{MONOGRAM} Office", "dev": "desktop", "home": "fees", "admin": True,
      "blurb": "Fees and reminders, accounts and approvals, Tally export, student import, report cards and settings.",
-     "tabs": [("fees", "Dashboard"), ("import", "Import students"), ("rctemplate", "Report cards"), ("circular", "Circulars"),
-              ("alertlog", "Messages sent"), ("modules", "Modules"), ("branding", "Settings")]},
+     "tabs": [], "extra": [("import", "Import students", "users"), ("rctemplate", "Report cards", "file"), ("circular", "Send a circular", "megaphone"),
+              ("alertlog", "Messages sent", "bell"), ("modules", "Modules on / off", "layers"), ("branding", "Settings", "settings")]},
 ]
 
 APP_CSS = """
@@ -116,7 +116,8 @@ def build_page(shell, app_js, host_js, app=None):
         cfg = "window.SOS_APP = " + json.dumps({
             "key": app["key"], "label": app["label"], "title": f"{SCHOOL} · {app['label']}", "dev": app["dev"],
             "home": app["home"], "admin": bool(app.get("admin")),
-            "tabs": [{"id": i, "label": lbl} for i, lbl in app["tabs"]]}) + ";\n"
+            "tabs": [{"id": i, "label": lbl} for i, lbl in app["tabs"]],
+            "extra": [{"id": i, "label": lbl, "icon": ic} for i, lbl, ic in app.get("extra", [])]}) + ";\n"
     html = html.replace("/*APP_CSS*/", scope(open(os.path.join(REPO, "schoolos", "public", "css", "school.css")).read()) + APP_CSS)
     html = html.replace("/*APP_JS*/", app_js).replace("/*HOST_JS*/", cfg + host_js)
     i = html.index('<div class="shell">')

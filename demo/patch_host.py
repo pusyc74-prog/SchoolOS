@@ -118,6 +118,7 @@ BOOT = r'''
 	const start = (location.hash || "").replace("#", "");
 	if (APP) {
 		if (APP.key === "office") Object.assign(CONTEXT.principal, { full_name: "Meena Joshi", user: "accounts@school" });
+		if (APP.extra && APP.extra.length) { window.__schoolosExtraMenu = APP.extra; window.__schoolosExtraGo = (id) => go(id); }
 		document.body.classList.add("appmode", "app-" + APP.dev, APP.admin ? "app-admin" : "app-user");
 		document.title = APP.title;
 		go(ALL.some((s) => s.id === start) && start !== "home" ? start : APP.home);

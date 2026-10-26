@@ -6,6 +6,17 @@ const SHOTS = process.env.SHOTS || ".";
 let fails = 0;
 const ok = (c, m) => { console.log((c ? "PASS " : "FAIL ") + m); if (!c) fails++; };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// go to a section the way a person would: the phone's bottom bar, or the menu (opened first on phones)
+async function nav(p, sv) {
+	const b = p.locator(`#bottom-nav [data-nav-sv="${sv}"]`);
+	if ((await b.count()) && (await b.first().isVisible())) await b.first().click();
+	else {
+		const m = p.locator("#menu-btn");
+		if (await m.isVisible()) { await m.click(); await sleep(350); }
+		await p.locator(`#tabs [data-nav-sv="${sv}"]`).click();
+	}
+	await sleep(800);
+}
 
 (async () => {
 	const browser = await chromium.launch();
@@ -50,11 +61,25 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 		ok(inst.installabilityErrors.length === 0, `${key}: installable ${JSON.stringify(inst.installabilityErrors.map((e) => e.errorId))}`);
 		await p.screenshot({ path: `${SHOTS}/${key}-${dev}.png` });
 		// every tab of the app opens
-		for (const b of await p.locator("#appnav button[data-go]").all()) {
-			const label = await b.innerText();
-			await b.click(); await sleep(700);
+		// every section in the menu, the way a person reaches it
+		const secs = await p.locator("#tabs [data-nav-sv]").evaluateAll((els) => els.map((e) => e.dataset.navSv));
+		ok(secs.length > 1, `${key}: menu lists its sections (${secs.join(", ")})`);
+		for (const sv of secs) {
+			await nav(p, sv);
+			const h = await p.locator("#app").innerHTML();
+			ok(h.length > 400 && !/class="error"|Not in this prototype|undefined|NaN/.test(h), `${key} → ${sv}`);
+		}
+		// other views (Fees, Accounts, Calendar...) and office tools
+		for (const v of await p.locator("#tabs [data-view]").evaluateAll((els) => els.map((e) => e.dataset.view))) {
+			if (dev === "phone" && (await p.locator("#menu-btn").isVisible())) { await p.click("#menu-btn"); await sleep(300); }
+			await p.click(`#tabs [data-view="${v}"]`); await sleep(800);
+			ok(!/class="error"/.test(await p.locator("#app").innerHTML()), `${key} → view ${v}`);
+		}
+		for (const x of await p.locator("#tabs [data-extra]").evaluateAll((els) => els.map((e) => e.dataset.extra))) {
+			await p.click(`#tabs [data-extra="${x}"]`); await sleep(700);
 			const h = await p.locator("#screen").innerHTML();
-			ok(h.length > 800 && !/class="error"|Not in this prototype/.test(h), `${key} → ${label}`);
+			ok(h.length > 800 && !/Not in this prototype/.test(h), `${key} → tool ${x}`);
+			await p.click("#appnav .back"); await sleep(800);
 		}
 		await p.close();
 	}
@@ -77,9 +102,9 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	// ---- flow 2: parent applies for leave -> teacher approves -> parent sees Approved
 	p = await open("/parents/");
 	await p.locator("[data-student]:not([data-sub])").first().click(); await sleep(700);
-	const leaveTab = p.locator('.sections [data-sv="leave"]');
+	const leaveTab = p.locator('#tabs [data-nav-sv="leave"]');
 	ok(await leaveTab.count() > 0, "parent: leave tab");
-	await leaveTab.click(); await sleep(700);
+	await nav(p, "leave");
 	const d = new Date(); d.setDate(d.getDate() + 12);
 	const iso = d.toISOString().slice(0, 10);
 	await p.fill('#leave-form input[name="from_date"]', iso);
@@ -89,8 +114,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	ok((await p.locator("#screen").innerText()).includes("Cousin's wedding"), "parent: leave request listed");
 	await p.close();
 	p = await open("/teachers/");
-	ok(/Leave\s*1|Leave\s*\d/.test(await p.locator(".sections").innerText()), "teacher: leave tab shows a count");
-	await p.click('.sections [data-sv="leave"]'); await sleep(700);
+	ok((await p.locator('#tabs [data-nav-sv="leave"] .count').count()) === 1, "teacher: leave section shows a count");
+	await nav(p, "leave");
 	const tTxt = await p.locator("#screen").innerText();
 	ok(tTxt.includes("Cousin's wedding"), "teacher: sees the new leave request");
 	const li = p.locator("li[data-leave]", { hasText: "Cousin's wedding" });
@@ -99,7 +124,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	await p.close();
 	p = await open("/parents/");
 	await p.locator("[data-student]:not([data-sub])").first().click(); await sleep(600);
-	await p.locator('.sections [data-sv="leave"]').click(); await sleep(700);
+	await nav(p, "leave");
 	const lv = await p.locator("#screen").innerText();
 	ok(/Approved/.test(lv.split("Cousin's wedding")[0].slice(-400) + lv.split("Cousin's wedding")[1]?.slice(0, 400)), "parent: sees leave approved");
 	await p.screenshot({ path: `${SHOTS}/parents-leave.png` });
@@ -107,13 +132,13 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 	// ---- flow 3: teacher posts homework -> parent & student see it
 	p = await open("/teachers/");
-	await p.click('.sections [data-sv="homework"]'); await sleep(700);
+	await nav(p, "homework");
 	await p.fill('#hw-form input[name="title"]', "Learn the 12 times table (demo)");
 	await p.click('#hw-form button[type="submit"]'); await sleep(1200);
 	await p.close();
 	for (const app of ["parents", "students"]) {
 		p = await open(`/${app}/`);
-		await p.click('.sections [data-sv="homework"]'); await sleep(700);
+		await nav(p, "homework");
 		ok((await p.locator("#screen").innerText()).includes("12 times table"), `${app}: sees the new homework`);
 		await p.close();
 	}
@@ -121,7 +146,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	// ---- flow 4: parent pays fee -> office collected today goes up
 	p = await open("/parents/");
 	await p.locator("[data-student]:not([data-sub])").first().click(); await sleep(600);
-	await p.locator('.sections [data-sv="fees"]').click(); await sleep(700);
+	await nav(p, "fees");
 	const pay = p.locator("#screen button", { hasText: /^Pay/ }).first();
 	ok(await pay.count() > 0, "parent: pay button");
 	if (await pay.count()) {

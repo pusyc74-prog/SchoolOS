@@ -119,7 +119,11 @@
 		"overdue": "थकीत", "due this week": "या आठवड्यात देय", "Income and expenses by month": "महिनावार उत्पन्न व खर्च", "School accounts": "शाळेचे हिशोब",
 		"Total to pay": "एकूण देय", "Unpaid bills": "न भरलेली बिले", "Received": "मिळाले", "Paid out": "दिले", "Entered by": "नोंद करणारे",
 		"financial year": "आर्थिक वर्ष", "days absent out of": "दिवस गैरहजर, एकूण", "No students below the limit": "मर्यादेखाली कोणी नाही",
-		"Dashed line": "तुटक रेषा", "target": "लक्ष्य", "to": "ते", "Attachment": "जोडलेली फाईल", "Coming up": "येणारे",
+		"Dashed line": "तुटक रेषा", "Lunch break": "जेवणाची सुट्टी", "Short break": "छोटी सुट्टी", "Free period": "मोकळी तासिका", "min": "मिनिटे",
+		"Days present": "उपस्थित दिवस", "School days": "शाळेचे दिवस", "See all": "सर्व पहा", "Latest grade": "नवीनतम श्रेणी", "chapters": "धडे",
+		"Chapters covered": "पूर्ण झालेले धडे", "Syllabus completed": "अभ्यासक्रम पूर्ण", "chapters done across all subjects": "धडे सर्व विषयांत पूर्ण",
+		"Notices from the school": "शाळेच्या सूचना", "Fees this year": "या वर्षीची फी", "Paid": "भरले", "this week": "या आठवड्यात", "More": "अधिक",
+		"Office tools": "कार्यालयीन साधने", "Teacher": "शिक्षक", "Parent": "पालक", "Student": "विद्यार्थी", "Office": "कार्यालय", "target": "लक्ष्य", "to": "ते", "Attachment": "जोडलेली फाईल", "Coming up": "येणारे",
 	});
 	const t = (s) => (lang === "mr" && MR[s] !== undefined ? MR[s] : s);
 	const loc = () => (lang === "mr" ? "mr-IN" : "en-IN");
@@ -188,23 +192,78 @@
 	const card = (title, body, opts = {}) => panel(title, body, opts);
 	const empty = (text) => `<div class="empty">${esc(t(text))}</div>`;
 	const status = (tone, text) => `<span class="status ${tone}">${esc(text)}</span>`;
-	const sections = (list, active) => list.length < 2 ? "" :
-		`<nav class="sections" role="tablist">${list.map(([k, l, badge]) =>
-			`<button type="button" role="tab" data-sv="${k}" aria-selected="${k === active}">${esc(t(l))}${badge ? `<span class="count">${badge}</span>` : ""}</button>`).join("")}</nav>`;
-	const screen = ({ title, kicker = "", subs = [], active = "", body = "", lead = "", actions = "" }) =>
-		`<div class="wrap">${lead}<header class="page-head"><div>${kicker ? `<p class="kicker">${kicker}</p>` : ""}<h1>${title}</h1></div>${actions ? `<div class="page-actions">${actions}</div>` : ""}</header>
-		${sections(subs, active)}<div class="content">${body}</div></div>`;
-	// a row of 2–4 numbers, each with a plain label; tapping one opens its tab
+	// line icons (24px grid, drawn with the current text colour)
+	const ICONS = {
+		menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+		bell: '<path d="M6 9a6 6 0 0 1 12 0c0 6.5 2.5 8 2.5 8h-17S6 15.5 6 9z"/><path d="M10.2 20.5a2 2 0 0 0 3.6 0"/>',
+		home: '<path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>',
+		book: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/>',
+		"book-open": '<path d="M2.5 5h6A3.5 3.5 0 0 1 12 8.5V20a2.5 2.5 0 0 0-2.5-2.5h-7z"/><path d="M21.5 5h-6A3.5 3.5 0 0 0 12 8.5V20a2.5 2.5 0 0 1 2.5-2.5h7z"/>',
+		check: '<circle cx="12" cy="12" r="9"/><path d="m8.5 12.3 2.4 2.4 4.6-5"/>',
+		chart: '<path d="M4 20V11M10 20V5M16 20v-6M2.5 20.5h19"/>',
+		rupee: '<path d="M7 4.5h11M7 9h11M7 4.5h3.5a4.5 4.5 0 0 1 0 9H7l7.5 6.5"/>',
+		calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/>',
+		leave: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17M9.5 15.5h5"/>',
+		clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>',
+		image: '<rect x="3.5" y="3.5" width="17" height="17" rx="2"/><circle cx="9" cy="9" r="1.8"/><path d="m20.5 15-5-5L4 20.5"/>',
+		award: '<circle cx="12" cy="9" r="5.5"/><path d="m8.5 13.5-1.3 7.5 4.8-2.6 4.8 2.6-1.3-7.5"/>',
+		gauge: '<path d="M3.6 18a9.5 9.5 0 1 1 16.8 0"/><path d="m12 13.5 4.5-4.5"/>',
+		cap: '<path d="M22 9.5 12 4.5 2 9.5l10 5z"/><path d="M6 11.5v5c3 2.5 9 2.5 12 0v-5"/>',
+		users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-1A4.5 4.5 0 0 1 7 14.5h4a4.5 4.5 0 0 1 4.5 4.5v1"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20v-1a4.5 4.5 0 0 0-3.5-4.4"/>',
+		user: '<circle cx="12" cy="8" r="4"/><path d="M4 20.5a8 8 0 0 1 16 0"/>',
+		megaphone: '<path d="M3.5 10v4a1 1 0 0 0 1 1h3l7.5 5V4l-7.5 5h-3a1 1 0 0 0-1 1z"/><path d="M18.5 8.5a5 5 0 0 1 0 7"/>',
+		alert: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/>',
+		layers: '<path d="m12 3 9.5 5-9.5 5-9.5-5z"/><path d="m2.5 13 9.5 5 9.5-5"/>',
+		card: '<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19M6.5 15h4"/>',
+		approve: '<rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="m8 12.2 2.8 2.8 5.2-6"/>',
+		file: '<path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5M8.5 13h7M8.5 17h5"/>',
+		wallet: '<rect x="2.5" y="6" width="19" height="14" rx="2"/><path d="M2.5 10h19M16.5 15h.01M5.5 6V4.5h13V6"/>',
+		door: '<path d="M5 21V4.5A1.5 1.5 0 0 1 6.5 3h11A1.5 1.5 0 0 1 19 4.5V21M3 21h18M14.5 12.5v.01"/>',
+		logout: '<path d="M9 20.5H5.5a1.5 1.5 0 0 1-1.5-1.5V5a1.5 1.5 0 0 1 1.5-1.5H9M15.5 16.5 20 12l-4.5-4.5M20 12H9"/>',
+		globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.8 2.5 15.2 0 18M12 3c-2.5 2.8-2.5 15.2 0 18"/>',
+		settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+		download: '<path d="M12 3.5v12M7.5 11l4.5 4.5 4.5-4.5M4 20.5h16"/>',
+		dots: '<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',
+		chevron: '<path d="m9 5.5 6.5 6.5L9 18.5"/>',
+	};
+	const icon = (name, cls = "") => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.dots}</svg>`;
+	const SECTION_ICONS = { overview: "home", homework: "book", attendance: "check", progress: "chart", fees: "rupee", leave: "leave",
+		activity: "clock", notices: "megaphone", lessons: "book-open", marks: "award", academics: "cap", staff: "users", dues: "alert",
+		classes: "layers", payments: "card", approvals: "approve", bills: "file", cash: "wallet", calendar: "calendar", photos: "image" };
+
+	// a ring with the percentage in the middle
+	function ring(p, { size = 76, stroke = 8, color = null, label = null } = {}) {
+		const r = (size - stroke) / 2, c = 2 * Math.PI * r, v = Math.max(0, Math.min(100, p || 0));
+		const col = color || toneColor(p, 75);
+		return `<div class="ring" style="width:${size}px;height:${size}px" role="img" aria-label="${esc(label || pct(p))}"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+			<circle class="track" cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke-width="${stroke}"/>
+			<circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" style="stroke:${col}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${((v / 100) * c).toFixed(1)} ${c.toFixed(1)}"/></svg>
+			<span class="ring-val" style="font-size:${Math.max(12, Math.round(size / 4.8))}px">${label !== null ? label : p === null || p === undefined ? "–" : `${Math.round(p * 10) / 10}%`}</span></div>`;
+	}
+
+	// what the current screen offers; drawn into the side menu and the phone's bottom bar
+	let navState = { subs: [], active: "", title: "", bell: null };
+	const screen = ({ title, kicker = "", subs = [], active = "", body = "", lead = "", actions = "", bell = null }) => {
+		const cur = subs.find(([k]) => k === active);
+		navState = { subs, active, title: cur ? cur[1] : "", bell };
+		return `<div class="wrap">${lead}<header class="page-head"><div>${kicker ? `<p class="kicker">${kicker}</p>` : ""}<h2 class="page-title">${title}</h2></div>${actions ? `<div class="page-actions">${actions}</div>` : ""}</header>
+		<div class="content">${body}</div></div>`;
+	};
+	// numbers with a plain label and an icon; tapping one opens its section
 	const stats = (items) => `<div class="stats">${items.filter(Boolean).map((s) =>
-		`<div class="stat ${s.go ? "go" : ""}" ${s.go ? `data-sv="${s.go}" role="button" tabindex="0"` : ""}>
-			<span class="stat-label">${esc(t(s.label))}</span><span class="stat-value ${s.tone || ""}">${s.value}</span>${s.note ? `<span class="stat-note">${s.note}</span>` : ""}</div>`).join("")}</div>`;
-	// things that need someone's attention, each opening the right tab
+		`<div class="stat ${s.tone || ""} ${s.go ? "go" : ""}" ${s.go ? `data-sv="${s.go}" role="button" tabindex="0"` : ""}>
+			<span class="stat-ic">${icon(s.icon || SECTION_ICONS[s.go] || "chart")}</span>
+			<span class="stat-body"><span class="stat-label">${esc(t(s.label))}</span><span class="stat-value">${s.value}</span>${s.note ? `<span class="stat-note">${s.note}</span>` : ""}</span></div>`).join("")}</div>`;
+	// things that need someone's attention, each opening the right section
 	const todo = (items) => {
 		const list = items.filter(Boolean);
-		if (!list.length) return `<div class="empty ok">${esc(t("Nothing needs your attention right now."))}</div>`;
-		return `<ul class="todo">${list.map((i) => `<li ${i.go ? `data-sv="${i.go}" role="button" tabindex="0"` : ""} class="${i.tone || ""}"><span class="dot"></span>
-			<span class="todo-text"><b>${i.text}</b>${i.note ? `<span class="meta">${i.note}</span>` : ""}</span>${i.go ? `<span class="chev" aria-hidden="true">›</span>` : ""}</li>`).join("")}</ul>`;
+		if (!list.length) return `<div class="empty ok">${icon("check")} ${esc(t("Nothing needs your attention right now."))}</div>`;
+		return `<ul class="todo">${list.map((i) => `<li ${i.go ? `data-sv="${i.go}" role="button" tabindex="0"` : ""} class="${i.tone || ""}"><span class="todo-ic">${icon(i.icon || SECTION_ICONS[i.go] || "alert")}</span>
+			<span class="todo-text"><b>${i.text}</b>${i.note ? `<span class="meta">${i.note}</span>` : ""}</span>${i.go ? icon("chevron", "chev") : ""}</li>`).join("")}</ul>`;
 	};
+	// soft colour per subject, so the same subject always looks the same
+	const tint = (name) => `--h:${hue(name)}`;
+	const subjectBadge = (name) => `<span class="subj-badge" style="${tint(name)}">${esc(String(name || "?").trim().charAt(0).toUpperCase())}</span>`;
 	const tonePct = (p, th = 75) => tone(p, th);
 	const reportButtons = (cards) => (cards || []).map((c) =>
 		`<a class="btn" href="/api/method/schoolos.api.report_card.download?name=${encodeURIComponent(c.name)}">${esc(t("Report card"))}: ${esc(c.template)}${c.overall_grade ? ` (${esc(c.overall_grade)})` : ""}</a>`).join("");
@@ -258,11 +317,20 @@
 	function timeline(schedule) {
 		if (!schedule || !schedule.length) return empty("No classes scheduled today");
 		const n = nowMins();
-		return `<ol class="periods">${schedule.map((s) => {
+		const out = [];
+		schedule.forEach((s, i) => {
+			if (i) {
+				const gap = mins(s.from_time) - mins(schedule[i - 1].to_time);
+				// a teacher's gap is a free period; a class's gap is a break
+				if (gap >= 10) out.push(`<li class="break"><span>${esc(t(s.student_group ? "Free period" : gap >= 40 ? "Lunch break" : "Short break"))}, ${gap} ${esc(t("min"))}</span></li>`);
+			}
 			const st = n > mins(s.to_time) ? "done" : n >= mins(s.from_time) ? "now" : "";
-			return `<li class="${st}"><span class="t">${fmtTime(s.from_time)}</span><div><b>${esc(s.course)}</b>
-				<span class="meta">${esc(short(s.student_group || s.instructor_name || ""))}${s.room ? `, ${esc(s.room)}` : ""}</span></div>${st === "now" ? status("info", t("Now")) : ""}</li>`;
-		}).join("")}</ol>`;
+			const who = s.student_group ? short(s.student_group) : s.instructor_name || "";
+			out.push(`<li class="period ${st}" style="${tint(s.course)}"><div class="period-time">${icon("clock")}${fmtTime(s.from_time)} – ${fmtTime(s.to_time)}${st === "now" ? `<span class="now-tag">${esc(t("Now"))}</span>` : ""}</div>
+				<b class="period-subject">${esc(s.course)}</b>
+				<div class="period-meta">${who ? `<span>${icon(s.student_group ? "users" : "user")}${esc(who)}</span>` : ""}${s.room ? `<span>${icon("door")}${esc(s.room)}</span>` : ""}</div></li>`);
+		});
+		return `<ol class="periods">${out.join("")}</ol>`;
 	}
 
 	function homeworkList(list, showGroup) {
@@ -270,7 +338,7 @@
 		return `<ul class="list">${list.map((h) => {
 			const due = h.due_date ? status(h.overdue ? "bad" : h.due_today ? "warn" : "", h.overdue ? t("Overdue") : h.due_today ? t("Due today") : `${t("Due")} ${fmtDate(h.due_date)}`) : "";
 			const body = stripHtml(h.details);
-			return `<li><div class="grow"><span class="meta">${esc(h.course || t(h.entry_type || "Homework"))}${showGroup ? `, ${esc(short(h.student_group))}` : ""}</span>
+			return `<li class="with-badge">${subjectBadge(h.course || h.entry_type)}<div class="grow"><span class="meta">${esc(h.course || t(h.entry_type || "Homework"))}${showGroup ? `, ${esc(short(h.student_group))}` : ""}</span>
 				<b>${esc(h.title)}</b>${body ? `<p class="body">${esc(body.slice(0, 200))}</p>` : ""}
 				${h.attachment ? `<a href="${esc(h.attachment)}" target="_blank" rel="noopener">${esc(t("Attachment"))}</a>` : ""}</div>
 				<div class="side">${due}${h.recipients_count ? `<span class="meta">${num(h.recipients_count)} ${esc(t("students"))}</span>` : ""}</div></li>`;
@@ -279,7 +347,7 @@
 
 	function circulars(list) {
 		if (!list || !list.length) return empty("No circulars yet");
-		return `<ul class="list">${list.map((c) => `<li><div class="grow"><b>${esc(c.title)}</b><p class="body">${esc(stripHtml(c.message).slice(0, 180))}</p></div>
+		return `<ul class="list">${list.map((c) => `<li class="with-badge"><span class="row-ic">${icon("megaphone")}</span><div class="grow"><b>${esc(c.title)}</b><p class="body">${esc(stripHtml(c.message).slice(0, 180))}</p></div>
 			<span class="meta side">${fmtDate(c.publish_date)}</span></li>`).join("")}</ul>`;
 	}
 
@@ -308,9 +376,9 @@
 		if (sub === "overview") {
 			body = stats([
 				{ label: "Attendance today", value: a.total ? pct(a.percentage) : "–", note: a.total ? `${num(a.absent)} ${esc(t("absent"))}` : esc(t("Not marked yet")), go: "attendance", tone: tonePct(a.percentage, 90) },
-				{ label: "Students", value: num(d.students.active) },
+				{ label: "Students", value: num(d.students.active), icon: "users" },
 				staff ? { label: "Staff present", value: `${num(staffIn)}`, note: `${esc(t("of"))} ${num(staff.active_staff)}`, go: "staff" } : null,
-				fees ? { label: "Fees collected", value: pct(fees.collection_pct), note: esc(inrShort(fees.outstanding)) + " " + esc(t("to collect")), go: null } : null,
+				fees ? { label: "Fees collected", value: pct(fees.collection_pct), note: esc(inrShort(fees.outstanding)) + " " + esc(t("to collect")), icon: "rupee" } : null,
 			]) + `<div class="cols2">${panel(t("Needs attention"), todo([
 				d.groups_unmarked.length ? { text: `${num(d.groups_unmarked.length)} ${esc(t("sections haven't marked attendance"))}`, note: esc(d.groups_unmarked.slice(0, 4).map(short).join(", ")), go: "attendance", tone: "warn" } : null,
 				d.low_attendance.length ? { text: `${num(d.low_attendance.length)} ${esc(t("students below"))} ${th}% ${esc(t("attendance"))}`, go: "attendance", tone: "bad" } : null,
@@ -415,15 +483,36 @@
 		</form>`;
 	}
 
+	// big numbers on the left, a ring on the right
+	function attendanceCard(a, todayStatus, go) {
+		const tone_ = tonePct(a.percentage, 90);
+		const today = todayStatus === "Absent" ? status("bad", t("Absent today")) : todayStatus === "Leave" ? status("warn", t("On leave today"))
+			: todayStatus === "Present" ? status("good", t("Present today")) : todayStatus === null ? "" : status("", t("Attendance not marked yet"));
+		return `<section class="panel att-card ${go ? "go" : ""}" ${go ? `data-sv="${go}" role="button" tabindex="0"` : ""}>
+			<div class="att-main"><div class="panel-head"><h2>${esc(t("Attendance"))}</h2>${today}</div>
+				<div class="att-nums"><div><b class="${tone_}">${num(a.present)}</b><span>${esc(t("Days present"))}</span></div><div><b>${num(a.working_days)}</b><span>${esc(t("School days"))}</span></div></div></div>
+			${ring(a.percentage, { size: 92, stroke: 9, color: toneColor(a.percentage, 90) })}</section>`;
+	}
+	function subjectTile(s, teacher) {
+		const syl = s.syllabus;
+		const w = syllabusWords(syl);
+		return `<button type="button" class="subject-tile" style="${tint(s.course)}" data-sv="progress">
+			<span class="st-top">${icon("book")}<b>${esc(s.course)}</b></span>
+			${teacher ? `<span class="st-line">${icon("user")}${esc(teacher)}</span>` : ""}
+			<span class="st-line">${icon("award")}${esc(t("Latest grade"))}: <b>${s.latest ? esc(s.latest.grade || pct(s.latest.percentage)) : "–"}</b></span>
+			${syl && syl.total ? `<span class="st-line">${icon("chart")}${num(syl.covered)}/${num(syl.total)} ${esc(t("chapters"))}</span><span class="st-status ${w.tone}">${esc(w.text)}</span>` : ""}</button>`;
+	}
+
 	// ---------- one student (parent / student)
 	let kidsCache = null;
 	async function studentView(studentId, back, sub = "overview") {
 		const d = await call("student", studentId ? { student: studentId } : {});
 		const sid = studentId || d.student.name;
 		const kid = (kidsCache || []).find((k) => k.student === sid);
+		const recent = (d.circulars || []).filter((c) => daysUntil(c.publish_date) >= -7).length;
 		const subs = [["overview", "Today"], on("homework") ? ["homework", "Homework"] : null, ["attendance", "Attendance"],
-			on("learning") ? ["progress", "Progress"] : null, on("fees") ? ["fees", "Fees"] : null, on("leave") ? ["leave", "Leave"] : null,
-			["activity", "Timeline"]].filter(Boolean);
+			on("fees") ? ["fees", "Fees"] : null, on("learning") ? ["progress", "Progress"] : null, on("leave") ? ["leave", "Leave"] : null,
+			["notices", "Notices", recent || ""], ["activity", "Timeline"]].filter(Boolean);
 		if (!subs.some(([k]) => k === sub)) sub = "overview";
 		const a = d.attendance;
 		let body = "";
@@ -432,23 +521,28 @@
 			const st = todayStatus ? todayStatus.status : null;
 			const due = (d.homework || []).filter((h) => h.due_date && !h.overdue);
 			const fee = kid && kid.fees;
-			body = `<p class="lead-line">${st === "Absent" ? status("bad", t("Absent today")) : st === "Leave" ? status("warn", t("On leave today")) : st === "Present" ? status("good", t("Present today")) : status("", t("Attendance not marked yet"))}</p>`
+			const prog = on("learning") ? await call("schoolos.api.learning.student_progress", { student: sid }).catch(() => null) : null;
+			const teacherOf = {};
+			(d.today_schedule || []).forEach((p) => (teacherOf[p.course] = p.instructor_name));
+			body = attendanceCard(a, st, "attendance")
 				+ stats([
-					{ label: "Attendance", value: pct(a.percentage), note: `${num(a.present)} ${esc(t("of"))} ${num(a.working_days)} ${esc(t("days"))}`, go: "attendance", tone: tonePct(a.percentage, 90) },
-					on("homework") ? { label: "Homework due", value: num(due.length), note: due.some((h) => h.due_today) ? esc(t("Some due today")) : "", go: "homework" } : null,
-					fee ? { label: "Fees due", value: esc(inrShort(fee.outstanding)), note: fee.outstanding > 0 && fee.next_due ? `${esc(t(fee.next_due.overdue ? "Overdue since" : "By"))} ${fmtDate(fee.next_due.date)}` : esc(t("All paid")), go: "fees", tone: fee.overdue > 0 ? "bad" : "" } : null,
+					on("homework") ? { label: "Homework due", value: num(due.length), note: due.some((h) => h.due_today) ? esc(t("Some due today")) : esc(t("this week")), go: "homework" } : null,
+					fee ? { label: "Fees due", value: esc(inrShort(fee.outstanding)), note: fee.outstanding > 0 && fee.next_due ? `${esc(t(fee.next_due.overdue ? "Overdue since" : "By"))} ${fmtDate(fee.next_due.date)}` : esc(t("All paid")), go: "fees", tone: fee.overdue > 0 ? "bad" : fee.outstanding ? "" : "good" } : null,
 				])
+				+ (prog && prog.subjects.length ? `<section class="strip-section"><div class="panel-head"><h2>${esc(t("Subjects"))}</h2><button class="link" data-sv="progress">${esc(t("See all"))}</button></div>
+					<div class="subject-strip">${prog.subjects.map((s) => subjectTile(s, teacherOf[s.course])).join("")}</div></section>` : "")
 				+ `<div class="cols2">${panel(t("Today's timetable"), timeline(d.today_schedule))}
-				${panel(t("From the school"), circulars((d.circulars || []).slice(0, 2)))}</div>`
+				${panel(t("From the school"), circulars((d.circulars || []).slice(0, 2)), { action: (d.circulars || []).length > 2 ? `<button class="link" data-sv="notices">${esc(t("See all"))}</button>` : "" })}</div>`
 				+ ((d.report_cards || []).length ? `<div class="actions">${reportButtons(d.report_cards)}</div>` : "");
 		} else if (sub === "homework") {
 			body = panel(t("Homework and diary"), homeworkList(d.homework));
 		} else if (sub === "attendance") {
-			body = stats([
-				{ label: "Attendance", value: pct(a.percentage), tone: tonePct(a.percentage, 90) }, { label: "Present", value: num(a.present) },
-				{ label: "Absent", value: num(a.absent), tone: a.absent ? "bad" : "" }, { label: "Leave", value: num(a.leave) },
+			body = attendanceCard(a, null) + stats([
+				{ label: "Absent", value: num(a.absent), tone: a.absent ? "bad" : "", icon: "alert" }, { label: "Leave", value: num(a.leave), icon: "leave" },
 			]) + panel(t("Last 30 school days"), calendar(d.calendar))
 				+ panel(t("Recent absences"), (d.recent_absences || []).length ? `<ul class="list">${d.recent_absences.map((x) => `<li><b>${esc(day(x).toLocaleDateString(loc(), { weekday: "long", day: "numeric", month: "long" }))}</b></li>`).join("")}</ul>` : empty("No absences"));
+		} else if (sub === "notices") {
+			body = panel(t("Notices from the school"), circulars(d.circulars));
 		} else if (sub === "progress") body = await progressPanel(sid, d);
 		else if (sub === "fees") body = await feesPanel(sid);
 		else if (sub === "leave") body = await leavePanel(sid);
@@ -456,7 +550,8 @@
 		const switcher = kidsCache && kidsCache.length > 1 && back === "parent"
 			? `<nav class="kids" aria-label="${esc(t("Children"))}">${kidsCache.map((k) => `<button type="button" data-student="${esc(k.student)}" aria-pressed="${k.student === sid}">${esc(firstName(k.student_name))}</button>`).join("")}</nav>` : "";
 		return screen({ lead: switcher, kicker: d.enrollment ? `${esc(d.enrollment.program)}, ${esc(d.enrollment.academic_year)}` : "",
-			title: studentId ? esc(d.student.student_name) : `${esc(greeting())}, ${esc(firstName(d.student.student_name))}`, subs, active: sub, body });
+			title: studentId ? esc(d.student.student_name) : `${esc(greeting())}, ${esc(firstName(d.student.student_name))}`, subs, active: sub, body,
+			bell: { count: recent, go: "notices" } });
 	}
 
 	async function parentView(sub) {
@@ -572,13 +667,22 @@
 
 	async function progressPanel(student) {
 		const p = await call("schoolos.api.learning.student_progress", { student });
-		const subjects = p.subjects.length ? `<ul class="list subjects">${p.subjects.map((s) => `<li>${syllabusRow(s.course, s.syllabus,
-			s.latest ? `<span class="grade" title="${esc(s.latest.exam)}">${esc(s.latest.grade || pct(s.latest.percentage))}</span>` : "")}
-			${s.topics.length ? `<details><summary>${esc(t("See chapters"))}</summary><ul class="chapters">${s.topics.map((tp) => `<li class="${tp.state}">${esc(tp.name)}<span class="meta">${esc(t(tp.state === "done" ? "Done" : tp.state === "started" ? "In progress" : "Not started"))}</span></li>`).join("")}</ul></details>` : ""}</li>`).join("")}</ul>` : empty("No data yet");
+		const withSyl = p.subjects.filter((s) => s.syllabus && s.syllabus.total);
+		const cov = withSyl.reduce((a, s) => a + s.syllabus.covered, 0), tot = withSyl.reduce((a, s) => a + s.syllabus.total, 0);
+		const overall = tot ? `<section class="panel overall"><div class="panel-head"><h2>${esc(t("Syllabus completed"))}</h2><b class="overall-val">${pct((cov / tot) * 100)}</b></div>${bar((cov / tot) * 100)}
+			<p class="meta">${num(cov)} ${esc(t("of"))} ${num(tot)} ${esc(t("chapters done across all subjects"))}</p></section>` : "";
+		const subjects = p.subjects.length ? `<div class="course-cards">${p.subjects.map((s) => {
+			const syl = s.syllabus, w = syllabusWords(syl);
+			return `<section class="course-card" style="${tint(s.course)}"><div class="cc-main"><div class="cc-title">${subjectBadge(s.course)}<b>${esc(s.course)}</b></div>
+				${s.latest ? `<div class="cc-line">${icon("award")}${esc(t("Latest grade"))}: <b>${esc(s.latest.grade || pct(s.latest.percentage))}</b> <span class="meta">${esc(s.latest.exam || "")}</span></div>` : ""}
+				${syl && syl.total ? `<div class="cc-line">${icon("chart")}${esc(t("Chapters covered"))}: <b>${num(syl.covered)}</b>/${num(syl.total)}</div><div>${status(w.tone, w.text)}</div>` : `<div class="cc-line meta">${esc(t("No syllabus set"))}</div>`}</div>
+				${syl && syl.total ? ring((syl.covered / syl.total) * 100, { size: 70, stroke: 7, color: w.tone === "bad" ? "var(--bad)" : "var(--brand-ring)" }) : ""}
+				${s.topics.length ? `<details class="cc-more"><summary>${esc(t("See chapters"))}</summary><ul class="chapters">${s.topics.map((tp) => `<li class="${tp.state}">${esc(tp.name)}<span class="meta">${esc(t(tp.state === "done" ? "Done" : tp.state === "started" ? "In progress" : "Not started"))}</span></li>`).join("")}</ul></details>` : ""}</section>`;
+		}).join("")}</div>` : empty("No data yet");
 		const tnotes = p.teacher_notes.length ? `<ul class="list">${p.teacher_notes.map((n) => `<li><div class="grow"><span class="meta">${esc(n.author)}, ${fmtDate(n.date)}</span><p class="body ink">${esc(stripHtml(n.log))}</p></div></li>`).join("")}</ul>` : empty("No notes from teachers yet");
 		const notes = p.class_notes.length ? `<ul class="list">${p.class_notes.slice(0, 8).map((n) => `<li><div class="grow"><span class="meta">${esc(n.course)}, ${fmtDate(n.date)}</span><b>${esc(n.topic || t("Lesson"))}</b>
 			${n.notes ? `<p class="body">${esc(stripHtml(n.notes))}</p>` : ""}${n.attachment ? `<a href="${esc(n.attachment)}" target="_blank" rel="noopener">${esc(t("Notes file"))}</a>` : ""}</div></li>`).join("")}</ul>` : empty("No class notes yet");
-		return panel(t("Subjects"), subjects, { note: t("Latest grade on the right") })
+		return overall + subjects
 			+ `<div class="cols2">${panel(t("Notes from teachers"), tnotes)}${panel(t("What was taught in class"), notes)}</div>`;
 	}
 
@@ -613,10 +717,10 @@
 			<div class="side"><b class="${i.overdue ? "bad-text" : ""}">${esc(inr(i.outstanding > 0.005 ? i.outstanding : i.total, cur))}</b>
 			${i.outstanding > 0.005 ? `${i.overdue ? status("bad", t("Overdue")) : ""}<button class="btn primary small" data-pay="${esc(i.invoice)}" data-amt="${i.outstanding}" data-student="${esc(student)}">${esc(t("Pay"))}</button>`
 				: `<a class="btn small" href="/api/method/schoolos.api.fees.receipt?invoice=${encodeURIComponent(i.invoice)}">${esc(t("Receipt"))}</a>`}</div></li>`;
-		return stats([
-			{ label: "To pay", value: esc(inr(f.outstanding, cur)), note: f.next_due ? `${esc(t(f.next_due.overdue ? "Overdue since" : "By"))} ${fmtDate(f.next_due.date)}` : esc(t("All fees paid")), tone: f.overdue ? "bad" : f.outstanding ? "" : "good" },
-			{ label: "Paid this year", value: esc(inr(f.paid, cur)), note: `${esc(t("of"))} ${esc(inr(f.total, cur))}` },
-		]) + panel(t("To pay"), unpaid.length ? `<ul class="list">${unpaid.map(inv).join("")}</ul>${f.pay_online ? "" : `<p class="meta">${esc(t("Online payment isn't set up yet. Please pay at the school office."))}</p>`}` : `<div class="empty ok">${esc(t("All fees paid"))}</div>`)
+		const paidPct = f.total ? (f.paid / f.total) * 100 : 0;
+		return `<section class="panel att-card"><div class="att-main"><div class="panel-head"><h2>${esc(t("Fees this year"))}</h2>${f.next_due ? status(f.next_due.overdue ? "bad" : "warn", `${t(f.next_due.overdue ? "Overdue since" : "By")} ${fmtDate(f.next_due.date)}`) : status("good", t("All fees paid"))}</div>
+			<div class="att-nums"><div><b class="${f.overdue ? "bad" : ""}">${esc(inrShort(f.outstanding))}</b><span>${esc(t("To pay"))}</span></div><div><b class="good">${esc(inrShort(f.paid))}</b><span>${esc(t("Paid"))}</span></div></div></div>
+			${ring(paidPct, { size: 92, stroke: 9, color: "var(--good)", label: `${Math.round(paidPct)}%` })}</section>` + panel(t("To pay"), unpaid.length ? `<ul class="list">${unpaid.map(inv).join("")}</ul>${f.pay_online ? "" : `<p class="meta">${esc(t("Online payment isn't set up yet. Please pay at the school office."))}</p>`}` : `<div class="empty ok">${esc(t("All fees paid"))}</div>`)
 			+ `<div class="cols2">${panel(t("Payments made"), f.payments.length ? `<ul class="list">${f.payments.map((p) => `<li><div class="grow"><b>${esc(inr(p.amount, cur))}</b><span class="meta">${esc(p.mode || "")}${p.reference ? `, ${esc(p.reference)}` : ""}</span></div><span class="meta side">${fmtDate(p.date)}</span></li>`).join("")}</ul>` : empty("No payments yet"))}
 			${paid.length ? panel(t("Paid fees"), `<ul class="list">${paid.map(inv).join("")}</ul>`) : ""}</div>`;
 	}
@@ -963,18 +1067,19 @@
 
 	// ---------- shell
 	const VIEWS = {
-		principal: { label: "Principal", render: principalView },
-		teacher: { label: "My classes", render: teacherView },
-		fees: { label: "Fees", render: feesView },
-		accounts: { label: "Accounts", render: accountsView },
-		parent: { label: "My children", render: parentView },
-		student: { label: "My dashboard", render: (sub) => studentView(null, null, sub || "overview") },
-		calendar: { label: "Calendar", render: calendarView },
+		principal: { label: "Principal", icon: "gauge", render: principalView },
+		teacher: { label: "My classes", icon: "book-open", render: teacherView },
+		fees: { label: "Fees", icon: "rupee", render: feesView },
+		accounts: { label: "Accounts", icon: "wallet", render: accountsView },
+		parent: { label: "My children", icon: "users", render: parentView },
+		student: { label: "My dashboard", icon: "home", render: (sub) => studentView(null, null, sub || "overview") },
+		calendar: { label: "Calendar", icon: "calendar", render: calendarView },
 	};
 
 	async function show(view, arg, sub) {
 		current = { view, arg, sub };
-		[...tabs.children].forEach((b) => b.dataset && b.dataset.view && b.setAttribute("aria-selected", String(b.dataset.view === view)));
+		navState = { subs: [], active: "", title: "", bell: null };
+		closeMenu();
 		app.innerHTML = `<div class="loading">${t("Loading…")}</div>`;
 		try {
 			app.innerHTML = arg ? await studentView(arg, view, sub || "overview") : await VIEWS[view].render(sub);
@@ -984,7 +1089,51 @@
 		} catch (e) {
 			app.innerHTML = `<div class="error">${esc(e.message || t("Something went wrong"))}</div>`;
 		}
+		renderNav();
+		const mc = document.getElementById("main-col");
+		if (mc) mc.scrollTop = 0;
 		try { localStorage.setItem("schoolos:view", view); } catch (e) {}
+	}
+
+	// ---------- navigation: side menu (drawer on phones), bottom bar on phones, app bar title and bell
+	const shellEl = () => document.querySelector(".shell-app");
+	function closeMenu() { const s = shellEl(); if (s && s.classList) s.classList.remove("menu-open"); }
+	function renderNav() {
+		if (!ctx) return;
+		const subs = navState.subs || [];
+		const item = (attrs, ic, label, curr, badge = "") => `<button type="button" class="menu-item" ${attrs} aria-current="${curr}">${icon(ic)}<span class="mi-label">${esc(t(label))}</span>${badge ? `<span class="count">${badge}</span>` : ""}</button>`;
+		let html = ctx.views.map((v) => {
+			const here = v === current.view;
+			let h = item(`data-view="${v}"`, VIEWS[v].icon, VIEWS[v].label, here && subs.length < 2);
+			if (here && subs.length > 1) h += `<div class="submenu">${subs.map(([k, l, b]) => item(`data-nav-sv="${k}"`, SECTION_ICONS[k] || "dots", l, k === navState.active, b)).join("")}</div>`;
+			return h;
+		}).join("");
+		const extra = window.__schoolosExtraMenu;
+		if (extra && extra.length) html += `<div class="menu-group">${esc(t("Office tools"))}</div>` + extra.map((x) => item(`data-extra="${esc(x.id)}"`, x.icon || "settings", x.label, false)).join("");
+		tabs.innerHTML = html;
+		const title = document.getElementById("page-title");
+		if (title) title.textContent = t(navState.title || (VIEWS[current.view] || {}).label || "");
+		const bell = document.getElementById("bell-slot");
+		if (bell) bell.innerHTML = navState.bell ? `<button type="button" class="icon-btn bell" data-nav-sv="${navState.bell.go}" aria-label="${esc(t("Notices"))}">${icon("bell")}${navState.bell.count ? `<span class="badge">${navState.bell.count}</span>` : ""}</button>` : "";
+		const bottom = document.getElementById("bottom-nav");
+		if (bottom) {
+			const many = subs.length > 5;
+			const shown = many ? subs.slice(0, 4) : subs;
+			bottom.innerHTML = subs.length > 1 ? shown.map(([k, l, b]) => `<button type="button" data-nav-sv="${k}" aria-current="${k === navState.active}">${icon(SECTION_ICONS[k] || "dots")}<span>${esc(t(l))}</span>${b ? `<span class="dot-badge"></span>` : ""}</button>`).join("")
+				+ (many ? `<button type="button" data-open-menu aria-current="${!shown.some(([k]) => k === navState.active)}">${icon("menu")}<span>${esc(t("More"))}</span></button>` : "") : "";
+			const s = shellEl();
+			if (s && s.classList) s.classList.toggle("has-bottom", subs.length > 1);
+		}
+	}
+	function navClick(e) {
+		const v = e.target.closest("[data-view]");
+		if (v && v.dataset.view) return show(v.dataset.view);
+		const sv = e.target.closest("[data-nav-sv]");
+		if (sv && sv.dataset.navSv) return show(current.view, current.arg, sv.dataset.navSv);
+		const x = e.target.closest("[data-extra]");
+		if (x && x.dataset.extra && window.__schoolosExtraGo) { closeMenu(); return window.__schoolosExtraGo(x.dataset.extra); }
+		const m = e.target.closest("[data-open-menu]");
+		if (m) { const s = shellEl(); if (s) s.classList.add("menu-open"); }
 	}
 
 	app.addEventListener("click", (e) => {
@@ -1111,26 +1260,32 @@
 	}
 
 	function topbarControls() {
-		const user = document.querySelector(".topbar .user");
-		user.insertAdjacentHTML("afterbegin",
-			`<button id="install-btn" class="linkbtn hidden">${t("Install app")}</button>
-			 <button id="lang-btn" class="linkbtn" title="Language">${lang === "mr" ? "EN" : "मराठी"}</button>`);
-		document.getElementById("lang-btn").onclick = () => {
+		const actions = document.querySelector(".appbar-actions");
+		if (actions) actions.insertAdjacentHTML("beforeend", `<button id="lang-btn" class="lang-btn" title="Language">${lang === "mr" ? "EN" : "मराठी"}</button>`);
+		const foot = document.querySelector(".drawer-foot");
+		if (foot) foot.insertAdjacentHTML("afterbegin", `<button id="install-btn" class="foot-link hidden">${icon("download")}${t("Install app")}</button>`);
+		const mb = document.getElementById("menu-btn");
+		if (mb) { mb.innerHTML = icon("menu"); mb.onclick = () => { const s = shellEl(); if (s) s.classList.toggle("menu-open"); }; }
+		const sc = document.getElementById("scrim");
+		if (sc) sc.onclick = closeMenu;
+		const lb = document.getElementById("lang-btn");
+		if (lb) lb.onclick = () => {
 			lang = lang === "mr" ? "en" : "mr";
 			try { localStorage.setItem("schoolos:lang", lang); } catch (e) {}
 			location.reload();
 		};
-		document.getElementById("install-btn").onclick = async () => {
+		const ib = document.getElementById("install-btn");
+		if (ib) ib.onclick = async () => {
 			if (!installEvent) return;
 			installEvent.prompt();
 			await installEvent.userChoice;
 			installEvent = null;
 			document.getElementById("install-btn").classList.add("hidden");
 		};
-		const lo = document.querySelector('.topbar a[href="/logout"]');
-		if (lo) lo.textContent = t("Log out");
+		const lo = document.querySelector('.drawer-foot a[href="/logout"]');
+		if (lo && lo.classList) lo.innerHTML = `${icon("logout")}${esc(t("Log out"))}`;
 		const dl = document.getElementById("desk-link");
-		if (dl) dl.textContent = t("Admin");
+		if (dl) dl.innerHTML = `${icon("settings")}${esc(t("Admin"))}`;
 	}
 
 	async function init() {
@@ -1142,18 +1297,22 @@
 			return;
 		}
 		document.getElementById("user-name").textContent = ctx.full_name || ctx.user;
+		const av = document.getElementById("user-avatar");
+		if (av) av.textContent = String(ctx.full_name || ctx.user || "?").split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+		const role = document.getElementById("user-role");
+		const r = ctx.roles || [];
+		if (role) role.textContent = t(r.includes("School Principal") ? "Principal" : ctx.views.includes("teacher") ? "Teacher" : ctx.views.includes("fees") ? "Office" : ctx.views.includes("parent") ? "Parent" : ctx.views.includes("student") ? "Student" : "");
 		const staff = ctx.roles.some((r) => !["Guardian", "Student"].includes(r));
 		if (staff) document.getElementById("desk-link").classList.remove("hidden");
 		if (!ctx.views.length) {
 			app.innerHTML = `<div class="wrap">${empty("Your account isn't linked to a student, guardian or teacher record yet. Please contact the school office.")}</div>`;
 			return;
 		}
-		tabs.innerHTML = ctx.views.map((v) => `<button class="tab" role="tab" data-view="${v}">${esc(t(VIEWS[v].label))}</button>`).join("");
-		tabs.addEventListener("click", (e) => {
-			const b = e.target.closest("[data-view]");
-			if (b) show(b.dataset.view);
-		});
-		if (ctx.views.length < 2) tabs.classList.add("hidden");
+		tabs.addEventListener("click", navClick);
+		const bn = document.getElementById("bottom-nav");
+		if (bn) bn.addEventListener("click", navClick);
+		const aa = document.querySelector(".appbar-actions");
+		if (aa) aa.addEventListener("click", navClick);
 		let start = ctx.views[0];
 		try {
 			const saved = localStorage.getItem("schoolos:view");

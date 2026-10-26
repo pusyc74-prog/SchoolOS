@@ -19,21 +19,30 @@
 	<!-- csrf_token -->
 </head>
 <body>
-	<header class="topbar">
-		<div class="brand">
-			{% if logo %}<img src="{{ logo }}" alt="" class="logo">{% endif %}
-			<span class="school-name">{{ school_name | e }}</span>
+	<div class="shell-app">
+		<aside class="drawer" id="drawer" aria-label="Menu">
+			<div class="drawer-head">
+				<span class="drawer-logo">{% if logo %}<img src="{{ logo }}" alt="">{% else %}{{ school_name[:1] | e }}{% endif %}</span>
+				<b class="school-name">{{ school_name | e }}</b>
+			</div>
+			<div class="profile"><span class="avatar" id="user-avatar"></span><div><b id="user-name"></b><span id="user-role"></span></div></div>
+			<nav id="tabs" class="menu" aria-label="Sections"></nav>
+			<div class="drawer-foot">
+				<a href="/desk" id="desk-link" class="foot-link hidden">Admin</a>
+				<a href="/logout" class="foot-link">Log out</a>
+			</div>
+		</aside>
+		<div class="scrim" id="scrim"></div>
+		<div class="main-col" id="main-col">
+			<header class="appbar">
+				<button type="button" class="icon-btn" id="menu-btn" aria-label="Menu"></button>
+				<h1 id="page-title"></h1>
+				<div class="appbar-actions"><span id="bell-slot"></span></div>
+			</header>
+			<main id="app"><div class="loading">Loading…</div></main>
+			<nav class="bottom-nav" id="bottom-nav" aria-label="Sections"></nav>
 		</div>
-		<div class="user">
-			<span id="user-name"></span>
-			<a href="/desk" id="desk-link" class="hidden">Admin</a>
-			<a href="/logout">Log out</a>
-		</div>
-	</header>
-	<nav id="tabs" class="tabs" role="tablist"></nav>
-	<main id="app">
-		<div class="loading">Loading…</div>
-	</main>
+	</div>
 	<script src="/assets/schoolos/js/school.js?v={{ version }}"></script>
 </body>
 </html>

@@ -703,7 +703,7 @@
 	const SCREENS = [
 		{ group: "Parent", items: [
 			{ id: "parent", name: "Parent app", kind: "app", role: "parent", dev: "phone", who: "Parent · Suresh Patil", desc: "Both children on one login: attendance, absences, homework due, latest marks and report card. Tap Details for one child. Try the मराठी switch in the top bar." },
-			{ id: "progress", name: "Child progress", kind: "app", role: "parent", dev: "phone", steps: ["child", "progress"], who: "Parent · Aarav's progress", desc: "Every subject: chapters finished against where the class should be by now (the orange marker), average and trend, class notes from each lesson and notes from teachers." },
+			{ id: "progress", name: "Child progress", kind: "app", role: "parent", dev: "phone", steps: ["child", "progress"], who: "Parent · Aarav's progress", desc: "Every subject as a card: chapters covered with a ring, a plain status (On track, or 2 chapters behind) and the latest grade. Below: notes from teachers and what was taught in class." },
 			{ id: "childfees", name: "Fees & pay", kind: "app", role: "parent", dev: "phone", steps: ["child", "fees"], who: "Parent · Aarav's fees", desc: "Dues, invoices by fee head and payment history. Tap Pay, enter a mobile number, and pay through the (demo) Razorpay checkout; the fee moves to paid with a receipt." },
 			{ id: "activity", name: "Activity timeline", kind: "app", role: "parent", dev: "phone", steps: ["child", "activity"], who: "Parent · everything about Aarav", desc: "Everything that happened, day by day: absences, homework, lessons taught, marks, teacher notes, fee payments and report cards." },
 			{ id: "leave", name: "Leave request", kind: "app", role: "parent", dev: "phone", steps: ["child", "leave"], who: "Parent · apply for leave", desc: "Apply for leave in two taps. The class teacher approves or rejects it from their app; approved days show as leave instead of absent and no absence alert goes out." },
@@ -742,7 +742,7 @@
 		$("#groups").innerHTML = SCREENS.map((g) => `<div class="group"><h4>${g.group}</h4><div class="nav">${g.items
 			.map((it) => `<button type="button" data-go="${it.id}" aria-current="${S.current && S.current.id === it.id}"><span>${it.name}</span><span class="kind">${it.kind === "app" ? "App" : it.kind === "phone" ? "Phone" : "Desk"}</span></button>`)
 			.join("")}</div></div>`).join("");
-		$("#wm").innerHTML = `${esc(S.brand.name)}<small>SchoolOS · working prototype</small>`;
+		$("#wm").innerHTML = `${esc(S.brand.name)}<small>Clickable wireframe</small>`;
 	}
 
 	function frame(kind, url) {
@@ -792,10 +792,21 @@
 		S.role = role;
 		if (sc && sc.mode) S.accountsMode = sc.mode === "full" ? (S.chosenMode || "full") : sc.mode;
 		try { localStorage.setItem("schoolos:view", (sc && sc.start) || CONTEXT[role].views[0]); } catch (e) {}
-		screen.innerHTML = `<div id="sos-root" class="sos lightbox-host" style="--brand:${S.brand.color};--lbh:${screen.clientHeight}px"></div><div class="sos" style="--brand:${S.brand.color};min-height:100%">
-			<header class="topbar"><div class="brand"><img src="${logo()}" alt="" class="logo"><span class="school-name">${esc(S.brand.name)}</span></div>
-			<div class="user"><span id="user-name"></span><a href="/desk" id="desk-link" class="hidden">Admin</a><a href="/logout">Log out</a></div></header>
-			<nav id="tabs" class="tabs" role="tablist"></nav><main id="app"><div class="loading">Loading…</div></main></div>`;
+		screen.innerHTML = `<div id="sos-root" class="sos lightbox-host" style="--brand:${S.brand.color};--lbh:${screen.clientHeight}px"></div><div class="sos" style="--brand:${S.brand.color};height:100%">
+			<div class="shell-app">
+				<aside class="drawer" id="drawer" aria-label="Menu">
+					<div class="drawer-head"><span class="drawer-logo"><img src="${logo()}" alt=""></span><b class="school-name">${esc(S.brand.name)}</b></div>
+					<div class="profile"><span class="avatar" id="user-avatar"></span><div><b id="user-name"></b><span id="user-role"></span></div></div>
+					<nav id="tabs" class="menu" aria-label="Sections"></nav>
+					<div class="drawer-foot"><a href="/desk" id="desk-link" class="foot-link hidden">Admin</a><a href="/logout" class="foot-link">Log out</a></div>
+				</aside>
+				<div class="scrim" id="scrim"></div>
+				<div class="main-col" id="main-col">
+					<header class="appbar"><button type="button" class="icon-btn" id="menu-btn" aria-label="Menu"></button><h1 id="page-title"></h1><div class="appbar-actions"><span id="bell-slot"></span></div></header>
+					<main id="app"><div class="loading">Loading…</div></main>
+					<nav class="bottom-nav" id="bottom-nav" aria-label="Sections"></nav>
+				</div>
+			</div></div>`;
 		screen.addEventListener("click", (e) => {
 			const a = e.target.closest("a[href]");
 			if (!a) return;
@@ -822,12 +833,12 @@
 	}
 	async function runSteps(screen, steps) {
 		for (const st of steps) {
-			const sel = st === "child" ? `[data-student="${STUDENTS[0].id}"]:not([data-sub])` : `[data-sv="${st}"]`;
+			const sel = st === "child" ? `[data-student="${STUDENTS[0].id}"]:not([data-sub])` : `#tabs [data-nav-sv="${st}"]`;
 			const el = await waitFor(screen, sel);
 			if (!el) return;
 			el.click();
 			await sleep(120);
-			if (st !== "child") await waitFor(screen, `[data-sv="${st}"][aria-selected="true"]`);
+			if (st !== "child") await waitFor(screen, `#tabs [data-nav-sv="${st}"][aria-current="true"]`);
 		}
 	}
 	window.__rebootSchoolOS = () => S.current && go(S.current.id);

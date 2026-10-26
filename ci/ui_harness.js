@@ -11,7 +11,7 @@ function el(id) {
 		setAttribute() {}, querySelector: () => null, querySelectorAll: () => [] };
 }
 const els = { app: el("app"), tabs: el("tabs"), "user-name": el("user-name"), "desk-link": el("desk-link"), "install-btn": el("install-btn"), "lang-btn": el("lang-btn") };
-global.document = { getElementById: (id) => els[id], querySelector: (q) => (q.includes(".user") ? { insertAdjacentHTML() {} } : { set textContent(v) {} }),
+global.document = { getElementById: (id) => els[id], querySelector: () => null,
 	querySelectorAll: () => [], createElement: () => ({ set innerHTML(v) { this._t = String(v).replace(/<[^>]+>/g, ""); }, get textContent() { return this._t; } }), head: { appendChild() {} } };
 global.window = { addEventListener() {}, frappe: {} };
 global.localStorage = { getItem: () => null, setItem() {} };
